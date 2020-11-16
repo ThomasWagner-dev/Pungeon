@@ -7,7 +7,7 @@ A simple top down Roguelike using Greenfoot.
 * [Setup](#setup)
 
 ## General info
-This a simple top down Roguelike game based on Greenfoot.
+This a simple top down Roguelike game based on Greenfoot.  
 The Versions of Greenfoot and Java are both limited by our school.
 
 ## Technologies 
