@@ -27,12 +27,12 @@ public class FileWork
         HashMap<String, HashMap<String, Double>> dmgMultiplier = new HashMap<>();
         try {
             Scanner sc = new Scanner(new File("./data/dmgMultipliers.stats"));
-            String[] types = sc.nextLine().split(" "),
+            String[] types = sc.nextLine().split(","),
                 line;
             HashMap<String, Double> tmp;
             for (String type : types) {
                 tmp = new HashMap<>();
-                line = sc.nextLine().split(" ");
+                line = sc.nextLine().split(",");
                 for (int i = 0; i<types.length; i++) {
                     tmp.put(types[i], Double.parseDouble(line[i]));
                 }
