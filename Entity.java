@@ -1,39 +1,67 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
+/**
+ * Superclass for all moving Objects.
+ */
 public abstract class Entity extends Actor
 {
-    protected int health, dmg, speed;
-    protected String dmgType;
+    protected int hp, maxhp, dmg, speed;
+    protected String dmgType, type;
+    
+    /**
+     * Yes
+     */
     public void act() {
         move();
     }
+    
+    /**
+     * moves the entity. If it is a Collider, it steps back elsewise colliding with an Object
+     */
     protected void move() {
-        int[] movement = getMovement(speed); //Fetches movement
+        int[] movementOriginal = getMovement();
+        int[] movement = new int[] {movementOriginal[0]*speed, movementOriginal[1]*speed}; //Fetches movement
         
         int oldX = getX(),
             oldY = getY(),
             newX = oldX + movement[0],
-            newY = oldY + movement[1],
-            workX = newX,
+            newY = oldY + movement[1];
+        
+        double workX = newX,
             workY = newY;
         //moves Entity to final location
         setLocation(newX, newY);
+        
+        //skips back movement if the entity doesn't have collision
+        if (!(this instanceof Collider)) return;
         
         //checks goes back, until Entity ain't colliding anymore
         while (isTouching(Collider.class)) {
             if (workX == oldX && workY == oldY) 
                 break;
             
-            workX -= Math.signum(movement[0]);
-            workY -= Math.signum(movement[1]);
+            workX -= movementOriginal[0]; //Original movement to keep the ratio between x and y
+            workY -= movementOriginal[1];
+            setLocation((int) workX, (int) workY);
         }
-        setLocation(workX, workY);
+        setLocation((int) workX, (int) workY);
     }
     
-    protected abstract int[] getMovement(); //AI dependent movements
+    /**
+     * gets movement, dependent on either player input or AI
+     */
+    protected abstract int[] getMovement();
     
-    protected int[] getMovement(int speed) {
-        int[] x = getMovement();
-        return new int[] {x[0]*speed, x[1]*speed};
+    /**
+     * Basic collision physics. check act() in Projectile for further information
+     */
+    protected void collide(Projectile p) {
+        DungeonWorld world = (DungeonWorld) getWorld();
+        hp -= p.dmg * world.dmgMultiplier.get(p.dmgType).get(type);
+        world.removeObject(p);
+        if (hp < 0) {
+            world.removeObject(this);
+        }
+        
     }
 }

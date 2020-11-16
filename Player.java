@@ -12,11 +12,6 @@ public class Player extends Entity implements Collider{
     
     public void act() {
         super.act();
-    }    
-    
-    @Override
-    protected void move() {
-
     }
     
     protected int[] getMovement() {

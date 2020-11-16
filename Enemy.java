@@ -1,20 +1,20 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class Enemy here.
+ * Superclass for all Enemies.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Commentator 
  */
 public abstract class Enemy extends Entity
 {
-    /**
-     * Act - do whatever the Enemy wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
     public void act() 
     {
+        super.act();
         attack();
     }    
+    
+    /**
+     * Abstract version of the attack method. Will be overwritten by all Subclasses, as all have a different attack scheme.
+     */
     public abstract void attack();
 }
