@@ -11,7 +11,7 @@ This a simple top down Roguelike game based on Greenfoot.
 The Versions of Greenfoot and Java are both limited by our school.
 
 ## Technologies 
-Projects are created with:
+Project created with:
 Java JDK: 8u172
 Greenfoot: 3.1.0
 
