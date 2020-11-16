@@ -14,7 +14,7 @@ public class FileWork
                 z = x.split(":");
                 key = z[0];
                 value = z[1];
-                
+
             }
         }
         catch (Exception e) {
@@ -22,14 +22,17 @@ public class FileWork
             e.printStackTrace();
         }
     }
-    
+
     public static HashMap<String, HashMap<String, Double>> getDmgMultiplier() {
         HashMap<String, HashMap<String, Double>> dmgMultiplier = new HashMap<>();
         try {
+            //Read the file.
             Scanner sc = new Scanner(new File("./data/dmgMultipliers.stats"));
-            String[] types = sc.nextLine().split(","),
-                line;
+            //Put all types into a list.
+            String[] types = sc.nextLine().split(",");
+            String[] line;
             HashMap<String, Double> tmp;
+            //Read dmg Multipliers for each type
             for (String type : types) {
                 tmp = new HashMap<>();
                 line = sc.nextLine().split(",");
@@ -43,7 +46,6 @@ public class FileWork
             System.err.println("Error while loading Damage Multipliers");
             e.printStackTrace();
         }
-        
         return dmgMultiplier;
     }
 }
