@@ -7,12 +7,15 @@ A simple top down Roguelike using Greenfoot.
 * [Setup](#setup)
 
 ## General info
-This is a collection of random projects i do while learning.
+This a simple top down Roguelike game based on Greenfoot.
+The Versions of Greenfoot and Java are both limited by our school.
 
 ## Technologies 
 Projects are created with:
-Java JDK 8u172
+Java JDK: 8u172
+Greenfoot: 3.1.0
 
 ## Setup
-Most of the projects won't work on their own.  
-For all projects runnable just install the imported Libaries and run it.
+Download the game.jar file.
+Install Java JDK 8u172 from https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html.  
+Run the game.jar file.
