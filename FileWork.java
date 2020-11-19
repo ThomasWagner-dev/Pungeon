@@ -23,6 +23,60 @@ public class FileWork
         }
     }
 
+    public static int[][] loadWorldFile(String screenName) {
+        int[][] worldList = {};
+        try {
+            //Read the file.
+            Scanner sc = new Scanner(new File("./data/worlds/" + screenName + ".world"));
+            //Initalize indices.
+            int line = 0;
+            int element = 0;
+            String[] lineValues = sc.nextLine().split(",");
+            //Check if the line contains Values.
+            while (lineValues.length != 0) {
+                //Add each Value from the line to the 2D-Array.
+                for (String type : lineValues) {
+                    worldList[line][element] = Integer.parseInt(type);
+                    element++;
+                }
+                element = 0;  
+                //Read the next line.
+                line++;
+                lineValues = sc.nextLine().split(",");
+            }
+        }
+        catch(Exception e) {
+            System.err.println("Error while loading WorldFile");
+            e.printStackTrace();
+        }  
+        return worldList;
+    }
+
+    public static Object loadBlock(int id) {
+        try {
+            //Read the file.
+            Scanner sc = new Scanner(new File("./data/blocks/" + id + ".block"));
+            //Determine the type of Block.
+            String line = sc.nextLine();
+            if (line == "tile") {
+                //TODO think about data structure for saving tiles. 
+            }
+            else if (line == "wall") {
+                //Read Breakability.
+                boolean breakable = Boolean.parseBoolean(sc.nextLine());
+                Wall wall = new Wall(breakable);
+                //Read image.
+                wall.setImage("./images/" + sc.nextLine());
+                return wall;
+            }
+        }
+        catch(Exception e) {
+            System.err.println("Error while loading WorldFile");
+            e.printStackTrace();
+        }  
+        return null;
+    }
+
     public static HashMap<String, HashMap<String, Double>> getDmgMultiplier() {
         HashMap<String, HashMap<String, Double>> dmgMultiplier = new HashMap<>();
         try {
