@@ -5,7 +5,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * 
  * @author Commentator
  */
-public class Wall extends Actor implements Collider
+public class Wall extends Block implements Collider
 {
     public final boolean breakable;
     

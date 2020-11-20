@@ -5,7 +5,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * 
  * @author (Screxo) 
  */
-public class Tile extends Actor
+public class Tile extends Block
 {
     public void act() 
     {
