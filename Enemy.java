@@ -5,7 +5,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * 
  * @author Commentator 
  */
-public abstract class Enemy extends Entity
+public abstract class Enemy extends Entity implements Collider
 {
     public void act() 
     {

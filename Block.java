@@ -9,11 +9,14 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public abstract class Block extends Actor
 {
     /**
-     * Act - do whatever the Block wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
+     * A public version of the protected clone() method of Object. Allows blocks to be cloned, to make map-loading easier.
      */
-    public void act() 
-    {
-        // Add your action code here.
-    }    
+    public Block clone() {
+        try {
+            return (Block) super.clone();
+        }
+        catch (Exception e) { //catches the weird exception clone may throw.
+            return null;
+        }
+    }
 }

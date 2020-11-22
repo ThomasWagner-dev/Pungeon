@@ -23,8 +23,8 @@ public class FileWork
         }
     }
 
-    public static int[][] loadWorldFile(String screenName) {
-        int[][] worldList = {};
+    public static String[][] loadWorldFile(String screenName) {
+        String[][] worldList = {};
         try {
             //Read the file.
             Scanner sc = new Scanner(new File("./data/worlds/" + screenName + ".world"));
@@ -36,7 +36,7 @@ public class FileWork
             while (lineValues.length != 0) {
                 //Add each Value from the line to the 2D-Array.
                 for (String type : lineValues) {
-                    worldList[line][element] = Integer.parseInt(type);
+                    worldList[line][element] = type;
                     element++;
                 }
                 element = 0;  
@@ -52,29 +52,68 @@ public class FileWork
         return worldList;
     }
 
-    public static Object loadBlock(int id) {
+    /**
+     * returns a hashmap of all blocks listed in ./data/blocks/
+     */
+    public static HashMap<String, Block> loadAllBlocks() {
+          HashMap<String, Block> blocks = new HashMap<>();
+          File dir = new File("./data/blocks/"); //creates a directory file of the blocks folder
+          File[] directoryListing = dir.listFiles(); //retrieves all files present in the folder
+          String[] splittedName;
+          String name;
+          if (directoryListing != null) { //see else
+              for (File child : directoryListing) {//loops though all files in the folder
+                  if (!child.getName().endsWith(".block")) continue; //skips all files, which aint blocks. for easier disableing using the .disabled ending.
+                  splittedName = child.getName().split("\\.");//splits name, to only get the name, without ending (this case .block)
+                  name = String.join(".", Arrays.copyOfRange(splittedName, 0, splittedName.length-1));
+                  blocks.put(name, loadBlock(child)); //puts the block into the hashmap using its name as a key and a loaded Block Object as the value.
+              }
+          } else {
+              // Handle the case where dir is not really a directory.
+              // Checking dir.isDirectory() above would not be sufficient
+              // to avoid race conditions with another process that deletes
+              // directories.
+          }
+          return blocks;
+    }
+    
+    /**
+     * Only used when loading manually.
+     * @see loadBlock(File f)
+     */
+    public static Block loadBlock(String id) {
+        return loadBlock(new File("./data/blocks/" + id + ".block"));
+    }
+    
+    /**
+     * loads a block from a file.
+     */
+    public static Block loadBlock(File f) {
+        Block block = null;
         try {
             //Read the file.
-            Scanner sc = new Scanner(new File("./data/blocks/" + id + ".block"));
+            Scanner sc = new Scanner(f);
             //Determine the type of Block.
             String line = sc.nextLine();
-            if (line == "tile") {
-                //TODO think about data structure for saving tiles. 
+            
+            switch (line) {
+                case "tile":
+                    block = new Tile();//TODO think about data structure for saving tiles. 
+                    break;
+                case "wall":
+                    //Read Breakability.
+                    boolean breakable = Boolean.parseBoolean(sc.nextLine());
+                    block = new Wall(breakable);
+                    break;
             }
-            else if (line == "wall") {
-                //Read Breakability.
-                boolean breakable = Boolean.parseBoolean(sc.nextLine());
-                Wall wall = new Wall(breakable);
-                //Read image.
-                wall.setImage("./images/" + sc.nextLine());
-                return wall;
-            }
+            //Read image.
+            block.setImage("./images/" + sc.nextLine());
         }
         catch(Exception e) {
             System.err.println("Error while loading WorldFile");
             e.printStackTrace();
         }  
-        return null;
+        return block;
     }
 
     public static HashMap<String, HashMap<String, Double>> getDmgMultiplier() {

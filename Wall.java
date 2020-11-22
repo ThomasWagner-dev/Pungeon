@@ -27,7 +27,7 @@ public class Wall extends Block implements Collider
         //check if the Projectile is reflected by walls
         if (p.isReflective) {
             //Big TODO: get collision face and invert accordingly!
-            p.direction = new int[] {p.direction[0]*-1, p.direction[1]*-1};
+            p.direction = new double[] {p.direction[0]*-1, p.direction[1]*-1};
         }
         else {
             world.removeObject(p);

@@ -7,7 +7,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Projectile extends Entity
 {
-    public int[] direction;
+    public double[] direction;
     public final boolean isReflective;
     protected final int dmg;
     protected final String dmgType;
@@ -21,6 +21,7 @@ public class Projectile extends Entity
      */
     public void act() {
         super.act();
+        System.out.println("text");
         for (Wall w : getIntersectingObjects(Wall.class)) {
             w.collide(this);
         }
@@ -30,7 +31,7 @@ public class Projectile extends Entity
         }
     }
     
-    public Projectile(int[] direction, int dmg, String dmgType, boolean isReflective) {
+    public Projectile(double[] direction, int dmg, String dmgType, boolean isReflective) {
         this.direction = direction; 
         this.dmg = dmg;
         this.dmgType = dmgType;
@@ -38,7 +39,8 @@ public class Projectile extends Entity
     }
     
     
-    protected int[] getMovement() {
-        return direction;
+    protected double[][] getMovement() {
+        System.out.println("test");
+        return new double[][] {direction,{1}};
     }
 }

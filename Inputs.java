@@ -12,8 +12,9 @@ public class Inputs
      * 
      * @return movement multiplier as [x,y]
      */
-    public static int[] getMovement() {
-        int[] movement = new int[2];
+    public static double[][] getMovement() {
+        double[] movement = new double[2];
+        double speedmultiplier = 1;
         if (Greenfoot.isKeyDown("w")) {
             movement[1] -= 1;
         }
@@ -26,6 +27,14 @@ public class Inputs
         if (Greenfoot.isKeyDown("d")) {
             movement[0] += 1;
         }
-        return movement;
+        
+        if (Greenfoot.isKeyDown("shift")) {
+            speedmultiplier = 2;
+        }
+        if (Greenfoot.isKeyDown("ctrl")) {
+            speedmultiplier = 0.5;
+        }
+        System.out.println(movement[0] + "," + movement[1]);
+        return new double[][] {movement,new double[]{speedmultiplier}};
     }
 }

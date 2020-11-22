@@ -11,3 +11,33 @@ Opening project: E:\Schulfächer\Info\App_Programierung\GreenfootStuff
 Connected to debug VM via dt_shmem transport...
 Communication with debug VM fully established.
 java.io.FileNotFoundException while reading import cache: userhome\greenfoot\import-cache.xml (The system cannot find the file specified)
+====
+
+====
+Greenfoot run started: Mon Nov 16 21:02:32 CET 2020
+Greenfoot version: 3.6.1
+Java version 11.0.2
+JavaFX version 11.0.2+1
+Virtual machine: OpenJDK 64-Bit Server VM 11.0.2+9 (Oracle Corporation)
+Running on: Windows 10 10.0 (amd64)
+Java Home: E:\Apps\greenfoot\jdk
+----
+Opening project: E:\Schulfächer\Info\App_Programierung\GreenfootStuff
+1605556953738: Listening for JDWP connection on address: javadebug
+Connected to debug VM via dt_shmem transport...
+Communication with debug VM fully established.
+====
+
+====
+Greenfoot run started: Sun Nov 22 01:25:19 CET 2020
+Greenfoot version: 3.6.1
+Java version 11.0.2
+JavaFX version 11.0.2+1
+Virtual machine: OpenJDK 64-Bit Server VM 11.0.2+9 (Oracle Corporation)
+Running on: Windows 10 10.0 (amd64)
+Java Home: E:\Apps\greenfoot\jdk
+----
+Opening project: E:\Schulfächer\Info\App_Programierung\GreenfootStuff
+1606004722234: Listening for JDWP connection on address: javadebug
+Connected to debug VM via dt_shmem transport...
+Communication with debug VM fully established.
