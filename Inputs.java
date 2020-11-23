@@ -10,7 +10,7 @@ public class Inputs
     /**
      * fetches momement multiplier.
      * 
-     * @return movement multiplier as [x,y]
+     * @return movement multiplier as [[x,y],[speedmultiplier]]
      */
     public static double[][] getMovement() {
         double[] movement = new double[2];

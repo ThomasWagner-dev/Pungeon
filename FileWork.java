@@ -105,12 +105,15 @@ public class FileWork
                     boolean breakable = Boolean.parseBoolean(sc.nextLine());
                     block = new Wall(breakable);
                     break;
+                case "trap":
+                    block = new Tile();
+                    break;
             }
             //Read image.
             block.setImage("./images/" + sc.nextLine());
         }
         catch(Exception e) {
-            System.err.println("Error while loading WorldFile");
+            System.err.println("Error while loading Block File");
             e.printStackTrace();
         }  
         return block;
