@@ -1,4 +1,4 @@
-package GreenfootGame;
+ 
 
 import greenfoot.*;
 /**
