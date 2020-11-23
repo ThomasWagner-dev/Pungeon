@@ -1,3 +1,5 @@
+package GreenfootGame;
+
 import java.util.*;
 import java.io.*;
 public class FileWork

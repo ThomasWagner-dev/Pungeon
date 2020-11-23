@@ -1,3 +1,5 @@
+package GreenfootGame;
+
 /**
  * Basic Interface for Collision detection.
  */

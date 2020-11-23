@@ -1,3 +1,5 @@
+package GreenfootGame;
+
 import greenfoot.*;
 /**
  * Class to fetch inputs.
