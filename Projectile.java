@@ -13,7 +13,8 @@ public class Projectile extends Entity
     public final boolean isReflective;
     protected final int dmg;
     protected final String dmgType;
-    
+    protected int lifespan;
+    protected Actor me;
     // public Projectile(int[] direction, int dmg, String dmgType) {
         // new Projectile(direction, dmg, dmgType, false);
     // }
@@ -23,7 +24,12 @@ public class Projectile extends Entity
      */
     public void act() {
         super.act();
-        System.out.println("text");
+        lifespan--;
+        
+        if (lifespan == 0) {
+            getWorld().removeObject(this);
+        }
+        
         for (Wall w : getIntersectingObjects(Wall.class)) {
             w.collide(this);
         }
@@ -33,11 +39,26 @@ public class Projectile extends Entity
         }
     }
     
-    public Projectile(double[] direction, int dmg, String dmgType, boolean isReflective) {
+    public Projectile(double[] direction, int dmg, String dmgType, boolean isReflective, String spriteName, int lifespan, Actor me) {
         this.direction = direction; 
         this.dmg = dmg;
         this.dmgType = dmgType;
         this.isReflective = isReflective;
+        this.lifespan = lifespan;
+        this.me = me;
+        
+        setImage(spriteName);
+    }
+    
+    public Projectile(double[] direction, int dmg, String dmgType, boolean isReflective, String spriteName, Actor me) {
+        this.direction = direction; 
+        this.dmg = dmg;
+        this.dmgType = dmgType;
+        this.isReflective = isReflective;
+        this.lifespan = -1;
+        this.me = me;
+        
+        setImage(spriteName);
     }
     
     
