@@ -1,28 +1,43 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+package GreenfootGame;
 
+import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import java.util.*;
 /**
  * Superclass for all moving Objects.
- */
+ */ 
 public abstract class Entity extends Actor
 {
-    protected int hp, maxhp, dmg, speed;
+    protected int hp, maxhp, dmg, attackcooldown, currentcooldown;
+    protected double speed;
     protected String dmgType, type;
+    protected ArrayList<String> activeEffects;
+    
+    /**
+     * creates objects for everything which is the same everywhere
+     */
+    public Entity() {
+        currentcooldown = 0;
+        activeEffects = new ArrayList<>();
+    }
     
     /**
      * Yes
      */
     public void act() {
         move();
+        currentcooldown = currentcooldown == 0? 0:currentcooldown-1;
     }
     
     /**
      * moves the entity. If it is a Collider, it steps back elsewise colliding with an Object
      */
     protected void move() {
-        int[] movementOriginal = getMovement();
-        int[] movement = new int[] {movementOriginal[0]*speed, movementOriginal[1]*speed}; //Fetches movement
-        
-        int oldX = getX(),
+        double[][] movementValues = getMovement(); //fetch movementvalues as [[x,y],[speedmultiplier]]
+        double speedmultiplier = movementValues[1][0]; //saves speedmultiplier
+        double[] movementOriginal = getLimitedMovement(movementValues[0]); //limits movement to a distance of 1
+        double[] movement = new double[] {movementOriginal[0]*speed*speedmultiplier, movementOriginal[1]*speed*speedmultiplier}; //calculates movementvector using the limited vector and speed
+        //System.out.println(Arrays.toString(movementOriginal));
+        double oldX = getX(),
             oldY = getY(),
             newX = oldX + movement[0],
             newY = oldY + movement[1];
@@ -30,7 +45,7 @@ public abstract class Entity extends Actor
         double workX = newX,
             workY = newY;
         //moves Entity to final location
-        setLocation(newX, newY);
+        setLocation((int) newX, (int)newY);
         
         //skips back movement if the entity doesn't have collision
         if (!(this instanceof Collider)) return;
@@ -48,20 +63,71 @@ public abstract class Entity extends Actor
     }
     
     /**
-     * gets movement, dependent on either player input or AI
+     * gets movement as a 2d vector, dependent on either player input or AI
      */
-    protected abstract int[] getMovement();
+    protected abstract double[][] getMovement();
     
     /**
      * Basic collision physics. check act() in Projectile for further information
      */
     protected void collide(Projectile p) {
-        DungeonWorld world = (DungeonWorld) getWorld();
-        hp -= p.dmg * world.dmgMultiplier.get(p.dmgType).get(type);
-        world.removeObject(p);
-        if (hp < 0) {
-            world.removeObject(this);
-        }
+        takeDamage(p);
+        getWorld().removeObject(p);
         
     }
+    
+    /**
+     * makes the Entity take damage from the @param[attacking entity].
+     * If hp is 0 or less afterwards, the dies and gets removed.
+     */
+    protected void takeDamage(Entity e) {
+        DungeonWorld world = (DungeonWorld) getWorld();
+        System.out.println(world.dmgMultiplier.keySet());
+        System.out.println("e.dmgType: "+ e.dmgType + "; type: "+type + "; dmg: ");//+(world.dmgMultiplier.get(e.dmgType).keySet()));
+        double demgMultiplier = world.dmgMultiplier.get(e.dmgType).get(type);
+        //reduces entity hp by the amount of damage, dependent on the damage multipliers, fetched from the dmgMultipliers.stats file.
+        hp -= e.dmg * world.dmgMultiplier.get(e.dmgType).get(type);
+        
+        // kills the entity, if hp is less or equal to 0
+        if (hp <= 0) {
+            die();
+        }
+    }
+    
+    /**
+     * executed if the entity dies. Removes object from world (and plays animation, if redifined in subclasses)
+     */
+    protected void die() {
+        getWorld().removeObject(this);
+    }
+    
+    
+    /**
+     * Calculates the movment vector, that the distance is equal to 1, to avoid overspeeding, when moving diagonal and/or getting full vector to player
+     */
+    protected double[] getLimitedMovement(double[] movement) {
+        double x = movement[0], 
+               y = movement[1],
+               distance = Math.sqrt(Math.pow(x,2) + Math.pow(y,2));
+        if (distance <= 1) //returns if the distance is 1 or less.
+            return movement;
+        
+        //calculates the multiplicator for x and y to get a distance of the added vectors, which is exaclty 1
+        double r = Math.sqrt(Math.abs(1/(Math.pow(x,2)+Math.pow(y,2))));    
+        //double r = Math.abs((Math.sqrt(Math.pow(x,2)*-1*Math.pow(y,2)+1)-x)/(Math.pow(y,2)+1));
+        //System.out.println("r:"+r); //debug print statement
+        return new double[] {x*r,y*r}; //returns the multiplied x and y values
+    }
+    
+    /**
+     * checks if cooldown is 0. resets cooldown to attackcooldown.
+     */
+    protected boolean checkCooldown() {
+        boolean ret = currentcooldown == 0;
+        if (ret) {
+            currentcooldown = attackcooldown;
+        }
+        return ret;
+    }
+    //protected abstract void attack(Entity e);
 }

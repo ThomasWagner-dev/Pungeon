@@ -1,3 +1,5 @@
+package GreenfootGame;
+
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
@@ -5,7 +7,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * 
  * @author Commentator
  */
-public class Wall extends Actor implements Collider
+public class Wall extends Block implements Collider
 {
     public final boolean breakable;
     
@@ -27,7 +29,7 @@ public class Wall extends Actor implements Collider
         //check if the Projectile is reflected by walls
         if (p.isReflective) {
             //Big TODO: get collision face and invert accordingly!
-            p.direction = new int[] {p.direction[0]*-1, p.direction[1]*-1};
+            p.direction = new double[] {p.direction[0]*-1, p.direction[1]*-1};
         }
         else {
             world.removeObject(p);
