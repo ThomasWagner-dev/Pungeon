@@ -10,7 +10,7 @@ public class DungeonWorld extends World
 {
     public final HashMap<String, HashMap<String, Double>> dmgMultiplier;
     protected final HashMap<String, Block> blocks;
-    
+    private final int pixelSize = 32;
     /**
      * TODO: make loading async
      */
@@ -26,6 +26,9 @@ public class DungeonWorld extends World
         
         System.out.println("Loading Blocks");
         blocks = FileWork.loadAllBlocks();
+        
+        System.out.println("Loading World");
+        loadScreen("startingRoom");
         
         
         System.out.println("Finished loading.");
@@ -46,13 +49,18 @@ public class DungeonWorld extends World
         loadingScreen.getImage().scale(1425, 850);
         setPaintOrder(Tile.class);
         //Load the world from a file.
-        String[][] world = FileWork.loadWorldFile(screenName);
+        ArrayList<ArrayList<String>> world = FileWork.loadWorldFile(screenName);
         //Render the world.
         int row = 0;
         //Load and add all Actors to the world.
-        while (row < world.length) {
-            for (String block : world[row]) {
-                addObject(blocks.get(block).clone(), 0, 0);
+        while (row < world.size()) {
+            for (int i = 0; i < world.get(row).size(); i++) {
+                addObject(
+                    blocks.get(
+                        world.get(row).get(i)).clone(),
+                        i * pixelSize + pixelSize/2,
+                        row * pixelSize + pixelSize/2
+                );
                 //addObject((Actor)FileWork.loadBlock(block), 0, 0);// TODO think about a tile and wall size.
             }
             row++;

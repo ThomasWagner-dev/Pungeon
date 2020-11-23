@@ -23,27 +23,30 @@ public class FileWork
         }
     }
 
-    public static String[][] loadWorldFile(String screenName) {
-        String[][] worldList = {};
+    public static ArrayList<ArrayList<String>> loadWorldFile(String screenName) {
+        ArrayList<ArrayList<String>> worldList = new ArrayList<>();
         try {
-            //Read the file.
+            // Read the file.
+            System.out.println(new File("./data/worlds/" + screenName + ".world").exists());
             Scanner sc = new Scanner(new File("./data/worlds/" + screenName + ".world"));
-            //Initalize indices.
-            int line = 0;
-            int element = 0;
-            String[] lineValues = sc.nextLine().split(",");
-            //Check if the line contains Values.
-            while (lineValues.length != 0) {
-                //Add each Value from the line to the 2D-Array.
-                for (String type : lineValues) {
-                    worldList[line][element] = type;
-                    element++;
-                }
-                element = 0;  
-                //Read the next line.
-                line++;
+            // Initalize indices.
+            String[] lineValues;
+            ArrayList<String> temp;
+            // Check if the line contains Values.
+            int i = 0;
+            do
+            {
+                // Read the next line.
                 lineValues = sc.nextLine().split(",");
-            }
+                // Add each Value from the line to the ArrayList. 
+                temp = new ArrayList<>();
+                for (String type : lineValues) {
+                    temp.add(type);
+                }   
+                // Add the line to the worldList.
+                worldList.add(temp); 
+                i++;
+            } while (i < 5);
         }
         catch(Exception e) {
             System.err.println("Error while loading WorldFile");
