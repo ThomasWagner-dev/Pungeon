@@ -33,6 +33,7 @@ public class FileWork
             String[] lineValues;
             ArrayList<String> temp;
             // Check if the line contains Values.
+            int i = 0;
             do
             {
                 // Read the next line.
@@ -44,7 +45,8 @@ public class FileWork
                 }   
                 // Add the line to the worldList.
                 worldList.add(temp); 
-            } while (lineValues.length != 0);
+                i++;
+            } while (i < 5);
         }
         catch(Exception e) {
             System.err.println("Error while loading WorldFile");

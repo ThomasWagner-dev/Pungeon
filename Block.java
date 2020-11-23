@@ -16,6 +16,7 @@ public abstract class Block extends Actor
             return (Block) super.clone();
         }
         catch (Exception e) { //catches the weird exception clone may throw.
+            System.out.println(e);
             return null;
         }
     }
