@@ -14,79 +14,88 @@ public class DungeonWorld extends World
     protected final HashMap<String, Block> blocks;
     private final int pixelSize = 32;
     /**
-     * TODO: make loading async
+     * Simple constructor to create the lobby containing Dungeon selection etc.
      */
     public DungeonWorld()
     {    
         // Create a new world with 1425x850 cells with a cell size of 1x1 pixels.
         super(1425, 850, 1);
-        //Load dmgMultipliers.
-        System.out.println("Start loading...");
-        
-        System.out.println("Loading dmgMultipliers");
+        // Inform the player of the loading process.
+        System.out.println("Starting world generation...");
+        // Load damage Multipliers.
+        System.out.println("Loading damage multipliers...");
         dmgMultiplier = FileWork.getDmgMultiplier();
-        
-        System.out.println("Loading Blocks");
+        // Load all blocks availabel for map generation.
+        System.out.println("Loading blocks...");
         blocks = FileWork.loadAllBlocks();
-        
-        System.out.println("Loading World");
+        // Load the world.
+        System.out.println("Loading world...");
         loadScreen("startingRoom");
-        
-        
+        // Inform the player of the end of the loading process.
         System.out.println("Finished loading.");
     }
 
     /**
-     * unloads the current screen and load in the new Screen.
+     * Unload the current world and then load a new one.
      * 
-     * TODO
+     * @param screenName The name of the screen to be loaded.
      */
     public void loadScreen(String screenName) {
-        //Remove all Existing Objects
+        // Remove all Existing Objects
         removeObjects(getObjects(null));
-        //Spawn Loading Screen.
+        // Spawn Loading Screen.
         Tile loadingScreen = new Tile();
         addObject(loadingScreen, 712, 425);
         loadingScreen.setImage("Wall.jpg"); 
         loadingScreen.getImage().scale(1425, 850);
         setPaintOrder(Tile.class);
-        //Load the world from a file.
+        // Load the world from a file.
         ArrayList<ArrayList<String>> world = FileWork.loadWorldFile(screenName);
-        //Render the world.
+        // Render the world.
         int row = 0;
-        //Load and add all Actors to the world.
+        // Load and add all Actors to the world.
         while (row < world.size()) {
             for (int i = 0; i < world.get(row).size(); i++) {
                 addObject(
                     blocks.get(
                         world.get(row).get(i)).clone(),
                         i * pixelSize + pixelSize/2,
-                        row * pixelSize + pixelSize/2
-                );
-                //addObject((Actor)FileWork.loadBlock(block), 0, 0);// TODO think about a tile and wall size.
+                        row * pixelSize + pixelSize/2);
             }
             row++;
         }
         removeObject(loadingScreen);
-        setPaintOrder(Player.class, Enemy.class, Projectile.class);//TODO Update paintorder after being done.
+        setPaintOrder(Player.class, Enemy.class, Projectile.class);
     }
     
     /**
-     * Gets the closest Object of a specific class to the actor me.
+     * Gets the closest Object of a specific class to the calling Actor.
      * 
-     * @param cls the Class which the closest Object is type of. use null to get an object of any class present.
-     * @param me the Actor, whose closest Object should be returned
-     * @return the object with the closest distance to the actor.
+     * @param cls The class elegible for the clostest object. Use null to make all classes elegible.
+     * @param me The calling Actor.
+     * 
+     * @return The closest Object of the class "cls" to the calling Actor "me".
+     * 
+     * TODO Get intet of Method
      */
-    public Actor getClosestObject(Class cls, Actor me) {
-        List<Actor> actors = getObjects(cls); //retrieves a list of objects of the class cls currently present in the world.
-        actors.remove(me); //removes me (the calling actor) to not get itself.
-        int x = me.getX(), y = me.getY(); //sets x and y coordinates to not retrieve them every single time
-        double distance, mindistance = -1; 
-        Actor closest = null;
-        for (Actor a : actors) { //loops thoughout all present Actors to see which one is closest
-            distance = getDistance(x, y, a.getX(), a.getY()); //retrieves the distance between the two points.
-            if (distance < mindistance || mindistance == -1) { //checks if distance is closer than the previously chosen closest or if the distance is -1 which is the initvalue.
+    public Actor getClosestObject(Class cls, Actor caller) {
+        // Retrieve all objects of the class "cls" currently present in the world and save them to a list.
+        List<Actor> actors = getObjects(cls);
+        // Remove the calling actor "me" from the list to avoid using distance to self.
+        actors.remove(caller); 
+        // Save the x and y coordinates of the calling Actor for computational efficiency.
+        int x = caller.getX();
+        int y = caller.getY();
+        // Assume the first actor is the closest one till proofen otherwise.
+        Actor closest = actors.get(0);
+        double mindistance = getDistance(x, y, closest.getX(), closest.getY());
+        double distance = 0;
+        // Loop through all Actors in the list actors to find the closest actor of the class "cls".
+        for (Actor a : actors) { 
+            // Get the distance between the two Actors.
+            distance = getDistance(x, y, a.getX(), a.getY()); 
+            // Check if distance of the points closer than the previously chosen closest one.
+            if (distance < mindistance) { 
                 closest = a;
                 mindistance = distance;
             }
@@ -95,7 +104,14 @@ public class DungeonWorld extends World
     }
     
     /**
-     * returns the distance using Pytaguras
+     * Calculates the distance between two points using the Pythagorean equation
+     * 
+     * @param x1 The x coordinate of the first point.
+     * @param y1 The y coordinate of the first point.
+     * @param x2 The x coordinate of the second point.
+     * @param y2 The y coordinate of the second point.
+     * 
+     * @return The distance of the first Point to the Second point as double.
      */
     private double getDistance(int x1, int y1, int x2, int y2) {
         return Math.sqrt(Math.pow(x2-x1,2)+Math.pow(y2-y1,2));
