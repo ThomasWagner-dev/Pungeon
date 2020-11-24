@@ -83,10 +83,23 @@ public abstract class Entity extends Actor
     protected void takeDamage(Entity e) {
         DungeonWorld world = (DungeonWorld) getWorld();
         System.out.println(world.dmgMultiplier.keySet());
-        System.out.println("e.dmgType: "+ e.dmgType + "; type: "+type + "; dmg: ");//+(world.dmgMultiplier.get(e.dmgType).keySet()));
+        //System.out.println("e.dmgType: "+ e.dmgType + "; type: "+type + "; dmg: ");//+(world.dmgMultiplier.get(e.dmgType).keySet()));
         double demgMultiplier = world.dmgMultiplier.get(e.dmgType).get(type);
         //reduces entity hp by the amount of damage, dependent on the damage multipliers, fetched from the dmgMultipliers.stats file.
         hp -= e.dmg * world.dmgMultiplier.get(e.dmgType).get(type);
+        
+        // kills the entity, if hp is less or equal to 0
+        if (hp <= 0) {
+            die();
+        }
+    }
+    
+    protected void takeDamage(Trap t) {
+        DungeonWorld world = (DungeonWorld) getWorld();
+        System.out.println(world.dmgMultiplier.keySet());
+        //System.out.println("t.dmgType: "+ t.dmgType + "; type: "+type + "; dmg: ");//+(world.dmgMultiplier.get(e.dmgType).keySet()));
+        //reduces entity hp by the amount of damage, dependent on the damage multipliers, fetched from the dmgMultipliers.stats file.
+        hp -= t.dmg * world.dmgMultiplier.get(t.dmgType).get(type);
         
         // kills the entity, if hp is less or equal to 0
         if (hp <= 0) {

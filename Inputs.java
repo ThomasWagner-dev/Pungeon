@@ -36,7 +36,7 @@ public class Inputs
         if (Greenfoot.isKeyDown("ctrl")) {
             speedmultiplier = 0.5;
         }
-        System.out.println(movement[0] + "," + movement[1]);
+        //System.out.println(movement[0] + "," + movement[1]);
         return new double[][] {movement,new double[]{speedmultiplier}};
     }
 }

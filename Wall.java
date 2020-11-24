@@ -38,4 +38,8 @@ public class Wall extends Block implements Collider
             world.removeObject(this);
         }
     }
+    
+    public Block clone() {
+        return new Wall(breakable);
+    }
 }

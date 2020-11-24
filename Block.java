@@ -13,13 +13,5 @@ public abstract class Block extends Actor
     /**
      * A public version of the protected clone() method of Object. Allows blocks to be cloned, to make map-loading easier.
      */
-    public Block clone() {
-        try {
-            return (Block) super.clone();
-        }
-        catch (Exception e) { //catches the weird exception clone may throw.
-            System.out.println(e);
-            return null;
-        }
-    }
+    public abstract Block clone();
 }
