@@ -41,3 +41,50 @@ Opening project: E:\Schulfächer\Info\App_Programierung\GreenfootStuff
 1606004722234: Listening for JDWP connection on address: javadebug
 Connected to debug VM via dt_shmem transport...
 Communication with debug VM fully established.
+====
+
+====
+Greenfoot run started: Sun Nov 22 11:29:18 CET 2020
+Greenfoot version: 3.6.1
+Java version 11.0.2
+JavaFX version 11.0.2+1
+Virtual machine: OpenJDK 64-Bit Server VM 11.0.2+9 (Oracle Corporation)
+Running on: Windows 10 10.0 (amd64)
+Java Home: E:\Apps\greenfoot\jdk
+----
+Opening project: E:\Schulfächer\Info\App_Programierung\GreenfootStuff
+1606040961107: Listening for JDWP connection on address: javadebug
+Connected to debug VM via dt_shmem transport...
+Communication with debug VM fully established.
+====
+
+====
+Greenfoot run started: Tue Nov 24 11:56:18 CET 2020
+Greenfoot version: 3.6.1
+Java version 11.0.2
+JavaFX version 11.0.2+1
+Virtual machine: OpenJDK 64-Bit Server VM 11.0.2+9 (Oracle Corporation)
+Running on: Windows 10 10.0 (amd64)
+Java Home: E:\Apps\greenfoot\jdk
+----
+Opening project: E:\Schulfächer\Info\App_Programierung\GreenfootStuff
+1606215382903: Listening for JDWP connection on address: javadebug
+Connected to debug VM via dt_shmem transport...
+Communication with debug VM fully established.
+An unexpected exception occurred:
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.CompletableFuture.reportGet(CompletableFuture.java:385)
+	at java.base/java.util.concurrent.CompletableFuture.get(CompletableFuture.java:2022)
+	at bluej.terminal.Terminal$TerminalWriter.write(Terminal.java:956)
+	at bluej.debugger.jdi.VMReference$IOHandlerThread.run(VMReference.java:2218)
+Exception in thread "JavaFX Application Thread" java.lang.NullPointerException
+	at bluej.terminal.Terminal.prepare(Terminal.java:527)
+	at bluej.terminal.Terminal.writeToPane(Terminal.java:485)
+	at bluej.terminal.Terminal$TerminalWriter.lambda$write$0(Terminal.java:948)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$10(PlatformImpl.java:428)
+	at java.base/java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$11(PlatformImpl.java:427)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:96)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:174)
+	at java.base/java.lang.Thread.run(Thread.java:834)
