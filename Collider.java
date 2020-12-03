@@ -1,4 +1,3 @@
- 
 
 /**
  * Basic Interface for Collision detection.

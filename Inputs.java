@@ -9,12 +9,20 @@ import greenfoot.*;
  */
 public class Inputs  
 {
+    KeyLayout keybinds;
+    
+    
+    public Inputs(KeyLayout keybinds) {
+        this.keybinds = keybinds;
+    }
+    
+    
     /**
      * fetches momement multiplier.
      * 
      * @return movement multiplier as [[x,y],[speedmultiplier]]
      */
-    public static double[][] getMovement() {
+    public double[][] getMovement() {
         double[] movement = new double[2];
         double speedmultiplier = 1;
         if (Greenfoot.isKeyDown("w")) {
@@ -38,5 +46,13 @@ public class Inputs
         }
         //System.out.println(movement[0] + "," + movement[1]);
         return new double[][] {movement,new double[]{speedmultiplier}};
+    }
+    
+    /**
+     * checks if Attack key is pressed.
+     */
+    public boolean attacks() {
+        boolean isPressed = false;
+        return Greenfoot.isKeyDown(keybinds.attack);
     }
 }

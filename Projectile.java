@@ -1,4 +1,4 @@
- 
+import java.util.*;
 
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
@@ -29,7 +29,9 @@ public class Projectile extends Entity
         if (lifespan == 0) {
             getWorld().removeObject(this);
         }
-        
+        List<Actor> intersectingWalls = getIntersectingObjects(Wall.class),
+            intersectingEntities = getIntersectingObjects(Entity.class);
+        intersectingWalls.remove(this);
         for (Wall w : getIntersectingObjects(Wall.class)) {
             w.collide(this);
         }
