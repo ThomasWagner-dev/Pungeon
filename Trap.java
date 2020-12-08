@@ -36,6 +36,6 @@ public class Trap extends Block
     }    
     
     public Block clone() {
-        return new Trap(dmg, dmgType, cooldown, range);
+        return topCloning(new Trap(dmg, dmgType, cooldown, range));
     }
 }

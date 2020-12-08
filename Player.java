@@ -20,7 +20,7 @@ public class Player extends Entity implements Collider{
         dmg = 7;
         type = "physical";
         rotation = new double[] {0,0};
-        selectedWeapon = new Weapon("Sword", "*poke*", 30, dmg, type, "apple1.png", 100);
+        selectedWeapon = new Weapon("Sword", "*poke*", 3, dmg, type, 15, "apple1.png", 100);
     }
     
     public void act() {
@@ -37,7 +37,8 @@ public class Player extends Entity implements Collider{
             new Projectile(
                 rotation, 
                 selectedWeapon.dmg, 
-                selectedWeapon.dmgType, 
+                selectedWeapon.dmgType,
+                selectedWeapon.speed,
                 false, 
                 selectedWeapon.spriteName, 
                 selectedWeapon.range, 
@@ -48,7 +49,8 @@ public class Player extends Entity implements Collider{
     
     protected double[][] getMovement() {
         double[][] movement = inputs.getMovement();
-        rotation = movement[0];
+        if (movement[0][0] != 0 || movement[0][1] != 0)
+            rotation = movement[0];
         return movement;
     }
 }

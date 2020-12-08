@@ -82,7 +82,7 @@ public abstract class Entity extends Actor
      */
     protected void takeDamage(Entity e) {
         DungeonWorld world = (DungeonWorld) getWorld();
-        System.out.println(world.dmgMultiplier.keySet());
+        System.out.println(world.dmgMultiplier.keySet()+ " me: "+ type + " e:" +e.dmgType);
         //System.out.println("e.dmgType: "+ e.dmgType + "; type: "+type + "; dmg: ");//+(world.dmgMultiplier.get(e.dmgType).keySet()));
         double demgMultiplier = world.dmgMultiplier.get(e.dmgType).get(type);
         //reduces entity hp by the amount of damage, dependent on the damage multipliers, fetched from the dmgMultipliers.stats file.

@@ -40,6 +40,6 @@ public class Wall extends Block implements Collider
     }
     
     public Block clone() {
-        return new Wall(breakable);
+        return topCloning(new Wall(breakable));
     }
 }

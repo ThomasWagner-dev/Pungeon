@@ -11,8 +11,8 @@ public class Projectile extends Entity
 {
     public double[] direction;
     public final boolean isReflective;
-    protected final int dmg;
-    protected final String dmgType;
+    //protected final int dmg;
+    //protected final String dmgType;
     protected int lifespan;
     protected Actor me;
     // public Projectile(int[] direction, int dmg, String dmgType) {
@@ -28,44 +28,50 @@ public class Projectile extends Entity
         
         if (lifespan == 0) {
             getWorld().removeObject(this);
+            return;
         }
-        List<Actor> intersectingWalls = getIntersectingObjects(Wall.class),
-            intersectingEntities = getIntersectingObjects(Entity.class);
+        List<Wall> intersectingWalls = getIntersectingObjects(Wall.class);
+        List<Entity> intersectingEntities = getIntersectingObjects(Entity.class);
         intersectingWalls.remove(this);
-        for (Wall w : getIntersectingObjects(Wall.class)) {
+        intersectingEntities.remove(this);
+        intersectingEntities.remove(me);
+        System.out.println(intersectingEntities);
+        for (Wall w : intersectingWalls) {
             w.collide(this);
         }
         
-        for (Entity e : getIntersectingObjects(Entity.class)) {
+        for (Entity e : intersectingEntities) {
             e.collide(this);
         }
     }
     
-    public Projectile(double[] direction, int dmg, String dmgType, boolean isReflective, String spriteName, int lifespan, Actor me) {
+    public Projectile(double[] direction, int dmg, String dmgType, int speed, boolean isReflective, String spriteName, int lifespan, Actor me) {
         this.direction = direction; 
         this.dmg = dmg;
         this.dmgType = dmgType;
         this.isReflective = isReflective;
         this.lifespan = lifespan;
         this.me = me;
+        this.speed = speed;
         
         setImage(spriteName);
     }
     
-    public Projectile(double[] direction, int dmg, String dmgType, boolean isReflective, String spriteName, Actor me) {
+    public Projectile(double[] direction, int dmg, String dmgType, int speed, boolean isReflective, String spriteName, Actor me) {
         this.direction = direction; 
         this.dmg = dmg;
         this.dmgType = dmgType;
         this.isReflective = isReflective;
         this.lifespan = -1;
         this.me = me;
+        this.speed = speed;
         
         setImage(spriteName);
     }
     
     
     protected double[][] getMovement() {
-        System.out.println("test");
+        System.out.println(Arrays.toString(direction));
         return new double[][] {direction,{1}};
     }
 }

@@ -1,4 +1,4 @@
- 
+import greenfoot.*; 
 
 import java.util.*;
 import java.io.*;
@@ -115,7 +115,9 @@ public class FileWork
                     break;
             }
             //Read image.
-            block.setImage("./images/" + sc.nextLine());
+            GreenfootImage img = new GreenfootImage("./images/" + sc.nextLine());
+            img.scale(DungeonWorld.pixelSize, DungeonWorld.pixelSize);
+            block.setImage(img);
         }
         catch(Exception e) {
             System.err.println("Error while loading Block File");

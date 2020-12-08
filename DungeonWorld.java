@@ -12,7 +12,7 @@ public class DungeonWorld extends World
 {
     public final HashMap<String, HashMap<String, Double>> dmgMultiplier;
     protected final HashMap<String, Block> blocks;
-    private final int pixelSize = 32;
+    public static final int pixelSize = 64;
     /**
      * Simple constructor to create the lobby containing Dungeon selection etc.
      */

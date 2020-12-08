@@ -15,6 +15,6 @@ public class Tile extends Block
     }    
     
     public Block clone() {
-        return new Tile();
+        return topCloning(new Tile());
     }
 }
