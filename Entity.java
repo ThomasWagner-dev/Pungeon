@@ -16,6 +16,9 @@ public abstract class Entity extends Actor
      * creates objects for everything which is the same everywhere
      */
     public Entity() {
+        GreenfootImage tmp = getImage();
+        tmp.scale(DungeonWorld.pixelSize,DungeonWorld.pixelSize);
+        setImage(tmp);
         currentcooldown = 0;
         activeEffects = new ArrayList<>();
     }
@@ -71,8 +74,8 @@ public abstract class Entity extends Actor
      * Basic collision physics. check act() in Projectile for further information
      */
     protected void collide(Projectile p) {
-        takeDamage(p);
         getWorld().removeObject(p);
+        takeDamage(p);
         
     }
     
@@ -84,7 +87,7 @@ public abstract class Entity extends Actor
         DungeonWorld world = (DungeonWorld) getWorld();
         System.out.println(world.dmgMultiplier.keySet()+ " me: "+ type + " e:" +e.dmgType);
         //System.out.println("e.dmgType: "+ e.dmgType + "; type: "+type + "; dmg: ");//+(world.dmgMultiplier.get(e.dmgType).keySet()));
-        double demgMultiplier = world.dmgMultiplier.get(e.dmgType).get(type);
+        double dmgMultiplier = world.dmgMultiplier.get(e.dmgType).get(type);
         //reduces entity hp by the amount of damage, dependent on the damage multipliers, fetched from the dmgMultipliers.stats file.
         hp -= e.dmg * world.dmgMultiplier.get(e.dmgType).get(type);
         

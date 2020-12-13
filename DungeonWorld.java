@@ -13,6 +13,7 @@ public class DungeonWorld extends World
     public final HashMap<String, HashMap<String, Double>> dmgMultiplier;
     protected final HashMap<String, Block> blocks;
     public static final int pixelSize = 64;
+    public String activeScreen;
     /**
      * Simple constructor to create the lobby containing Dungeon selection etc.
      */
@@ -30,7 +31,8 @@ public class DungeonWorld extends World
         blocks = FileWork.loadAllBlocks();
         // Load the world.
         System.out.println("Loading world...");
-        loadScreen("startingRoom");
+        FileWork.loadPlayer(0, this);
+        //loadScreen("startingRoom");
         // Inform the player of the end of the loading process.
         System.out.println("Finished loading.");
     }
@@ -50,7 +52,18 @@ public class DungeonWorld extends World
         loadingScreen.getImage().scale(1425, 850);
         setPaintOrder(Tile.class);
         // Load the world from a file.
+        removeObject(loadingScreen);
+        loadMap(screenName);
+        loadEnemies(screenName);
+        
+        activeScreen = screenName;
+        //System.out.println(activeScreen);
+        setPaintOrder(Player.class, Enemy.class, Projectile.class);
+    }
+    
+    private void loadMap(String screenName) {
         ArrayList<ArrayList<String>> world = FileWork.loadWorldFile(screenName);
+        
         // Render the world.
         int row = 0;
         // Load and add all Actors to the world.
@@ -64,8 +77,16 @@ public class DungeonWorld extends World
             }
             row++;
         }
-        removeObject(loadingScreen);
-        setPaintOrder(Player.class, Enemy.class, Projectile.class);
+        
+    }
+    
+    private void loadEnemies(String screenName) {
+        HashMap<Enemy, int[]> enemies = FileWork.loadEnemyFile(screenName);
+        int[] pos;
+        for (Enemy e : enemies.keySet()) {
+            pos = enemies.get(e);
+            addObject(e, pixelSize/2+pos[0]*pixelSize, pixelSize/2+pos[1]*pixelSize);
+        }
     }
     
     /**
@@ -115,5 +136,9 @@ public class DungeonWorld extends World
      */
     private double getDistance(int x1, int y1, int x2, int y2) {
         return Math.sqrt(Math.pow(x2-x1,2)+Math.pow(y2-y1,2));
+    }
+    
+    public void save(int slot) {
+        FileWork.savePlayer(slot, this);
     }
 }

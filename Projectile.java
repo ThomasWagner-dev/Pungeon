@@ -36,12 +36,19 @@ public class Projectile extends Entity
         intersectingEntities.remove(this);
         intersectingEntities.remove(me);
         System.out.println(intersectingEntities);
+        boolean collided = false;
         for (Wall w : intersectingWalls) {
-            w.collide(this);
+            if (!collided) {
+                w.collide(this);
+                collided = true;
+            }
         }
         
         for (Entity e : intersectingEntities) {
-            e.collide(this);
+            if (!collided) {
+                e.collide(this);
+                collided = true;
+            }
         }
     }
     

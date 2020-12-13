@@ -20,7 +20,7 @@ public class Player extends Entity implements Collider{
         dmg = 7;
         type = "physical";
         rotation = new double[] {0,0};
-        selectedWeapon = new Weapon("Sword", "*poke*", 3, dmg, type, 15, "apple1.png", 100);
+        selectedWeapon = new Weapon("Sword", "*poke*", 5, dmg, type, 15, "apple1.png", 100);
     }
     
     public void act() {

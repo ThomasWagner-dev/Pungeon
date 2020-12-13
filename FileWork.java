@@ -24,19 +24,69 @@ public class FileWork
             e.printStackTrace();
         }
     }
+    
+    public static void savePlayer(int slot, DungeonWorld world) {
+        try {
+            Player p = world.getObjects(Player.class).get(0);
+            
+            Writer wr = new FileWriter(new File("./data/saves/{}/player.sav".replace("{}", slot+"")));
+            
+            wr.write("[location]\n");
+            wr.write("pos={x},{y}\n".replace("{x}", p.getX()+"").replace("{y}", p.getY()+""));
+            wr.write("screen={}\n".replace("{}",world.activeScreen));
+            wr.close();
+        }
+        catch (Exception e) {
+            System.err.println("Error while saving player");
+            e.printStackTrace();
+        }
+    }
+    
+    
+    /**
+     * load the player into the world.
+     */
+    public static void loadPlayer(int slot, DungeonWorld world) {
+        Player player = new Player();
+        try {
+            Scanner sc = new Scanner(new File("./data/saves/{}/player.sav".replace("{}",slot+"")));
+            String[] line;
+            int[] pos = new int[2];
+            while (sc.hasNextLine()) {
+                line = sc.nextLine().split("=");
+                if (!line[0].startsWith("[")) {
+                    switch (line[0]) {
+                        case "screen":
+                            world.loadScreen(line[1]);
+                            System.out.println(line[1]);
+                            break;
+                        case "pos":
+                            line = line[1].split(",");
+                            pos = new int[] {Integer.parseInt(line[0]), Integer.parseInt(line[1])};
+                            break;
+                        //add further save stuff here
+                    }
+                }
+            }
+            world.addObject(player, pos[0], pos[1]);
+        }
+        catch(Exception e) {
+            System.err.println("Error while loading player into world");
+            e.printStackTrace();
+        }
+    }
+    
 
     public static ArrayList<ArrayList<String>> loadWorldFile(String screenName) {
         ArrayList<ArrayList<String>> worldList = new ArrayList<>();
         try {
             // Read the file.
-            System.out.println(new File("./data/worlds/" + screenName + ".world").exists());
             Scanner sc = new Scanner(new File("./data/worlds/" + screenName + ".world"));
             // Initalize indices.
             String[] lineValues;
             ArrayList<String> temp;
             // Check if the line contains Values.
-            int i = 0;
-            do
+            while(sc.hasNextLine())
             {
                 // Read the next line.
                 lineValues = sc.nextLine().split(",");
@@ -47,8 +97,7 @@ public class FileWork
                 }   
                 // Add the line to the worldList.
                 worldList.add(temp); 
-                i++;
-            } while (i < 5);
+            }
         }
         catch(Exception e) {
             System.err.println("Error while loading WorldFile");
@@ -150,5 +199,31 @@ public class FileWork
             e.printStackTrace();
         }
         return dmgMultiplier;
+    }
+    
+    public static HashMap<Enemy, int[]> loadEnemyFile(String screenName) {
+        HashMap<Enemy, int[]> enemies = new HashMap<>();
+        try {
+            Scanner sc = new Scanner(new File("./data/worlds/{}.enemymap".replace("{}",screenName)));
+            String[] line;
+            String type;
+            Enemy e = null;
+            while (sc.hasNextLine()) {
+                line = sc.nextLine().split("=");
+                type = line[0];
+                line = line[1].split(",");
+                switch (type) {
+                    case "zombie":
+                        e = new Zombie();
+                        
+                }
+                enemies.put(e, new int[] {Integer.parseInt(line[0]), Integer.parseInt(line[1])});
+            }
+        }
+        catch (Exception e) {
+            System.err.println("Error while loading enemies from File");
+            e.printStackTrace();
+        }
+        return enemies;
     }
 }
