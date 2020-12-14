@@ -126,6 +126,7 @@ public class FileWork
         return weapons;
     }
     
+    
     private static Weapon loadWeapon(File f) {
         String name="", descr="", type="", img="";
         int range=0, dmg=0, speed=0, cooldown=0;

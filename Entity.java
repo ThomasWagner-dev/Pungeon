@@ -76,7 +76,6 @@ public abstract class Entity extends Actor
     protected void collide(Projectile p) {
         getWorld().removeObject(p);
         takeDamage(p);
-        
     }
     
     /**
@@ -149,9 +148,19 @@ public abstract class Entity extends Actor
     }
     //protected abstract void attack(Entity e);
     
+    /**
+     * sets the sprite to the given sprite. Includes propper scaling of the image to the overall game size
+     */
+    protected void setSprite(String spriteName, double scale) {
+        GreenfootImage tmp = new GreenfootImage(spriteName); //fetches image
+        tmp.scale((int) (DungeonWorld.pixelSize*scale),(int) (DungeonWorld.pixelSize*scale)); //scales it to pixelsize times scale
+        setImage(tmp);//sets image
+    }
+    
+    /**
+     * calls setSprite(String spritename, double scale) using scale 1
+     */
     protected void setSprite(String spriteName) {
-        GreenfootImage tmp = new GreenfootImage(spriteName);
-        tmp.scale(DungeonWorld.pixelSize,DungeonWorld.pixelSize);
-        setImage(tmp);
+        setSprite(spriteName, 1);
     }
 }

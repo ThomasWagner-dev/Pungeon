@@ -1,0 +1,3 @@
+enemy class [e.g. Zombie]
+sprite
+weaponname [e.g. sword_basic] #has to be in ./data/weapons/weaponname.wpn

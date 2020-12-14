@@ -1,6 +1,6 @@
 name=Claw
 descr=a rats claw
-range=100
+range=1
 dmg=5
 type=physical
 speed=20

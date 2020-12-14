@@ -1,6 +1,6 @@
 name=Sword
 descr=*poke*
-range=10
+range=2
 dmg=7
 type=physical
 speed=15

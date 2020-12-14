@@ -1,0 +1,8 @@
+name=name
+descr=description
+range=range in blocks
+dmg=base damage
+type=damage type
+speed=weapon speed
+img=sprite
+cooldown=attack cooldown

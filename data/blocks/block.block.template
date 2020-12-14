@@ -1,0 +1,3 @@
+block class [e.g. tile or wall]
+{breakable} [for blocks only]
+sprite

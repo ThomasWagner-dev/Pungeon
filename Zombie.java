@@ -1,5 +1,3 @@
- 
-
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
@@ -14,16 +12,11 @@ public class Zombie extends Melee //implements Collider
      * creates a basic melee zombie
      */
     public Zombie() {
-        //super();
+        //fetches weapon from file
         weapon = DungeonWorld.weapons.get("claw_rat");
         speed = 2;
-        attackcooldown = 100;
-        dmg = 5;
-        dmgType = "physical";
         type = "physical";
         maxhp = 20;
         hp = 20;
     }
-    
-    
 }
