@@ -1,0 +1,8 @@
+name=Claw
+descr=a rats claw
+range=100
+dmg=5
+type=physical
+speed=20
+img=apple1.png
+cooldown=100

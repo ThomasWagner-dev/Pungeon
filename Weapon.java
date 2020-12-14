@@ -21,4 +21,16 @@ public class Weapon
         this.maxCooldown = cooldown;
         this.speed = speed;
     }
+    
+    public void reduceCooldown() {
+        cooldown = cooldown == 0? 0 : cooldown-1;
+    }
+    
+    public void resetCooldown() {
+        cooldown = maxCooldown;
+    }
+    
+    public boolean checkCooldown() {
+        return cooldown <= 0;
+    }
 }

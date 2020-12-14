@@ -89,8 +89,10 @@ public abstract class Entity extends Actor
         //System.out.println("e.dmgType: "+ e.dmgType + "; type: "+type + "; dmg: ");//+(world.dmgMultiplier.get(e.dmgType).keySet()));
         double dmgMultiplier = world.dmgMultiplier.get(e.dmgType).get(type);
         //reduces entity hp by the amount of damage, dependent on the damage multipliers, fetched from the dmgMultipliers.stats file.
-        hp -= e.dmg * world.dmgMultiplier.get(e.dmgType).get(type);
-        
+        System.out.println("dmg: "+e.dmg + " mulitplier: "+dmgMultiplier);
+        System.out.println("hp before: "+hp);
+        hp -= e.dmg * dmgMultiplier;
+        System.out.println("hp after: "+hp);        
         // kills the entity, if hp is less or equal to 0
         if (hp <= 0) {
             die();
@@ -146,4 +148,10 @@ public abstract class Entity extends Actor
         return ret;
     }
     //protected abstract void attack(Entity e);
+    
+    protected void setSprite(String spriteName) {
+        GreenfootImage tmp = new GreenfootImage(spriteName);
+        tmp.scale(DungeonWorld.pixelSize,DungeonWorld.pixelSize);
+        setImage(tmp);
+    }
 }

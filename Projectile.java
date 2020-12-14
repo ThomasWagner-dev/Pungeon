@@ -25,7 +25,6 @@ public class Projectile extends Entity
     public void act() {
         super.act();
         lifespan--;
-        
         if (lifespan == 0) {
             getWorld().removeObject(this);
             return;
@@ -52,7 +51,20 @@ public class Projectile extends Entity
         }
     }
     
+    public Projectile(double[] direction, Weapon selectedWeapon, Actor root) {
+        this.direction = direction;
+        dmg = selectedWeapon.dmg;
+        dmgType = selectedWeapon.dmgType;
+        speed = selectedWeapon.speed;
+        isReflective = false;
+        setSprite(selectedWeapon.spriteName);
+        lifespan = selectedWeapon.range;
+        this.me = root;
+    }
+    
     public Projectile(double[] direction, int dmg, String dmgType, int speed, boolean isReflective, String spriteName, int lifespan, Actor me) {
+        //setRotation((int) Math.acos((direction[0])/(Math.sqrt(direction[0]*direction[0]+direction[1]*direction[1])))*90+90);
+        System.out.println(getRotation());
         this.direction = direction; 
         this.dmg = dmg;
         this.dmgType = dmgType;
@@ -61,7 +73,7 @@ public class Projectile extends Entity
         this.me = me;
         this.speed = speed;
         
-        setImage(spriteName);
+        setSprite(spriteName);
     }
     
     public Projectile(double[] direction, int dmg, String dmgType, int speed, boolean isReflective, String spriteName, Actor me) {

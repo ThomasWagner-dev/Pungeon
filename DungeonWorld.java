@@ -11,6 +11,7 @@ import java.util.*;
 public class DungeonWorld extends World
 {
     public final HashMap<String, HashMap<String, Double>> dmgMultiplier;
+    public static HashMap<String, Weapon> weapons;
     protected final HashMap<String, Block> blocks;
     public static final int pixelSize = 64;
     public String activeScreen;
@@ -26,12 +27,17 @@ public class DungeonWorld extends World
         // Load damage Multipliers.
         System.out.println("Loading damage multipliers...");
         dmgMultiplier = FileWork.getDmgMultiplier();
+        //Load weapons
+        weapons = FileWork.loadAllWeapons();
+        System.out.println(weapons.keySet());
         // Load all blocks availabel for map generation.
         System.out.println("Loading blocks...");
         blocks = FileWork.loadAllBlocks();
         // Load the world.
         System.out.println("Loading world...");
         FileWork.loadPlayer(0, this);
+        
+        
         //loadScreen("startingRoom");
         // Inform the player of the end of the loading process.
         System.out.println("Finished loading.");
@@ -134,8 +140,12 @@ public class DungeonWorld extends World
      * 
      * @return The distance of the first Point to the Second point as double.
      */
-    private double getDistance(int x1, int y1, int x2, int y2) {
+    private static double getDistance(int x1, int y1, int x2, int y2) {
         return Math.sqrt(Math.pow(x2-x1,2)+Math.pow(y2-y1,2));
+    }
+    
+    public static double getDistance(Actor a, Actor b) {
+        return Math.sqrt(Math.pow(a.getX()-b.getX(),2)+Math.pow(a.getY()-b.getY(),2));
     }
     
     public void save(int slot) {

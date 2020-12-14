@@ -1,0 +1,8 @@
+name=Sword
+descr=*poke*
+range=10
+dmg=7
+type=physical
+speed=15
+img=sword.png
+cooldown=100

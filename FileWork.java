@@ -107,6 +107,68 @@ public class FileWork
     }
 
     /**
+     * loads weapons from the ./data/weapons folder
+     */
+    public static HashMap<String, Weapon> loadAllWeapons() {
+        HashMap<String, Weapon> weapons = new HashMap<>();
+        File dir = new File("./data/weapons/");
+        File[] directoryListing = dir.listFiles();
+        String[] splittedName;
+        String name;
+        if (directoryListing != null) {
+            for (File child : directoryListing) {
+                if (!child.getName().endsWith(".wpn")) continue;
+                splittedName = child.getName().split("\\.");
+                name = String.join(".", Arrays.copyOfRange(splittedName,0, splittedName.length-1));
+                weapons.put(name, loadWeapon(child));
+            }
+        }
+        return weapons;
+    }
+    
+    private static Weapon loadWeapon(File f) {
+        String name="", descr="", type="", img="";
+        int range=0, dmg=0, speed=0, cooldown=0;
+        try {
+            Scanner sc = new Scanner(f);
+            String[] line;
+            while (sc.hasNextLine()) {
+                line = sc.nextLine().split("=");
+                switch (line[0]) {
+                    case "name":
+                        name = line[1];
+                        break;
+                    case "descr":
+                        descr = line[1];
+                        break;
+                    case "range":
+                        range = Integer.parseInt(line[1]);
+                        break;
+                    case "type":
+                        type = line[1];
+                        break;
+                    case "speed":
+                        speed = Integer.parseInt(line[1]);
+                        break;
+                    case "img":
+                        img = line[1];
+                        break;
+                    case "cooldown":
+                        cooldown = Integer.parseInt(line[1]);
+                        break;
+                    case "dmg":
+                        dmg = Integer.parseInt(line[1]);
+                }
+            }
+        }
+        catch (Exception e) {
+            System.err.println("Error while loading weapon from file {}".replace("{}", f.getPath()));
+            e.printStackTrace();
+        }
+        return new Weapon(name, descr, range, dmg, type, speed, img, cooldown);
+    }
+    
+    /**
      * returns a hashmap of all blocks listed in ./data/blocks/
      */
     public static HashMap<String, Block> loadAllBlocks() {
@@ -130,7 +192,7 @@ public class FileWork
           }
           return blocks;
     }
-    
+   
     /**
      * Only used when loading manually.
      * @see loadBlock(File f)

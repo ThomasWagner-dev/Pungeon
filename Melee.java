@@ -9,6 +9,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public abstract class Melee extends Enemy
 {
+    
     /**
      * Act - do whatever the Zombie wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
@@ -16,19 +17,6 @@ public abstract class Melee extends Enemy
     public void act() 
     {
         super.act();
-    }   
-    
-    /**
-     * modified attack method.
-     */
-    public void attack() {
-        DungeonWorld world = (DungeonWorld) getWorld();
-        if (isTouching(Player.class)) {
-            if (!checkCooldown())
-                return;
-            Player player = (Player) world.getClosestObject(Player.class, this);
-            player.takeDamage(this);
-        }
     }
     
     /**
