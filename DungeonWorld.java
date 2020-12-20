@@ -13,7 +13,7 @@ public class DungeonWorld extends World
     public final HashMap<String, HashMap<String, Double>> dmgMultiplier;
     public static HashMap<String, Weapon> weapons;
     protected final HashMap<String, Block> blocks;
-    public static final int pixelSize = 64;
+    public static final int pixelSize = 64, height = 13, width=22;
     public String activeScreen;
     /**
      * Simple constructor to create the lobby containing Dungeon selection etc.
@@ -21,7 +21,7 @@ public class DungeonWorld extends World
     public DungeonWorld()
     {    
         // Create a new world with 1425x850 cells with a cell size of 1x1 pixels.
-        super(1425, 850, 1);
+        super(width*pixelSize, height*pixelSize, 1);
         // Inform the player of the loading process.
         System.out.println("Starting world generation...");
         // Load damage Multipliers.
@@ -37,8 +37,6 @@ public class DungeonWorld extends World
         System.out.println("Loading world...");
         FileWork.loadPlayer(0, this);
         
-        
-        //loadScreen("startingRoom");
         // Inform the player of the end of the loading process.
         System.out.println("Finished loading.");
     }
