@@ -39,8 +39,10 @@ public class Player extends Entity implements Collider{
     
     public void selectWeapon(Weapon w) {
         selectedWeapon = w;
-        GreenfootImage img = DungeonWorld.scaleImage(new GreenfootImage(skin),1);
-        img.drawImage(w.img,0,0);
+        GreenfootImage img = DungeonWorld.scaleImage(new GreenfootImage(skin),1), wImg = w.img;
+        wImg.rotate(-45);
+        img.drawImage(w.img,0,15);
+        wImg.rotate(45);
         setImage(img);
     }
     

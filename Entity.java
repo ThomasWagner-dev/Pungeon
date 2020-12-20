@@ -74,7 +74,20 @@ public abstract class Entity extends Actor
      * Basic collision physics. check act() in Projectile for further information
      */
     protected void collide(Projectile p) {
-        getWorld().removeObject(p);
+        DungeonWorld world = (DungeonWorld) getWorld();
+        world.removeObject(p);
+        System.out.println(world.dmgMultiplier.keySet()+ " me: "+ type + " e:" +p.dmgType);
+        //System.out.println("e.dmgType: "+ e.dmgType + "; type: "+type + "; dmg: ");//+(world.dmgMultiplier.get(e.dmgType).keySet()));
+        double dmgMultiplier = world.dmgMultiplier.get(p.dmgType).get(type);
+        //reduces entity hp by the amount of damage, dependent on the damage multipliers, fetched from the dmgMultipliers.stats file.
+        System.out.println("dmg: "+p.dmg + " mulitplier: "+dmgMultiplier);
+        System.out.println("hp before: "+hp);
+        hp -= p.dmg * dmgMultiplier;
+        System.out.println("hp after: "+hp);        
+        // kills the entity, if hp is less or equal to 0
+        if (hp <= 0) {
+            die();
+        }
     }
     
     /**
