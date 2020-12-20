@@ -7,7 +7,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * 
  * @author Commentator
  */
-public abstract class Melee extends Enemy
+public class Melee extends Enemy
 {
     
     /**
@@ -26,5 +26,9 @@ public abstract class Melee extends Enemy
         DungeonWorld world = (DungeonWorld) getWorld();
         Player player = (Player) world.getClosestObject(Player.class, this);
         return new double[][] {{player.getX()-getX(),player.getY()-getY()},{1}};
+    }
+    
+    public Enemy clone() {
+        return super.topClone(new Melee(), this);
     }
 }

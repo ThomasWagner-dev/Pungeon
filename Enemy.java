@@ -39,4 +39,20 @@ public abstract class Enemy extends Entity implements Collider
     public boolean checkCooldown() {
         return weapon.checkCooldown();
     }
+        
+    public Enemy topClone(Enemy e, Enemy origin) {
+        e.hp = origin.hp;
+        e.maxhp = origin.maxhp;
+        e.dmg = origin.dmg;
+        e.attackcooldown = origin.attackcooldown;
+        e.currentcooldown = origin.currentcooldown;
+        e.speed = origin.speed;
+        e.type = origin.type;
+        e.activeEffects = origin.activeEffects;
+        e.setImage(origin.getImage());
+        e.weapon = origin.weapon;
+        return e;
+    }
+    
+    public Enemy clone() {System.out.println("hallo ich sollte nicht aufgerufen werden");return null;}
 }

@@ -11,8 +11,9 @@ import java.util.*;
 public class DungeonWorld extends World
 {
     public final HashMap<String, HashMap<String, Double>> dmgMultiplier;
-    public static HashMap<String, Weapon> weapons;
-    protected final HashMap<String, Block> blocks;
+    public final HashMap<String, Weapon> weapons;
+    public final HashMap<String, Block> blocks;
+    public final HashMap<String, Enemy> enemies;
     public static final int pixelSize = 64, globalScale=pixelSize/16, height = 13, width=22;
     public String activeScreen;
     /**
@@ -33,6 +34,11 @@ public class DungeonWorld extends World
         // Load all blocks availabel for map generation.
         System.out.println("Loading blocks...");
         blocks = FileWork.loadAllBlocks();
+        
+        //Load enemies
+        System.out.println("Loading enemies...");
+        enemies = FileWork.loadAllEnemies(weapons);
+        
         // Load the world.
         System.out.println("Loading world...");
         FileWork.loadPlayer(0, this);
@@ -80,10 +86,10 @@ public class DungeonWorld extends World
     }
     
     private void loadEnemies(String screenName) {
-        HashMap<Enemy, int[]> enemies = FileWork.loadEnemyFile(screenName);
+        HashMap<Enemy, int[]> Screenenemies = FileWork.loadEnemyFile(screenName, enemies);
         int[] pos;
-        for (Enemy e : enemies.keySet()) {
-            pos = enemies.get(e);
+        for (Enemy e : Screenenemies.keySet()) {
+            pos = Screenenemies.get(e);
             addObject(e, pixelSize/2+pos[0]*pixelSize, pixelSize/2+pos[1]*pixelSize);
         }
     }

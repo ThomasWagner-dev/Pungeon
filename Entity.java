@@ -9,7 +9,7 @@ public abstract class Entity extends Actor
 {
     protected int hp, maxhp, dmg, attackcooldown, currentcooldown;
     protected double speed;
-    protected String dmgType, type;
+    protected String  type;
     protected ArrayList<String> activeEffects;
     
     /**
@@ -75,22 +75,21 @@ public abstract class Entity extends Actor
      */
     protected void collide(Projectile p) {
         getWorld().removeObject(p);
-        takeDamage(p);
     }
     
     /**
      * makes the Entity take damage from the @param[attacking entity].
      * If hp is 0 or less afterwards, the dies and gets removed.
      */
-    protected void takeDamage(Entity e) {
+    protected void takeDamage(Weapon w) {
         DungeonWorld world = (DungeonWorld) getWorld();
-        System.out.println(world.dmgMultiplier.keySet()+ " me: "+ type + " e:" +e.dmgType);
+        System.out.println(world.dmgMultiplier.keySet()+ " me: "+ type + " e:" +w.dmgType);
         //System.out.println("e.dmgType: "+ e.dmgType + "; type: "+type + "; dmg: ");//+(world.dmgMultiplier.get(e.dmgType).keySet()));
-        double dmgMultiplier = world.dmgMultiplier.get(e.dmgType).get(type);
+        double dmgMultiplier = world.dmgMultiplier.get(w.dmgType).get(type);
         //reduces entity hp by the amount of damage, dependent on the damage multipliers, fetched from the dmgMultipliers.stats file.
-        System.out.println("dmg: "+e.dmg + " mulitplier: "+dmgMultiplier);
+        System.out.println("dmg: "+w.dmg + " mulitplier: "+dmgMultiplier);
         System.out.println("hp before: "+hp);
-        hp -= e.dmg * dmgMultiplier;
+        hp -= w.dmg * dmgMultiplier;
         System.out.println("hp after: "+hp);        
         // kills the entity, if hp is less or equal to 0
         if (hp <= 0) {

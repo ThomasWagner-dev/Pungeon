@@ -17,13 +17,10 @@ public class Player extends Entity implements Collider{
         speed = 5;
         maxhp = 20;
         hp = 20;
-        dmgType = "physical";
         dmg = 7;
         type = "physical";
         rotation = new double[] {0,0};
-        selectWeapon(DungeonWorld.weapons.get("sword_basic"));
         //selectedWeapon = DungeonWorld.weapons.get("sword_basic");
-        System.out.println(selectedWeapon);
     }
     
     public void act() {

@@ -1,3 +1,6 @@
-zombie
-entity/enemies/rat.png
-claw_rat
+type=melee
+img=entity/enemies/rat.png
+speed=2
+type=physical
+hp=20
+weapon=claw_rat

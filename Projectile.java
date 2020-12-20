@@ -15,6 +15,7 @@ public class Projectile extends Entity
     //protected final String dmgType;
     protected int lifespan;
     protected Actor me;
+    public String dmgType;
     // public Projectile(int[] direction, int dmg, String dmgType) {
         // new Projectile(direction, dmg, dmgType, false);
     // }

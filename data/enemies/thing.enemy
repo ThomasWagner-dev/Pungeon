@@ -1,3 +1,6 @@
-Zombie
-woman1.jpg
-sword_basic
+type=melee
+speed=3
+type=fire
+hp=25
+img=Invis.png
+weapon=sword_basic

@@ -66,6 +66,10 @@ public class FileWork
                             break;
                         case "skin":
                             player.skin=line[1];
+                            break;
+                        case "weapon":
+                            player.selectWeapon(world.weapons.get(line[1]));
+                            break;
                         //add further save stuff here
                     }
                 }
@@ -300,24 +304,82 @@ public class FileWork
         return dmgMultiplier;
     }
     
-    public static HashMap<Enemy, int[]> loadEnemyFile(String screenName) {
+    public static HashMap<String, Enemy> loadAllEnemies(HashMap<String, Weapon> weapons) {
+        HashMap<String, Enemy> enemies = new HashMap<>();
+        File dir = new File("./data/enemies/"); //creates a directory file of the blocks folder
+        File[] directoryListing = dir.listFiles(); //retrieves all files present in the folder
+        String[] splittedName;
+        String name;
+        if (directoryListing != null) { //see else
+            for (File child : directoryListing) {//loops though all files in the folder
+                if (!child.getName().endsWith(".enemy")) continue; //skips all files, which aint blocks. for easier disableing using the .disabled ending.
+                splittedName = child.getName().split("\\.");//splits name, to only get the name, without ending (this case .block)
+                name = String.join(".", Arrays.copyOfRange(splittedName, 0, splittedName.length-1));
+                enemies.put(name, loadEnemy(child, weapons)); //puts the block into the hashmap using its name as a key and a loaded Block Object as the value.
+            }
+        } else {
+            // Handle the case where dir is not really a directory.
+            // Checking dir.isDirectory() above would not be sufficient
+            // to avoid race conditions with another process that deletes
+            // directories.
+        }
+        return enemies;
+    }
+    
+    public static Enemy loadEnemy(File f, HashMap<String, Weapon> weapons) {
+        Enemy en = null;
+        try {
+            Scanner sc = new Scanner(f);
+            String[] line = sc.nextLine().split("=");
+            switch(line[1]) {
+                case "melee":
+                    en = new Melee();
+                    break;
+                case "ranged":
+                    en = null; //new Skeleton();
+                    break;
+            }
+            while(sc.hasNextLine()) {
+                line = sc.nextLine().split("=");
+                switch(line[0]) {
+                    case "img":
+                        en.setSprite(line[1]);
+                        System.out.println("test");
+                        break;
+                    case "weapon":
+                        en.weapon = weapons.get(line[1]);
+                        break;
+                    case "hp":
+                        en.maxhp = Integer.parseInt(line[1]);
+                        en.hp = en.maxhp;
+                        break;
+                    case "speed":
+                        en.speed = Integer.parseInt(line[1]);
+                        break;
+                    case "type":
+                        en.type = line[1];
+                        break;
+                }
+            }
+        }
+        catch (Exception e) {
+            System.err.println("Error while loading Enemy {}".replace("{}",f.getName()));
+            e.printStackTrace();
+        }
+        return en;
+    }
+    
+    public static HashMap<Enemy, int[]> loadEnemyFile(String screenName, HashMap<String, Enemy> origin) {
         HashMap<Enemy, int[]> enemies = new HashMap<>();
         try {
             Scanner sc = new Scanner(new File("./data/worlds/{}.enemymap".replace("{}",screenName)));
             String[] line;
             String type;
-            Enemy e = null;
             while (sc.hasNextLine()) {
                 line = sc.nextLine().split("=");
                 type = line[0];
                 line = line[1].split(",");
-                switch (type) {
-                    case "zombie":
-                        e = new Zombie();
-                        
-                }
-                e.setSprite(sc.nextLine());
-                enemies.put(e, new int[] {Integer.parseInt(line[0]), Integer.parseInt(line[1])});
+                enemies.put(origin.get(type).clone(), new int[] {Integer.parseInt(line[0]), Integer.parseInt(line[1])});
             }
         }
         catch (Exception e) {
