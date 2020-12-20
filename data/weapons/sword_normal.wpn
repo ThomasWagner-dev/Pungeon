@@ -1,0 +1,10 @@
+name=sword_normal
+descr=*slice*
+range=0
+dmg=7
+type=physical
+speed=1
+img=weapon_sword_normal.png
+scale=0.5
+cooldown=100
+hitbox=hitboxes/hitbox_sword.png

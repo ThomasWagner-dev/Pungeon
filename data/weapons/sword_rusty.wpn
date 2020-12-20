@@ -1,0 +1,10 @@
+name=sword_rusty
+descr=*slice*
+range=0
+dmg=5
+type=physical
+speed=1
+img=weapon_sword_rusty.png
+scale=0.5
+cooldown=100
+hitbox=hitboxes/hitbox_sword.png

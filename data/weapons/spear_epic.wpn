@@ -1,0 +1,10 @@
+name=spear_normal
+descr=*poke*
+range=0
+dmg=13
+type=physical
+speed=1
+img=weapon_spear_epic.png
+scale=0.5
+cooldown=70
+hitbox=hitboxes/hitbox_spear.png
