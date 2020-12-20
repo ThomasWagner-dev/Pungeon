@@ -1,8 +1,9 @@
 name=Claw
 descr=a rats claw
-range=1
+range=0
 dmg=5
 type=physical
-speed=20
-img=apple1.png
+speed=1
+img=Invis.png
+hitbox=weapons/hitboxes/sword.png
 cooldown=100

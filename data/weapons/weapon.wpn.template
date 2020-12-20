@@ -1,8 +1,10 @@
 name=name
 descr=description
-range=range in blocks
+range=range in blocks (0 for melee)
 dmg=base damage
 type=damage type
-speed=weapon speed
+speed=weapon speed (1 for melee)
 img=sprite
+scale=scale (0.5 standard)
+hitbox=hitboxlocation (hitboxes/sword.png e.g)
 cooldown=attack cooldown

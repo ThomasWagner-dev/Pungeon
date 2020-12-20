@@ -13,7 +13,7 @@ public class DungeonWorld extends World
     public final HashMap<String, HashMap<String, Double>> dmgMultiplier;
     public static HashMap<String, Weapon> weapons;
     protected final HashMap<String, Block> blocks;
-    public static final int pixelSize = 64, height = 13, width=22;
+    public static final int pixelSize = 64, globalScale=pixelSize/16, height = 13, width=22;
     public String activeScreen;
     /**
      * Simple constructor to create the lobby containing Dungeon selection etc.
@@ -50,13 +50,8 @@ public class DungeonWorld extends World
         // Remove all Existing Objects
         removeObjects(getObjects(null));
         // Spawn Loading Screen.
-        Tile loadingScreen = new Tile();
-        addObject(loadingScreen, 712, 425);
-        loadingScreen.setImage("Wall.jpg"); 
-        loadingScreen.getImage().scale(1425, 850);
         setPaintOrder(Tile.class);
         // Load the world from a file.
-        removeObject(loadingScreen);
         loadMap(screenName);
         loadEnemies(screenName);
         
@@ -148,5 +143,20 @@ public class DungeonWorld extends World
     
     public void save(int slot) {
         FileWork.savePlayer(slot, this);
+    }
+    
+    public static GreenfootImage scaleImage(GreenfootImage img, double scale) {
+        img.scale((int) (img.getWidth()*scale*globalScale), (int) (img.getHeight()*scale*globalScale));
+        return img;
+    }
+    
+    public static int getRotationAngle(double[] dir) {
+        double den = (Math.sqrt(Math.pow(dir[0], 2) + Math.pow(dir[1], 2)));
+        double cos = dir[0]/den;
+        int ret = (int) Math.round(Math.toDegrees(Math.acos(cos)));
+        if (dir[1] < 0)
+            return 360-ret;
+        else
+            return ret;
     }
 }

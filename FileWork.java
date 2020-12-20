@@ -64,6 +64,8 @@ public class FileWork
                             line = line[1].split(",");
                             pos = new int[] {Integer.parseInt(line[0]), Integer.parseInt(line[1])};
                             break;
+                        case "skin":
+                            player.skin=line[1];
                         //add further save stuff here
                     }
                 }
@@ -128,8 +130,9 @@ public class FileWork
     
     
     private static Weapon loadWeapon(File f) {
-        String name="", descr="", type="", img="";
+        String name="", descr="", type="", img="", hitbox = "";
         int range=0, dmg=0, speed=0, cooldown=0;
+        double scale = 1;
         try {
             Scanner sc = new Scanner(f);
             String[] line;
@@ -159,14 +162,21 @@ public class FileWork
                         break;
                     case "dmg":
                         dmg = Integer.parseInt(line[1]);
+                        break;
+                    case "hitbox":
+                        hitbox = line[1];
+                        break;
+                    case "scale":
+                        scale = Double.parseDouble(line[1]);
                 }
             }
+            return new Weapon(name, descr, range, dmg, type, speed, cooldown, img, scale, hitbox);
         }
         catch (Exception e) {
             System.err.println("Error while loading weapon from file {}".replace("{}", f.getPath()));
             e.printStackTrace();
+            return null;
         }
-        return new Weapon(name, descr, range, dmg, type, speed, img, cooldown);
     }
     
     /**
@@ -211,8 +221,9 @@ public class FileWork
             //Read the file.
             Scanner sc = new Scanner(f);
             //Determine the type of Block.
-            String line = sc.nextLine();
-            
+            String line = sc.nextLine(), trigger="", activeImg="", inactiveImg="", dmgType="";
+            int range=0, dmg=0, cooldown=0;
+            String[] sline;
             switch (line) {
                 case "tile":
                     block = new Tile();//TODO think about data structure for saving tiles. 
@@ -223,8 +234,33 @@ public class FileWork
                     block = new Wall(breakable);
                     break;
                 case "trap":
-                    block = new Tile();
-                    break;
+                    while(sc.hasNextLine()) {
+                        sline = sc.nextLine().split("=");
+                        switch (sline[0]) {
+                            case "trigger":
+                                trigger = sline[1];
+                                break;
+                            case "activeImg":
+                                activeImg = sline[1];
+                                break;
+                            case "inactiveImg":
+                                inactiveImg = sline[1];
+                                break;
+                            case "range":
+                                range = Integer.parseInt(sline[1]);
+                                break;
+                            case "dmg":
+                                dmg = Integer.parseInt(sline[1]);
+                                break;
+                            case "dmgType":
+                                dmgType = sline[1];
+                                break;
+                            case "cooldown":
+                                cooldown = Integer.parseInt(sline[1]);
+                                break;
+                        }
+                    }
+                    return new Trap(range, inactiveImg, activeImg, dmg, dmgType, trigger, cooldown);
             }
             //Read image.
             GreenfootImage img = new GreenfootImage("./images/" + sc.nextLine());
@@ -280,6 +316,7 @@ public class FileWork
                         e = new Zombie();
                         
                 }
+                e.setSprite(sc.nextLine());
                 enemies.put(e, new int[] {Integer.parseInt(line[0]), Integer.parseInt(line[1])});
             }
         }

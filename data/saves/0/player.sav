@@ -1,3 +1,5 @@
 [location]
 pos=810,322
 screen=startingRoom
+[cosmetics]
+skin=entity/player/player.png

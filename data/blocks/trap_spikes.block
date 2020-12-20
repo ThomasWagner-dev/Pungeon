@@ -1,0 +1,7 @@
+trap
+trigger=contact
+dmg=7
+dmgType=physical
+range=0
+activeImg=map/tiles/spikes_active.png
+inactiveImg=map/tiles/spikes_inactive.png

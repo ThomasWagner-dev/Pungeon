@@ -1,8 +1,10 @@
 name=Sword
-descr=*poke*
-range=2
+descr=*slice*
+range=0
 dmg=7
 type=physical
-speed=15
-img=sword.png
+speed=1
+img=weapons/sword.png
+scale=0.5
 cooldown=100
+hitbox=weapons/hitboxes/sword.png

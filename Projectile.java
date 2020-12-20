@@ -57,8 +57,8 @@ public class Projectile extends Entity
         dmgType = selectedWeapon.dmgType;
         speed = selectedWeapon.speed;
         isReflective = false;
-        setSprite(selectedWeapon.spriteName);
-        lifespan = (int) ((selectedWeapon.range*DungeonWorld.pixelSize)/speed);
+        setSprite(selectedWeapon.hitbox);
+        lifespan = selectedWeapon.range==0? 2:(int) ((selectedWeapon.range*DungeonWorld.pixelSize)/speed)+1;
         this.me = root;
     }
     

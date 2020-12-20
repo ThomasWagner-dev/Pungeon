@@ -10,15 +10,19 @@ import java.util.*;
 public class Trap extends Block
 {
     public final int dmg, cooldown, range;
-    public final String dmgType;
+    public final String dmgType, trigger;
     private int currentCooldown;
+    public final String inactiveImg, activeImg;
     
-    public Trap(int dmg, String dmgType, int cooldown, int range) {
+    public Trap(int range, String inactiveImg, String activeImg, int dmg, String dmgType, String trigger, int cooldown) {
         this.dmg = dmg;
         this.dmgType = dmgType;
         this.cooldown = cooldown;
         this.range = range;
         currentCooldown = 0;
+        this.trigger = trigger;
+        this.inactiveImg = inactiveImg;
+        this.activeImg = activeImg;
     }
     
     
@@ -36,6 +40,6 @@ public class Trap extends Block
     }    
     
     public Block clone() {
-        return topCloning(new Trap(dmg, dmgType, cooldown, range));
+        return topCloning(new Trap(range, inactiveImg, activeImg, dmg, dmgType, trigger, cooldown));
     }
 }

@@ -153,7 +153,8 @@ public abstract class Entity extends Actor
      */
     protected void setSprite(String spriteName, double scale) {
         GreenfootImage tmp = new GreenfootImage(spriteName); //fetches image
-        tmp.scale((int) (DungeonWorld.pixelSize*scale),(int) (DungeonWorld.pixelSize*scale)); //scales it to pixelsize times scale
+        //tmp.scale((int) ((DungeonWorld.pixelSize*DungeonWorld.pixelSize*scale)/tmp.getWidth()),(int) ((DungeonWorld.pixelSize*DungeonWorld.pixelSize*scale)/tmp.getHeight())); //scales it to pixelsize times scale
+        tmp.scale((int) (tmp.getWidth()*scale*DungeonWorld.globalScale), (int) (tmp.getHeight()*scale*DungeonWorld.globalScale));
         setImage(tmp);//sets image
     }
     
