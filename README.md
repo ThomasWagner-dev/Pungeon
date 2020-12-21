@@ -18,15 +18,15 @@ Greenfoot: 3.6.0
 
 ## Setup
 Download the game.jar file.  
-Install Java 11 from ****.
+Install Java 11 from ****.  
 Run the game.jar file.  
 
 ## Contributers
--Thomas Wagner
+-Thomas Wagner  
 Github: https://github.com/ThomasWagner-dev
 
--Andreas Bücker
+-Andreas Bücker   
 Github: https://github.com/KommentatorForAll
 
--Jaques Reimers
+-Jaques Reimers  
 Github: https://github.com/Klaus341
