@@ -5,17 +5,28 @@ A simple top down Roguelike using Greenfoot.
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Setup](#setup)
+* [Contributers](#contributers)
 
 ## General info
 This a simple top down Roguelike game based on Greenfoot.  
-The Versions of Greenfoot and Java are both limited by our school.
+
 
 ## Technologies 
 Project created with:  
-Java JDK: 8u172  
-Greenfoot: 3.1.0  
+Java 11  
+Greenfoot: 3.6.0  
 
 ## Setup
 Download the game.jar file.  
-Install Java JDK 8u172 from https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html.  
+Install Java 11 from ****.
 Run the game.jar file.  
+
+## Contributers
+-Thomas Wagner
+Github: https://github.com/ThomasWagner-dev
+
+-Andreas Bücker
+Github: https://github.com/KommentatorForAll
+
+-Jaques Reimers
+Github: https://github.com/Klaus341
