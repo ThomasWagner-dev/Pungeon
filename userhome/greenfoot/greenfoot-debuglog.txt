@@ -208,3 +208,55 @@ Opening project: E:\Schulfächer\Info\App_Programierung\GreenfootStuff
 1608461884096: Listening for JDWP connection on address: javadebug
 Connected to debug VM via dt_shmem transport...
 Communication with debug VM fully established.
+1608508590816: Listening for JDWP connection on address: javadebug
+====
+
+====
+Greenfoot run started: Mon Dec 21 10:31:30 CET 2020
+Greenfoot version: 3.6.1
+Java version 11.0.2
+JavaFX version 11.0.2+1
+Virtual machine: OpenJDK 64-Bit Server VM 11.0.2+9 (Oracle Corporation)
+Running on: Windows 10 10.0 (amd64)
+Java Home: E:\Apps\greenfoot\jdk
+----
+Opening project: E:\Schulfächer\Info\App_Programierung\GreenfootStuff
+An unexpected exception occurred:
+bluej.pkgmgr.dependency.Dependency$DependencyNotFoundException: Failed to find 'from' target Zombie
+	at bluej.pkgmgr.dependency.Dependency.<init>(Dependency.java:148)
+	at bluej.pkgmgr.dependency.UsesDependency.<init>(UsesDependency.java:63)
+	at bluej.pkgmgr.Package.refreshPackage(Package.java:897)
+	at bluej.pkgmgr.Project.<init>(Project.java:306)
+	at bluej.pkgmgr.Project.openProject(Project.java:520)
+	at greenfoot.guifx.GreenfootGuiHandler.tryOpen(GreenfootGuiHandler.java:45)
+	at bluej.Main.processArgs(Main.java:188)
+	at bluej.Main.lambda$new$1(Main.java:155)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$10(PlatformImpl.java:428)
+	at java.base/java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$11(PlatformImpl.java:427)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:96)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:174)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+An unexpected exception occurred:
+bluej.pkgmgr.dependency.Dependency$DependencyNotFoundException: Failed to find 'to' target Zombie
+	at bluej.pkgmgr.dependency.Dependency.<init>(Dependency.java:157)
+	at bluej.pkgmgr.dependency.UsesDependency.<init>(UsesDependency.java:63)
+	at bluej.pkgmgr.Package.refreshPackage(Package.java:897)
+	at bluej.pkgmgr.Project.<init>(Project.java:306)
+	at bluej.pkgmgr.Project.openProject(Project.java:520)
+	at greenfoot.guifx.GreenfootGuiHandler.tryOpen(GreenfootGuiHandler.java:45)
+	at bluej.Main.processArgs(Main.java:188)
+	at bluej.Main.lambda$new$1(Main.java:155)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$10(PlatformImpl.java:428)
+	at java.base/java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$11(PlatformImpl.java:427)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:96)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:174)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+1608543092619: Listening for JDWP connection on address: javadebug
+Connected to debug VM via dt_shmem transport...
+Communication with debug VM fully established.
+Dec 21, 2020 10:51:21 AM javafx.scene.CssStyleHelper calculateValue
+WARNING: Could not resolve '-fx-text-background-color' while resolving lookups for '-fx-text-fill' from rule '*.label' in stylesheet jar:file:/E:/Apps/greenfoot/lib/javafx/lib/javafx.controls.jar!/com/sun/javafx/scene/control/skin/modena/modena.bss

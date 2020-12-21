@@ -39,8 +39,11 @@ public abstract class Enemy extends Entity implements Collider
     public boolean checkCooldown() {
         return weapon.checkCooldown();
     }
-        
-    public Enemy topClone(Enemy e, Enemy origin) {
+     
+    /**
+     * Clones the parameters of @param[origin] to @param[e]. e has to be provided as Enemy itself is abstract
+     */
+    public static Enemy topClone(Enemy e, Enemy origin) {
         e.hp = origin.hp;
         e.maxhp = origin.maxhp;
         e.dmg = origin.dmg;

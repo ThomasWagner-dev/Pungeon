@@ -28,6 +28,9 @@ public class Melee extends Enemy
         return new double[][] {{player.getX()-getX(),player.getY()-getY()},{1}};
     }
     
+    /**
+     * returns a clone of this enemy
+     */
     public Enemy clone() {
         return super.topClone(new Melee(), this);
     }

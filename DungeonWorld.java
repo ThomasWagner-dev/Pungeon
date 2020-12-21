@@ -63,9 +63,13 @@ public class DungeonWorld extends World
         
         activeScreen = screenName;
         //System.out.println(activeScreen);
-        setPaintOrder(Player.class, Enemy.class, Projectile.class);
+        setPaintOrder(Projectile.class, Player.class, Enemy.class, Wall.class, Trap.class, Tile.class);
     }
     
+    /**
+    * Loads the map of the screen
+    * @param screenName screen to be loaded
+    */
     private void loadMap(String screenName) {
         ArrayList<ArrayList<String>> world = FileWork.loadWorldFile(screenName);
         
@@ -85,8 +89,12 @@ public class DungeonWorld extends World
         
     }
     
+    /**
+    * Loads enemies of the screenName
+    * @param screenName The screen the enemies are loaded from
+    */
     private void loadEnemies(String screenName) {
-        HashMap<Enemy, int[]> Screenenemies = FileWork.loadEnemyFile(screenName, enemies);
+        HashMap<Enemy, int[]> Screenenemies = FileWork.loadEnemyFile(screenName, enemies); //get enemies for the current screen
         int[] pos;
         for (Enemy e : Screenenemies.keySet()) {
             pos = Screenenemies.get(e);
@@ -143,19 +151,33 @@ public class DungeonWorld extends World
         return Math.sqrt(Math.pow(x2-x1,2)+Math.pow(y2-y1,2));
     }
     
+    /**
+    * returns the distance betweeen 2 actors. see method above for further information
+    */
     public static double getDistance(Actor a, Actor b) {
         return Math.sqrt(Math.pow(a.getX()-b.getX(),2)+Math.pow(a.getY()-b.getY(),2));
     }
     
+    /**
+    * saves the player to the given save slot
+    */
     public void save(int slot) {
         FileWork.savePlayer(slot, this);
     }
     
+    /**
+    * scales the given image to fit the world
+    * @param img Image to be scaled
+    * @param scale The scale it should get scaled to (in addition to the worlds global scale)
+    */
     public static GreenfootImage scaleImage(GreenfootImage img, double scale) {
         img.scale((int) (img.getWidth()*scale*globalScale), (int) (img.getHeight()*scale*globalScale));
         return img;
     }
     
+    /**
+    * gets the angel an Actor has to be rotated to, to fit the movement vector
+    */
     public static int getRotationAngle(double[] dir) {
         double den = (Math.sqrt(Math.pow(dir[0], 2) + Math.pow(dir[1], 2)));
         double cos = dir[0]/den;
