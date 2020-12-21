@@ -16,6 +16,7 @@ public class DungeonWorld extends World
     public final HashMap<String, Enemy> enemies;
     public static final int pixelSize = 64, globalScale=pixelSize/16, height = 13, width=22;
     public String activeScreen;
+    public int selectedSave;
     /**
      * Simple constructor to create the lobby containing Dungeon selection etc.
      */
@@ -23,6 +24,10 @@ public class DungeonWorld extends World
     {    
         // Create a new world with 1425x850 cells with a cell size of 1x1 pixels.
         super(width*pixelSize, height*pixelSize, 1);
+        
+        //TODO: put save selection here
+        selectedSave = 0;
+        
         // Inform the player of the loading process.
         System.out.println("Starting world generation...");
         // Load damage Multipliers.
@@ -41,7 +46,7 @@ public class DungeonWorld extends World
         
         // Load the world.
         System.out.println("Loading world...");
-        FileWork.loadPlayer(0, this);
+        FileWork.loadPlayer(selectedSave, this);
         
         // Inform the player of the end of the loading process.
         System.out.println("Finished loading.");

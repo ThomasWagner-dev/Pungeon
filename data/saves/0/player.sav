@@ -5,3 +5,6 @@ screen=startingRoom
 skin=entity/player/player.png
 [inventory]
 weapon=sword_basic
+[status]
+hp=20
+maxhp=20

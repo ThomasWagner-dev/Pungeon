@@ -8,12 +8,12 @@ public class Weapon
 {
     public final int range, dmg, maxCooldown, speed;
     public final double scale;
-    public final String name, description, dmgType;
+    public final String name, description, dmgType, displayName;
     public final String spriteName, hitbox;
     public final GreenfootImage img;
     public int cooldown;
     
-    public Weapon(String name, String description, int range, int dmg, String dmgType, int speed, int cooldown, String spriteName, String hitbox) {
+    public Weapon(String name, String displayname, String description, int range, int dmg, String dmgType, int speed, int cooldown, String spriteName, String hitbox) {
         this.range = range;
         this.name = name;
         this.description = description;
@@ -25,10 +25,11 @@ public class Weapon
         this.speed = speed;
         this.hitbox = hitbox;
         this.scale = 1;
+        this.displayName = displayname;
         img = DungeonWorld.scaleImage(new GreenfootImage(spriteName),scale);
     }
     
-    public Weapon(String name, String description, int range, int dmg, String dmgType, int speed, int cooldown, String spriteName, double scale, String hitbox) {
+    public Weapon(String name, String displayname, String description, int range, int dmg, String dmgType, int speed, int cooldown, String spriteName, double scale, String hitbox) {
         this.range = range;
         this.name = name;
         this.description = description;
@@ -40,6 +41,7 @@ public class Weapon
         this.speed = speed;
         this.hitbox = hitbox;
         this.scale = scale;
+        this.displayName = displayname;
         img = DungeonWorld.scaleImage(new GreenfootImage(spriteName),scale);
     }
     

@@ -34,6 +34,13 @@ public class FileWork
             wr.write("[location]\n");
             wr.write("pos={x},{y}\n".replace("{x}", p.getX()+"").replace("{y}", p.getY()+""));
             wr.write("screen={}\n".replace("{}",world.activeScreen));
+            wr.write("[cosmetics]\n");
+            wr.write("skin={}\n".replace("{}", p.skin));
+            wr.write("[inventory]\n");
+            wr.write("weapon={}\n".replace("{}", p.selectedWeapon.name));
+            wr.write("[status]\n");
+            wr.write("hp={}\n".replace("{}", p.hp+""));
+            wr.write("maxhp={}\n".replace("{}", p.maxhp+""));
             wr.close();
         }
         catch (Exception e) {
@@ -69,6 +76,12 @@ public class FileWork
                             break;
                         case "weapon":
                             player.selectWeapon(world.weapons.get(line[1]));
+                            break;
+                        case "hp":
+                            player.hp = Integer.parseInt(line[1]);
+                            break;
+                        case "maxhp":
+                            player.maxhp = Integer.parseInt(line[1]);
                             break;
                         //add further save stuff here
                     }
@@ -174,7 +187,7 @@ public class FileWork
                         scale = Double.parseDouble(line[1]);
                 }
             }
-            return new Weapon(name, descr, range, dmg, type, speed, cooldown, img, scale, hitbox);
+            return new Weapon(f.getName().replace(".wpn",""), name, descr, range, dmg, type, speed, cooldown, img, scale, hitbox);
         }
         catch (Exception e) {
             System.err.println("Error while loading weapon from file {}".replace("{}", f.getPath()));

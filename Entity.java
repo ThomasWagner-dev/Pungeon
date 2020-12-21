@@ -58,9 +58,10 @@ public abstract class Entity extends Actor
             if (workX == oldX && workY == oldY) 
                 break;
             
-            workX -= movementOriginal[0]; //Original movement to keep the ratio between x and y
-            workY -= movementOriginal[1];
-            setLocation((int) workX, (int) workY);
+            //workX -= movementOriginal[0]; //Original movement to keep the ratio between x and y
+            //workY -= movementOriginal[1];
+            setLocation((int) oldX, (int) oldY);
+            return;
         }
         setLocation((int) workX, (int) workY);
     }
