@@ -25,8 +25,8 @@ public class Player extends Entity implements Collider{
     
     public void act() {
         super.act();
-        selectedWeapon.cooldown--;
-        if (selectedWeapon.cooldown <= 0 && inputs.attacks()) {
+        selectedWeapon.reduceCooldown();
+        if (inputs.attacks()) {
             attack();
         }
     }
@@ -35,9 +35,7 @@ public class Player extends Entity implements Collider{
      * attacks. see attack(world, owner, rotation) in weapon for more information 
      */
     public void attack() {
-        selectedWeapon.cooldown = selectedWeapon.maxCooldown;
         selectedWeapon.attack(getWorld(), this, rotation);
-        //getWorld().addObject(p, getX(), getY());
     }
     
     /**

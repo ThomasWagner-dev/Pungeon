@@ -1,0 +1,6 @@
+type=melee
+img=entity/enemies/skeleton.png
+weapon=bow_basic
+type=physical
+speed=3
+hp=10

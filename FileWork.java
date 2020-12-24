@@ -4,26 +4,10 @@ import java.util.*;
 import java.io.*;
 public class FileWork
 {
-    public static HashMap<Integer, HashMap<String, Object>> saves = new HashMap<>();
-    public static void load(int slot) {
-        try {
-            Scanner sc = new Scanner(new File("./saves/save{}.gfg".replace("{}",slot+"")));
-            String content = sc.next();
-            HashMap<String, Object> saveslot = new HashMap<>();
-            String key, value;
-            String[] z;
-            for (String x : content.split("\n")) {
-                z = x.split(":");
-                key = z[0];
-                value = z[1];
-
-            }
-        }
-        catch (Exception e) {
-            System.err.println("Error while loading file");
-            e.printStackTrace();
-        }
+    private static InputStream readFile(String location) {
+        return FileWork.class.getResourceAsStream(location);
     }
+    
     
     public static void savePlayer(int slot, DungeonWorld world) {
         try {
@@ -56,7 +40,7 @@ public class FileWork
     public static void loadPlayer(int slot, DungeonWorld world) {
         Player player = new Player();
         try {
-            Scanner sc = new Scanner(new File("./data/saves/{}/player.sav".replace("{}",slot+"")));
+            Scanner sc = new Scanner(readFile("./data/saves/{}/player.sav".replace("{}",slot+"")));
             String[] line;
             int[] pos = new int[2];
             while (sc.hasNextLine()) {
@@ -75,7 +59,7 @@ public class FileWork
                             player.skin=line[1];
                             break;
                         case "weapon":
-                            player.selectWeapon(world.weapons.get(line[1]));
+                            player.selectWeapon(world.weapons.get(line[1]).clone());
                             break;
                         case "hp":
                             player.hp = Integer.parseInt(line[1]);
@@ -100,7 +84,7 @@ public class FileWork
         ArrayList<ArrayList<String>> worldList = new ArrayList<>();
         try {
             // Read the file.
-            Scanner sc = new Scanner(new File("./data/worlds/" + screenName + ".world"));
+            Scanner sc = new Scanner(readFile("./data/worlds/" + screenName + ".world"));
             // Initalize indices.
             String[] lineValues;
             ArrayList<String> temp;
@@ -148,8 +132,10 @@ public class FileWork
     
     private static Weapon loadWeapon(File f) {
         String name="", descr="", type="", img="", hitbox = "";
-        int range=0, dmg=0, speed=0, cooldown=0;
+        int range=0, dmg=0, speed=0, cooldown=0, angle=0;
+        GreenfootImage tmp = new GreenfootImage("Invis.png");
         double scale = 1;
+        boolean isMelee = true;
         try {
             Scanner sc = new Scanner(f);
             String[] line;
@@ -182,12 +168,23 @@ public class FileWork
                         break;
                     case "hitbox":
                         hitbox = line[1];
+                        tmp = new GreenfootImage(line[1]);
+                        try {
+                            angle = Integer.parseInt(line[2]);
+                        }
+                        catch(IndexOutOfBoundsException e) {}
                         break;
                     case "scale":
                         scale = Double.parseDouble(line[1]);
+                        break;
+                    case "melee":
+                        isMelee = line[1].equals("true");
+                        break;
+                    case "ranged":
+                        isMelee = line[1].equals("false");
                 }
             }
-            return new Weapon(f.getName().replace(".wpn",""), name, descr, range, dmg, type, speed, cooldown, img, scale, hitbox);
+            return new Weapon(f.getName().replace(".wpn",""), name, descr, range, dmg, type, speed, cooldown, img, scale, hitbox, isMelee, angle);
         }
         catch (Exception e) {
             System.err.println("Error while loading weapon from file {}".replace("{}", f.getPath()));
@@ -295,7 +292,7 @@ public class FileWork
         HashMap<String, HashMap<String, Double>> dmgMultiplier = new HashMap<>();
         try {
             //Read the file.
-            Scanner sc = new Scanner(new File("./data/dmgMultipliers.stats"));
+            Scanner sc = new Scanner(readFile("./data/dmgMultipliers.stats"));
             //Put all types into a list.
             String[] types = sc.nextLine().split(",");
             String[] line;
@@ -360,7 +357,7 @@ public class FileWork
                         System.out.println("test");
                         break;
                     case "weapon":
-                        en.weapon = weapons.get(line[1]);
+                        en.weapon = weapons.get(line[1]).clone();
                         break;
                     case "hp":
                         en.maxhp = Integer.parseInt(line[1]);
@@ -385,7 +382,7 @@ public class FileWork
     public static HashMap<Enemy, int[]> loadEnemyFile(String screenName, HashMap<String, Enemy> origin) {
         HashMap<Enemy, int[]> enemies = new HashMap<>();
         try {
-            Scanner sc = new Scanner(new File("./data/worlds/{}.enemymap".replace("{}",screenName)));
+            Scanner sc = new Scanner(readFile("./data/worlds/{}.enemymap".replace("{}",screenName)));
             String[] line;
             String type;
             while (sc.hasNextLine()) {
@@ -401,4 +398,40 @@ public class FileWork
         }
         return enemies;
     }
+    
+    public static HashMap<String, GreenfootSound> loadAllSounds() {
+        HashMap<String, GreenfootSound> sounds = new HashMap<>();
+        File dir = new File("./sounds/");
+        File[] dirFiles = dir.listFiles();
+        String name;
+        String[] splittedName;
+        if (dirFiles != null) {
+            for (File child : dirFiles) {
+                name = child.getName();
+                if (!name.startsWith("snd_")) continue;
+                splittedName = name.split("_");
+                sounds.put(String.join("_",Arrays.copyOfRange(splittedName, 1, splittedName.length)), new GreenfootSound(name));
+            }
+        }
+        
+        return sounds;
+    }
+    
+    public static HashMap<String, GreenfootSound> loadAllMusic() {
+        HashMap<String, GreenfootSound> musics = new HashMap<>();
+        File dir = new File("./sounds/");
+        File[] dirFiles = dir.listFiles();
+        String name;
+        String[] splittedName;
+        if (dirFiles != null) {
+            for (File child : dirFiles) {
+                name = child.getName();
+                if (!name.startsWith("msc_")) continue;
+                splittedName = name.split("_");
+                musics.put(String.join("_",Arrays.copyOfRange(splittedName, 1, splittedName.length)), new GreenfootSound(name));
+            }
+        }
+        return musics;
+    }
+
 }

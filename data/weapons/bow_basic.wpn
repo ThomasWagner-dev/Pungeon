@@ -1,0 +1,11 @@
+name=A simple Bow
+descr=shoots out arrows
+range=5
+dmg=4
+type=physical
+speed=7
+img=weapons/bow_basic.png
+scale=0.5
+hitbox=entity/projectiles/arrow.png=45
+cooldown=300
+ranged=true

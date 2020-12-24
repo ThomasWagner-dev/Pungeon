@@ -7,7 +7,7 @@ import java.util.*;
  */ 
 public abstract class Entity extends Actor
 {
-    protected int hp, maxhp, dmg, attackcooldown, currentcooldown;
+    protected int hp, maxhp, dmg;
     protected double speed;
     protected String  type;
     protected ArrayList<String> activeEffects;
@@ -19,7 +19,6 @@ public abstract class Entity extends Actor
         GreenfootImage tmp = getImage();
         tmp.scale(DungeonWorld.pixelSize,DungeonWorld.pixelSize);
         setImage(tmp);
-        currentcooldown = 0;
         activeEffects = new ArrayList<>();
     }
     
@@ -28,7 +27,6 @@ public abstract class Entity extends Actor
      */
     public void act() {
         move();
-        currentcooldown = currentcooldown == 0? 0:currentcooldown-1;
     }
     
     /**
@@ -48,7 +46,7 @@ public abstract class Entity extends Actor
         double workX = newX,
             workY = newY;
         //moves Entity to final location
-        setLocation((int) newX, (int)newY);
+        setLocation((int) Math.round(newX), (int) Math.round(newY));
         
         //skips back movement if the entity doesn't have collision
         if (!(this instanceof Collider)) return;
@@ -71,12 +69,32 @@ public abstract class Entity extends Actor
      */
     protected abstract double[][] getMovement();
     
+    protected void collide(Wpn_hitbox p) {
+        DungeonWorld world = (DungeonWorld) getWorld();
+        System.out.println(world.dmgMultiplier.keySet()+ " me: "+ type + " e:" +p.dmgType);
+        //System.out.println("e.dmgType: "+ e.dmgType + "; type: "+type + "; dmg: ");//+(world.dmgMultiplier.get(e.dmgType).keySet()));
+        double dmgMultiplier = world.dmgMultiplier.get(p.dmgType).get(type);
+        //reduces entity hp by the amount of damage, dependent on the damage multipliers, fetched from the dmgMultipliers.stats file.
+        System.out.println("dmg: "+p.dmg + " mulitplier: "+dmgMultiplier);
+        System.out.println("hp before: "+hp);
+        hp -= p.dmg * dmgMultiplier;
+        System.out.println("hp after: "+hp);        
+        // kills the entity, if hp is less or equal to 0
+        if (hp <= 0) {
+            die();
+        }        
+    }
+    
     /**
      * Basic collision physics. check act() in Projectile for further information
      */
     protected void collide(Projectile p) {
         DungeonWorld world = (DungeonWorld) getWorld();
         world.removeObject(p);
+        if (this instanceof Projectile) {
+            world.removeObject(this);
+            return;
+        }
         System.out.println(world.dmgMultiplier.keySet()+ " me: "+ type + " e:" +p.dmgType);
         //System.out.println("e.dmgType: "+ e.dmgType + "; type: "+type + "; dmg: ");//+(world.dmgMultiplier.get(e.dmgType).keySet()));
         double dmgMultiplier = world.dmgMultiplier.get(p.dmgType).get(type);
@@ -128,7 +146,9 @@ public abstract class Entity extends Actor
      * executed if the entity dies. Removes object from world (and plays animation, if redifined in subclasses)
      */
     protected void die() {
-        getWorld().removeObject(this);
+        DungeonWorld world = (DungeonWorld) getWorld();
+        world.removeObject(this);
+        world.musichandler.update();
     }
     
     
@@ -148,17 +168,6 @@ public abstract class Entity extends Actor
         //System.out.println("r:"+r); //debug print statement
         return new double[] {x*r,y*r}; //returns the multiplied x and y values
     }
-    
-    /**
-     * checks if cooldown is 0. resets cooldown to attackcooldown.
-     */
-    protected boolean checkCooldown() {
-        boolean ret = currentcooldown == 0;
-        if (ret) {
-            currentcooldown = attackcooldown;
-        }
-        return ret;
-    }
     //protected abstract void attack(Entity e);
     
     /**
@@ -177,4 +186,17 @@ public abstract class Entity extends Actor
     protected void setSprite(String spriteName) {
         setSprite(spriteName, 1);
     }
+    
+    protected void setSprite(GreenfootImage tmp, int scale) {
+        tmp.scale((int) (tmp.getWidth()*scale*DungeonWorld.globalScale), (int) (tmp.getHeight()*scale*DungeonWorld.globalScale));
+        setImage(tmp);//sets image        
+    }
+    
+    /**
+     * calls setSprite(String spritename, double scale) using scale 1
+     */
+    protected void setSprite(GreenfootImage spriteName) {
+        setSprite(spriteName, 1);
+    }
+    
 }

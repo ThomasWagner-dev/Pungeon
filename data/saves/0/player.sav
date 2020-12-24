@@ -4,7 +4,7 @@ screen=startingRoom
 [cosmetics]
 skin=entity/player/player.png
 [inventory]
-weapon=sword_basic
+weapon=bow_basic
 [status]
 hp=20
 maxhp=20

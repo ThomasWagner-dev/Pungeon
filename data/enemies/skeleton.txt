@@ -1,3 +1,0 @@
-type=melee
-img=entity/enemy/skeleton.png
-weapon=bow_basic

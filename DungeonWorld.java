@@ -17,6 +17,7 @@ public class DungeonWorld extends World
     public static final int pixelSize = 64, globalScale=pixelSize/16, height = 13, width=22;
     public String activeScreen;
     public int selectedSave;
+    public MusicHandler musichandler;
     /**
      * Simple constructor to create the lobby containing Dungeon selection etc.
      */
@@ -24,7 +25,6 @@ public class DungeonWorld extends World
     {    
         // Create a new world with 1425x850 cells with a cell size of 1x1 pixels.
         super(width*pixelSize, height*pixelSize, 1);
-        
         //TODO: put save selection here
         selectedSave = 0;
         
@@ -47,6 +47,10 @@ public class DungeonWorld extends World
         // Load the world.
         System.out.println("Loading world...");
         FileWork.loadPlayer(selectedSave, this);
+        
+        // Load music
+        System.out.println("Loading musichandler");
+        musichandler = new MusicHandler(this);
         
         // Inform the player of the end of the loading process.
         System.out.println("Finished loading.");

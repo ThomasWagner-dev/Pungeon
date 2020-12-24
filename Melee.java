@@ -25,6 +25,7 @@ public class Melee extends Enemy
     public double[][] getMovement() {
         DungeonWorld world = (DungeonWorld) getWorld();
         Player player = (Player) world.getClosestObject(Player.class, this);
+        if (inRange(player)) return new double[][] {{0,0},{1}};
         return new double[][] {{player.getX()-getX(),player.getY()-getY()},{1}};
     }
     

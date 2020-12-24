@@ -35,7 +35,7 @@ public class Projectile extends Entity
         intersectingWalls.remove(this);
         intersectingEntities.remove(this);
         intersectingEntities.remove(me);
-        System.out.println(intersectingEntities);
+        //System.out.println(intersectingEntities);
         boolean collided = false;
         for (Wall w : intersectingWalls) {
             if (!collided) {
@@ -59,7 +59,7 @@ public class Projectile extends Entity
         speed = selectedWeapon.speed;
         isReflective = false;
         setSprite(selectedWeapon.hitbox);
-        lifespan = selectedWeapon.range==0? 2:(int) ((selectedWeapon.range*DungeonWorld.pixelSize)/speed)+1;
+        lifespan = selectedWeapon.range==0? 10:(int) ((selectedWeapon.range*DungeonWorld.pixelSize)/speed)+1;
         this.me = root;
     }
     

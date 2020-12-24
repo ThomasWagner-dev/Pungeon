@@ -25,19 +25,13 @@ public abstract class Enemy extends Entity implements Collider
         //System.out.println("attack!");
         DungeonWorld world = (DungeonWorld) getWorld();
         Player p = (Player) world.getClosestObject(Player.class, this); //fetches closest player
-        double distance = DungeonWorld.getDistance(this, p); //gets the distance between oneself and the player
         //System.out.println(distance);//
         //checks if the distance to the player is close enough
-        if (distance < weapon.range) {
-            if (!checkCooldown()) return; //skips if there's still cooldown on the weapon
-            world.addObject(new Projectile(new double[] {p.getX()-getX(),p.getY()-getY()}, weapon, this), getX(), getY()); //spawns attacking projectile
-            weapon.resetCooldown(); //resets cooldown to max
+        //System.out.println((new GreenfootImage(weapon.hitbox)).getWidth()+DungeonWorld.pixelSize/2);
+        //System.out.println();
+        if (inRange(p)) {
+            weapon.attack(world, this, new double[] {p.getX()-getX(), p.getY()-getY()}); //spawns attacking projectile
         }
-    }
-    
-    @Override
-    public boolean checkCooldown() {
-        return weapon.checkCooldown();
     }
      
     /**
@@ -47,8 +41,6 @@ public abstract class Enemy extends Entity implements Collider
         e.hp = origin.hp;
         e.maxhp = origin.maxhp;
         e.dmg = origin.dmg;
-        e.attackcooldown = origin.attackcooldown;
-        e.currentcooldown = origin.currentcooldown;
         e.speed = origin.speed;
         e.type = origin.type;
         e.activeEffects = origin.activeEffects;
@@ -58,4 +50,10 @@ public abstract class Enemy extends Entity implements Collider
     }
     
     public Enemy clone() {System.out.println("hallo ich sollte nicht aufgerufen werden");return null;}
+    
+    public boolean inRange(Actor a) {
+        double distance = DungeonWorld.getDistance(this, a); //fetch distance between me and actor
+        int absRange = weapon.range * DungeonWorld.pixelSize + DungeonWorld.scaleImage(new GreenfootImage(weapon.hitbox),1).getWidth() + DungeonWorld.pixelSize/2; //calculate absolute range
+        return distance <= absRange;
+    }
 }
