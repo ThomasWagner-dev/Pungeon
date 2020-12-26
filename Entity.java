@@ -1,5 +1,3 @@
- 
-
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.*;
 /**
@@ -9,7 +7,7 @@ public abstract class Entity extends Actor
 {
     protected int hp, maxhp, dmg;
     protected double speed;
-    protected String  type;
+    protected String type;
     protected ArrayList<String> activeEffects;
     public String name;
     
@@ -129,7 +127,7 @@ public abstract class Entity extends Actor
             die();
         }
         else {
-            world.musichandler.playSound("dmg", this);
+            world.musichandler.playSound("dmg", name);
         }
     }
     
@@ -153,7 +151,7 @@ public abstract class Entity extends Actor
         DungeonWorld world = (DungeonWorld) getWorld();
         world.removeObject(this);
         world.musichandler.update();
-        world.musichandler.playSound("die", this);
+        world.musichandler.playSound("die", name);
     }
     
     

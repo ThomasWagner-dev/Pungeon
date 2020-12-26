@@ -100,6 +100,6 @@ public class Weapon
         p.setRotation(DungeonWorld.getRotationAngle(direction)+angle);
         world.addObject(p, owner.getX(), owner.getY());
         p.move(DungeonWorld.pixelSize/2);
-        world.musichandler.playSound("wpn",this);
+        world.musichandler.playSound("wpn",name);
     }
 }

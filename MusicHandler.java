@@ -4,7 +4,7 @@ import greenfoot.*;
  * Handles the music of the game
  * 
  * @author Commentator
- * @version 2020-12-24-01-53
+ * @version 2020-12-26-23-21
  */
 public class MusicHandler  
 {
@@ -51,18 +51,8 @@ public class MusicHandler
         }
     }
     
-    public void playSound(String event, Entity e) {
-        String name ="snd_"+event+"_"+e.name;
-        try {
-            sounds.get(name).play();
-        }
-        catch(Exception ex) {
-            System.out.println("unknown sound: "+name);
-        }
-    }
-    
-    public void playSound(String event, Weapon e) {
-        String name ="snd_"+event+"_"+e.name;
+    public void playSound(String event, String caller) {
+        String name ="snd_"+event+"_"+caller;
         try {
             sounds.get(name).play();
         }
