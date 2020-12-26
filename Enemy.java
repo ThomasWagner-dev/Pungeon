@@ -10,6 +10,11 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public abstract class Enemy extends Entity implements Collider
 {
     protected Weapon weapon;
+    //public final String name;
+    
+    public Enemy(String name) {
+        this.name = name;
+    }
     
     public void act() 
     {

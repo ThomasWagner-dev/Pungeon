@@ -116,14 +116,10 @@ public class FileWork
         HashMap<String, Weapon> weapons = new HashMap<>();
         File dir = new File("./data/weapons/");
         File[] directoryListing = dir.listFiles();
-        String[] splittedName;
-        String name;
         if (directoryListing != null) {
             for (File child : directoryListing) {
                 if (!child.getName().endsWith(".wpn")) continue;
-                splittedName = child.getName().split("\\.");
-                name = String.join(".", Arrays.copyOfRange(splittedName,0, splittedName.length-1));
-                weapons.put(name, loadWeapon(child));
+                weapons.put(child.getName().replaceAll("\\.\\w+$",""), loadWeapon(child));
             }
         }
         return weapons;
@@ -200,14 +196,10 @@ public class FileWork
           HashMap<String, Block> blocks = new HashMap<>();
           File dir = new File("./data/blocks/"); //creates a directory file of the blocks folder
           File[] directoryListing = dir.listFiles(); //retrieves all files present in the folder
-          String[] splittedName;
-          String name;
           if (directoryListing != null) { //see else
               for (File child : directoryListing) {//loops though all files in the folder
                   if (!child.getName().endsWith(".block")) continue; //skips all files, which aint blocks. for easier disableing using the .disabled ending.
-                  splittedName = child.getName().split("\\.");//splits name, to only get the name, without ending (this case .block)
-                  name = String.join(".", Arrays.copyOfRange(splittedName, 0, splittedName.length-1));
-                  blocks.put(name, loadBlock(child)); //puts the block into the hashmap using its name as a key and a loaded Block Object as the value.
+                  blocks.put(child.getName().replaceAll("\\.\\w+$",""), loadBlock(child)); //puts the block into the hashmap using its name as a key and a loaded Block Object as the value.
               }
           } else {
               // Handle the case where dir is not really a directory.
@@ -318,14 +310,10 @@ public class FileWork
         HashMap<String, Enemy> enemies = new HashMap<>();
         File dir = new File("./data/enemies/"); //creates a directory file of the blocks folder
         File[] directoryListing = dir.listFiles(); //retrieves all files present in the folder
-        String[] splittedName;
-        String name;
         if (directoryListing != null) { //see else
             for (File child : directoryListing) {//loops though all files in the folder
                 if (!child.getName().endsWith(".enemy")) continue; //skips all files, which aint blocks. for easier disableing using the .disabled ending.
-                splittedName = child.getName().split("\\.");//splits name, to only get the name, without ending (this case .block)
-                name = String.join(".", Arrays.copyOfRange(splittedName, 0, splittedName.length-1));
-                enemies.put(name, loadEnemy(child, weapons)); //puts the block into the hashmap using its name as a key and a loaded Block Object as the value.
+                enemies.put(child.getName().replaceAll("\\.\\w+$",""), loadEnemy(child, weapons)); //puts the block into the hashmap using its name as a key and a loaded Block Object as the value.
             }
         } else {
             // Handle the case where dir is not really a directory.
@@ -343,7 +331,7 @@ public class FileWork
             String[] line = sc.nextLine().split("=");
             switch(line[1]) {
                 case "melee":
-                    en = new Melee();
+                    en = new Melee(f.getName().replaceAll("\\.\\w+$",""));
                     break;
                 case "ranged":
                     en = null; //new Skeleton();
@@ -354,7 +342,6 @@ public class FileWork
                 switch(line[0]) {
                     case "img":
                         en.setSprite(line[1]);
-                        System.out.println("test");
                         break;
                     case "weapon":
                         en.weapon = weapons.get(line[1]).clone();
@@ -428,7 +415,7 @@ public class FileWork
                 name = child.getName();
                 if (!name.startsWith("msc_")) continue;
                 splittedName = name.split("_");
-                musics.put(String.join("_",Arrays.copyOfRange(splittedName, 1, splittedName.length)), new GreenfootSound(name));
+                musics.put(String.join("_",Arrays.copyOfRange(splittedName, 1, splittedName.length)).replaceAll("\\.\\w+$",""), new GreenfootSound(name));
             }
         }
         return musics;

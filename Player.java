@@ -35,7 +35,7 @@ public class Player extends Entity implements Collider{
      * attacks. see attack(world, owner, rotation) in weapon for more information 
      */
     public void attack() {
-        selectedWeapon.attack(getWorld(), this, rotation);
+        selectedWeapon.attack((DungeonWorld) getWorld(), this, rotation);
     }
     
     /**

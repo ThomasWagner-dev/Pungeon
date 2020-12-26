@@ -11,6 +11,7 @@ public abstract class Entity extends Actor
     protected double speed;
     protected String  type;
     protected ArrayList<String> activeEffects;
+    public String name;
     
     /**
      * creates objects for everything which is the same everywhere
@@ -122,10 +123,13 @@ public abstract class Entity extends Actor
         System.out.println("dmg: "+w.dmg + " mulitplier: "+dmgMultiplier);
         System.out.println("hp before: "+hp);
         hp -= w.dmg * dmgMultiplier;
-        System.out.println("hp after: "+hp);        
+        System.out.println("hp after: "+hp);      
         // kills the entity, if hp is less or equal to 0
         if (hp <= 0) {
             die();
+        }
+        else {
+            world.musichandler.playSound("dmg", this);
         }
     }
     
@@ -149,6 +153,7 @@ public abstract class Entity extends Actor
         DungeonWorld world = (DungeonWorld) getWorld();
         world.removeObject(this);
         world.musichandler.update();
+        world.musichandler.playSound("die", this);
     }
     
     

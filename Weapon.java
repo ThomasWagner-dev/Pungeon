@@ -82,7 +82,7 @@ public class Weapon
         return cooldown <= 0;
     }
     
-    public void attack(World world, Actor owner, double[] direction) { //double[] direction, int dmg, String dmgType, int speed, boolean isReflective, String spriteName, int lifespan, Actor me
+    public void attack(DungeonWorld world, Actor owner, double[] direction) { //double[] direction, int dmg, String dmgType, int speed, boolean isReflective, String spriteName, int lifespan, Actor me
         if (!checkCooldown()) return;
         resetCooldown();
         Projectile p;
@@ -100,5 +100,6 @@ public class Weapon
         p.setRotation(DungeonWorld.getRotationAngle(direction)+angle);
         world.addObject(p, owner.getX(), owner.getY());
         p.move(DungeonWorld.pixelSize/2);
+        world.musichandler.playSound("wpn",this);
     }
 }

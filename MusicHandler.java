@@ -12,11 +12,13 @@ public class MusicHandler
     public final DungeonWorld world;
     public GreenfootSound currentSound;
     public MusicHandler(DungeonWorld world) {
+        System.out.println("Loading music...");
         musics = FileWork.loadAllMusic();
+        System.out.println("Loaded sound tracks: "+musics.keySet());
         sounds = FileWork.loadAllSounds();
-        System.out.println(musics.keySet());
+        System.out.println("Loaded sound effects: "+sounds.keySet());
         this.world = world;
-        currentSound = musics.get("ow_combat.mp3");
+        currentSound = musics.get("ow_combat");
         //currentSound.playLoop();
         currentSound.setVolume(50);
         update();
@@ -41,14 +43,31 @@ public class MusicHandler
             soundNameComposite.add("combat");
             name += "combat";
         }
-            
-        
-        name += ".mp3";
         GreenfootSound song = musics.get(name);
         if (!song.equals(currentSound)) {
             currentSound.stop();
             currentSound = song;
             currentSound.playLoop();
+        }
+    }
+    
+    public void playSound(String event, Entity e) {
+        String name ="snd_"+event+"_"+e.name;
+        try {
+            sounds.get(name).play();
+        }
+        catch(Exception ex) {
+            System.out.println("unknown sound: "+name);
+        }
+    }
+    
+    public void playSound(String event, Weapon e) {
+        String name ="snd_"+event+"_"+e.name;
+        try {
+            sounds.get(name).play();
+        }
+        catch(Exception ex) {
+            System.out.println("unknown sound: "+name);
         }
     }
 }

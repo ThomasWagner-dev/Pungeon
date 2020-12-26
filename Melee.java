@@ -10,6 +10,10 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class Melee extends Enemy
 {
     
+    public Melee(String name) {
+        super(name);
+    }
+    
     /**
      * Act - do whatever the Zombie wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
@@ -33,6 +37,6 @@ public class Melee extends Enemy
      * returns a clone of this enemy
      */
     public Enemy clone() {
-        return super.topClone(new Melee(), this);
+        return super.topClone(new Melee(name), this);
     }
 }

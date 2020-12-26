@@ -33,25 +33,36 @@ public class DungeonWorld extends World
         // Load damage Multipliers.
         System.out.println("Loading damage multipliers...");
         dmgMultiplier = FileWork.getDmgMultiplier();
+        System.out.println("Loaded types: "+dmgMultiplier.keySet());
+        System.out.println();
         //Load weapons
+        System.out.println("Loading weapons...");
         weapons = FileWork.loadAllWeapons();
-        System.out.println(weapons.keySet());
+        System.out.println("Loaded Weapons: "+weapons.keySet());
+        System.out.println();
         // Load all blocks availabel for map generation.
         System.out.println("Loading blocks...");
         blocks = FileWork.loadAllBlocks();
-        
+        System.out.println("Loaded Blocks: "+blocks.keySet());
+        System.out.println();
         //Load enemies
         System.out.println("Loading enemies...");
         enemies = FileWork.loadAllEnemies(weapons);
-        
+        System.out.println("Loaded enemies: "+enemies.keySet());
+        System.out.println();
         // Load the world.
-        System.out.println("Loading world...");
+        System.out.println("Loading save...");
         FileWork.loadPlayer(selectedSave, this);
-        
+        System.out.println();
         // Load music
-        System.out.println("Loading musichandler");
+        System.out.println("Loading musichandler...");
         musichandler = new MusicHandler(this);
+        System.out.println();
         
+        //Change paint order
+        System.out.println("Changing paintorder");
+        setPaintOrder(Projectile.class, Player.class, Enemy.class, Wall.class, Trap.class, Tile.class);
+        System.out.println();
         // Inform the player of the end of the loading process.
         System.out.println("Finished loading.");
     }
@@ -64,15 +75,12 @@ public class DungeonWorld extends World
     public void loadScreen(String screenName) {
         // Remove all Existing Objects
         removeObjects(getObjects(null));
-        // Spawn Loading Screen.
-        setPaintOrder(Tile.class);
         // Load the world from a file.
         loadMap(screenName);
         loadEnemies(screenName);
         
         activeScreen = screenName;
         //System.out.println(activeScreen);
-        setPaintOrder(Projectile.class, Player.class, Enemy.class, Wall.class, Trap.class, Tile.class);
     }
     
     /**
