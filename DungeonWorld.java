@@ -1,5 +1,3 @@
- 
-
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.*;
 
@@ -14,6 +12,7 @@ public class DungeonWorld extends World
     public final HashMap<String, Weapon> weapons;
     public final HashMap<String, Block> blocks;
     public final HashMap<String, Enemy> enemies;
+    public final HashMap<String, Screen> screens;
     public static final int pixelSize = 64, globalScale=pixelSize/16, height = 13, width=22;
     public String activeScreen;
     public int selectedSave;
@@ -35,7 +34,7 @@ public class DungeonWorld extends World
         dmgMultiplier = FileWork.getDmgMultiplier();
         System.out.println("Loaded types: "+dmgMultiplier.keySet());
         System.out.println();
-        //Load weapons
+        // Load weapons
         System.out.println("Loading weapons...");
         weapons = FileWork.loadAllWeapons();
         System.out.println("Loaded Weapons: "+weapons.keySet());
@@ -45,10 +44,15 @@ public class DungeonWorld extends World
         blocks = FileWork.loadAllBlocks();
         System.out.println("Loaded Blocks: "+blocks.keySet());
         System.out.println();
-        //Load enemies
+        // Load enemies
         System.out.println("Loading enemies...");
         enemies = FileWork.loadAllEnemies(weapons);
         System.out.println("Loaded enemies: "+enemies.keySet());
+        System.out.println();
+        // Load screens
+        System.out.println("Loading all Screens");
+        screens = FileWork.loadAllScreens(blocks, enemies);
+        System.out.println("Loaded screens: "+screens.keySet());
         System.out.println();
         // Load the world.
         System.out.println("Loading save...");
@@ -58,65 +62,12 @@ public class DungeonWorld extends World
         System.out.println("Loading musichandler...");
         musichandler = new MusicHandler(this);
         System.out.println();
-        
         //Change paint order
         System.out.println("Changing paintorder");
         setPaintOrder(Projectile.class, Player.class, Enemy.class, Wall.class, Trap.class, Tile.class);
         System.out.println();
         // Inform the player of the end of the loading process.
         System.out.println("Finished loading.");
-    }
-
-    /**
-     * Unload the current world and then load a new one.
-     * 
-     * @param screenName The name of the screen to be loaded.
-     */
-    public void loadScreen(String screenName) {
-        // Remove all Existing Objects
-        removeObjects(getObjects(null));
-        // Load the world from a file.
-        loadMap(screenName);
-        loadEnemies(screenName);
-        
-        activeScreen = screenName;
-        //System.out.println(activeScreen);
-    }
-    
-    /**
-    * Loads the map of the screen
-    * @param screenName screen to be loaded
-    */
-    private void loadMap(String screenName) {
-        ArrayList<ArrayList<String>> world = FileWork.loadWorldFile(screenName);
-        
-        // Render the world.
-        int row = 0;
-        // Load and add all Actors to the world.
-        while (row < world.size()) {
-            for (int i = 0; i < world.get(row).size(); i++) {
-                addObject(
-                    blocks.get(
-                        world.get(row).get(i)).clone(),
-                        i * pixelSize + pixelSize/2,
-                        row * pixelSize + pixelSize/2);
-            }
-            row++;
-        }
-        
-    }
-    
-    /**
-    * Loads enemies of the screenName
-    * @param screenName The screen the enemies are loaded from
-    */
-    private void loadEnemies(String screenName) {
-        HashMap<Enemy, int[]> Screenenemies = FileWork.loadEnemyFile(screenName, enemies); //get enemies for the current screen
-        int[] pos;
-        for (Enemy e : Screenenemies.keySet()) {
-            pos = Screenenemies.get(e);
-            addObject(e, pixelSize/2+pos[0]*pixelSize, pixelSize/2+pos[1]*pixelSize);
-        }
     }
     
     /**
@@ -203,5 +154,11 @@ public class DungeonWorld extends World
             return 360-ret;
         else
             return ret;
+    }
+    
+    public static void compilePosition(int[] pos) {
+        for (int i = 0; i < pos.length; i++) {
+            pos[i] = pos[i] * pixelSize + pixelSize/2;
+        }
     }
 }

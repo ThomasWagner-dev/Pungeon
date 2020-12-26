@@ -48,8 +48,7 @@ public class FileWork
                 if (!line[0].startsWith("[")) {
                     switch (line[0]) {
                         case "screen":
-                            world.loadScreen(line[1]);
-                            System.out.println(line[1]);
+                            world.screens.get(line[1]).load(world);
                             break;
                         case "pos":
                             line = line[1].split(",");
@@ -84,7 +83,7 @@ public class FileWork
         ArrayList<ArrayList<String>> worldList = new ArrayList<>();
         try {
             // Read the file.
-            Scanner sc = new Scanner(readFile("./data/worlds/" + screenName + ".world"));
+            Scanner sc = new Scanner(readFile("./data/screens/" + screenName + ".world"));
             // Initalize indices.
             String[] lineValues;
             ArrayList<String> temp;
@@ -306,6 +305,74 @@ public class FileWork
         return dmgMultiplier;
     }
     
+    public static HashMap<String, Screen> loadAllScreens(HashMap<String, Block> blocks, HashMap<String, Enemy> enemies) {
+        HashMap<String, Screen> screens = new HashMap<>();
+        File dir = new File("./data/screens");
+        File[] directoryListing = dir.listFiles();
+        if (directoryListing != null) {
+            for (File child : directoryListing) {
+                if (!child.getName().endsWith(".world")) continue; // skips enemymaps at first, those are read in specific loaded
+                screens.put(child.getName().replaceAll("\\.\\w+$",""), loadScreen(child, blocks, enemies));
+            }
+        }
+        return screens;
+    }
+    
+    public static Screen loadScreen(File f, HashMap<String, Block> blocks, HashMap<String, Enemy> enemies) {
+        try {
+            Scanner sc = new Scanner(f);
+            ArrayList<ArrayList<String>> rawMap= new ArrayList<>();
+            HashMap<String, String> adjScreens = new HashMap<>();
+            Block background = new Tile();
+            HashMap<Enemy, int[]> enemymap = loadEnemyMap(f.getName().replaceAll("\\.\\w+$",""), enemies);
+            String[] line = sc.nextLine().split(",");
+            while (!line[0].equals("###")) {
+                rawMap.add(new ArrayList<String>(Arrays.asList(line)));
+                line = sc.nextLine().split(",");
+            }
+            while(sc.hasNextLine()) {
+                line = sc.nextLine().split(":");
+                switch(line[0]) {
+                    case "bg":
+                        background = blocks.get(line[1]);
+                        break;
+                    default:
+                        adjScreens.put(line[0],line[1].equals("none")? null : line[1]);
+                        break;
+                }
+            }
+            return new Screen(rawMap, enemymap, background, blocks, adjScreens);
+        }
+        catch(Exception e) {
+            System.out.println("error");
+            System.err.println("Error while loading screen {}:".replace("{}",f.getName()));
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public static HashMap<Enemy, int[]> loadEnemyMap(String screenName, HashMap<String, Enemy> origin) {
+        HashMap<Enemy, int[]> enemies = new HashMap<>();
+        System.out.println(screenName);
+        try {
+            Scanner sc = new Scanner(readFile("./data/screens/{}.enemymap".replace("{}",screenName)));
+            String[] line;
+            String type;
+            while (sc.hasNextLine()) {
+                line = sc.nextLine().split("=");
+                type = line[0];
+                line = line[1].split(",");
+                enemies.put(origin.get(type).clone(), new int[] {Integer.parseInt(line[0]), Integer.parseInt(line[1])});
+            }
+        }
+        catch (Exception e) {
+            System.err.println("Error while loading enemies from File");
+            e.printStackTrace();
+        }
+        System.out.println(enemies.keySet());
+        return enemies;
+    }
+    
     public static HashMap<String, Enemy> loadAllEnemies(HashMap<String, Weapon> weapons) {
         HashMap<String, Enemy> enemies = new HashMap<>();
         File dir = new File("./data/enemies/"); //creates a directory file of the blocks folder
@@ -364,26 +431,6 @@ public class FileWork
             e.printStackTrace();
         }
         return en;
-    }
-    
-    public static HashMap<Enemy, int[]> loadEnemyFile(String screenName, HashMap<String, Enemy> origin) {
-        HashMap<Enemy, int[]> enemies = new HashMap<>();
-        try {
-            Scanner sc = new Scanner(readFile("./data/worlds/{}.enemymap".replace("{}",screenName)));
-            String[] line;
-            String type;
-            while (sc.hasNextLine()) {
-                line = sc.nextLine().split("=");
-                type = line[0];
-                line = line[1].split(",");
-                enemies.put(origin.get(type).clone(), new int[] {Integer.parseInt(line[0]), Integer.parseInt(line[1])});
-            }
-        }
-        catch (Exception e) {
-            System.err.println("Error while loading enemies from File");
-            e.printStackTrace();
-        }
-        return enemies;
     }
     
     public static HashMap<String, GreenfootSound> loadAllSounds() {

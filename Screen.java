@@ -10,14 +10,12 @@ public class Screen
 {
     public final ArrayList<ArrayList<Block>> map;
     public final HashMap<Enemy, int[]> enemies;
-    public final DungeonWorld world;
     public HashMap<String, String> adjacentScreens;
     public Block backgroundBlock;
     
-    public Screen(ArrayList<ArrayList<String>> rawMap, HashMap<Enemy, int[]> enemies, Block background, HashMap<String, Block> blocks, HashMap<String, String> adjacentScreens, DungeonWorld world) {
+    public Screen(ArrayList<ArrayList<String>> rawMap, HashMap<Enemy, int[]> enemies, Block background, HashMap<String, Block> blocks, HashMap<String, String> adjacentScreens) {
         map = loadMap(rawMap, blocks);
         this.enemies = enemies;
-        this.world = world;
         this.adjacentScreens = adjacentScreens;
         backgroundBlock = background;
     }
@@ -28,6 +26,7 @@ public class Screen
         for (ArrayList<String> ttmp : rawMap) {
             tmp = new ArrayList<>();
             for (String b : ttmp) {
+                System.out.println(b);
                 tmp.add(blocks.get(b).clone());
             }
             map.add(tmp);
@@ -35,7 +34,7 @@ public class Screen
         return map;
     }
     
-    public void load() {
+    public void load(DungeonWorld world) {
         List<Actor> actress = world.getObjects(null);
         actress.remove(world.getObjects(Player.class));
         world.removeObjects(actress);
@@ -57,6 +56,18 @@ public class Screen
                 }
             }
             row++;
+        }
+        
+        //load Enemies
+        int[] pos;
+        for (Enemy e : enemies.keySet()) {
+            pos = enemies.get(e);
+            DungeonWorld.compilePosition(pos);           
+            world.addObject(
+                e.clone(),
+                pos[0],
+                pos[1]
+            );
         }
     }
 }
