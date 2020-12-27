@@ -26,7 +26,6 @@ public class Screen
         for (ArrayList<String> ttmp : rawMap) {
             tmp = new ArrayList<>();
             for (String b : ttmp) {
-                System.out.println(b);
                 tmp.add(blocks.get(b).clone());
             }
             map.add(tmp);

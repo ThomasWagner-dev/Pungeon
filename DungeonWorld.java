@@ -14,6 +14,7 @@ public class DungeonWorld extends World
     public final HashMap<String, Enemy> enemies;
     public final HashMap<String, Screen> screens;
     public static final int pixelSize = 64, globalScale=pixelSize/16, height = 13, width=22;
+    public final Tag data;
     public String activeScreen;
     public int selectedSave;
     public MusicHandler musichandler;
@@ -29,6 +30,11 @@ public class DungeonWorld extends World
         
         // Inform the player of the loading process.
         System.out.println("Starting world generation...");
+        System.out.println();
+        //loading data.nbt
+        System.out.println("Loading data.nbt...");
+        data = FileWork.getData();
+        System.out.println();
         // Load damage Multipliers.
         System.out.println("Loading damage multipliers...");
         dmgMultiplier = FileWork.getDmgMultiplier();
@@ -66,6 +72,10 @@ public class DungeonWorld extends World
         System.out.println("Changing paintorder");
         setPaintOrder(Projectile.class, Player.class, Enemy.class, Wall.class, Trap.class, Tile.class);
         System.out.println();
+        
+        //FileWork.dmgToData(data, dmgMultiplier);
+        //FileWork.writeData(data);
+        
         // Inform the player of the end of the loading process.
         System.out.println("Finished loading.");
     }

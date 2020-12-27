@@ -4,6 +4,8 @@ import java.util.*;
 import java.io.*;
 public class FileWork
 {
+    public static Tag endTag = new Tag(Tag.Type.TAG_End, null, null);
+    
     private static InputStream readFile(String location) {
         return FileWork.class.getResourceAsStream(location);
     }
@@ -283,7 +285,7 @@ public class FileWork
         HashMap<String, HashMap<String, Double>> dmgMultiplier = new HashMap<>();
         try {
             //Read the file.
-            Scanner sc = new Scanner(readFile("./data/dmgMultipliers.stats"));
+            Scanner sc = new Scanner(readFile("./data/stats/dmgMultipliers.stats"));
             //Put all types into a list.
             String[] types = sc.nextLine().split(",");
             String[] line;
@@ -467,5 +469,47 @@ public class FileWork
         }
         return musics;
     }
-
+    
+    public static Tag getData() {
+        Tag t = null;
+        try {
+            t =  Tag.readFrom(readFile("./data.nbt"));
+        }
+        catch(Exception e) {
+            System.err.println("Error while loading data from file");
+            e.printStackTrace();
+        }
+        return t;
+    }
+    
+    public static Tag initData() {
+        Tag data = new Tag(Tag.Type.TAG_Compound, "data", new Tag[] {endTag});
+        Tag loottables = new Tag("loottables", Tag.Type.TAG_Compound);
+        data.addTag(loottables);
+        return data;
+    }
+    
+    public static void dmgToData(Tag data, HashMap<String, HashMap<String, Double>> dmg) {
+        HashMap<String, Double> tmp;
+        Tag dmgMultipliers = new Tag(Tag.Type.TAG_Compound, "dmgMultipliers", new Tag[] {endTag}), x;
+        for(String key : dmg.keySet()) {
+            tmp = dmg.get(key);
+            x = new Tag(Tag.Type.TAG_Compound, key, new Tag[] {endTag});
+            for (String mp : tmp.keySet()) {
+                x.addTag(new Tag(Tag.Type.TAG_Double, mp, tmp.get(mp)));
+            }
+            dmgMultipliers.addTag(x);
+        }
+        data.addTag(dmgMultipliers);
+    }
+    
+    public static void writeData(Tag data) {
+        try {
+            data.writeTo(new FileOutputStream("./data.nbt"));
+        }
+        catch(Exception e) {
+            System.err.println("Error while writing data to file: ");
+            e.printStackTrace();
+        }
+    }
 }
