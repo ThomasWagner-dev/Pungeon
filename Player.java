@@ -6,6 +6,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * The player.
  * 
  * @author Commentator
+ * @version 2020-12-27-22-10
  */
 public class Player extends Entity implements Collider{
     protected double[] rotation;
@@ -26,8 +27,34 @@ public class Player extends Entity implements Collider{
     public void act() {
         super.act();
         selectedWeapon.reduceCooldown();
+        //check for screentransition
+        if (isAtEdge()) {
+            checkScreenTransition();
+        }
         if (inputs.attacks()) {
             attack();
+        }
+    }
+    
+    public void checkScreenTransition() {
+        String edge = "";
+        DungeonWorld world = (DungeonWorld) getWorld();
+        int x = getX(), y = getY(), mx= world.getWidth(), my = world.getHeight();
+        //System.out.println("x: " + x + " y: " + y + " mx: " + mx + " my: " + my);
+        if (x == 0) edge = "left";
+        if (y == 0) edge = "up";
+        if (x == mx-1) edge = "right";
+        if (y == my-1) edge = "down";
+        String nextScreenName = world.activeScreen.adjacentScreens.get(edge);
+        if (nextScreenName != null) {
+            Screen nextScreen = world.screens.get(nextScreenName);
+            nextScreen.load(world);
+            if (edge.equals("up") || edge.equals("down")) {
+                setLocation(x, my-(y-world.pixelSize/2));
+            }
+            else {
+                setLocation(mx - (x - world.pixelSize/2), y);
+            }
         }
     }
     

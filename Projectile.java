@@ -91,7 +91,6 @@ public class Projectile extends Entity
     
     
     protected double[][] getMovement() {
-        System.out.println(Arrays.toString(direction));
         return new double[][] {direction,{1}};
     }
 }

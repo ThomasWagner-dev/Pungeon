@@ -4,7 +4,7 @@ import greenfoot.*;
  * 
  * 
  * @author Commentator
- * @version 2020-12-24-13-03
+ * @version 2020-12-27-22-09
  */
 public class Screen  
 {
@@ -12,8 +12,10 @@ public class Screen
     public final HashMap<Enemy, int[]> enemies;
     public HashMap<String, String> adjacentScreens;
     public Block backgroundBlock;
+    public final String name;
     
-    public Screen(ArrayList<ArrayList<String>> rawMap, HashMap<Enemy, int[]> enemies, Block background, HashMap<String, Block> blocks, HashMap<String, String> adjacentScreens) {
+    public Screen(String name, ArrayList<ArrayList<String>> rawMap, HashMap<Enemy, int[]> enemies, Block background, HashMap<String, Block> blocks, HashMap<String, String> adjacentScreens) {
+        this.name = name;
         map = loadMap(rawMap, blocks);
         this.enemies = enemies;
         this.adjacentScreens = adjacentScreens;
@@ -34,10 +36,10 @@ public class Screen
     }
     
     public void load(DungeonWorld world) {
-        List<Actor> actress = world.getObjects(null);
-        actress.remove(world.getObjects(Player.class));
+        List<Actor> actress = world.getObjectsExclusive(Player.class);
+        //List<Actor> actress = world.getObjects(null);
+        //actress.removeAll(world.getObjects(Player.class));
         world.removeObjects(actress);
-        
         // Render the world.
         int row = 0, x, y;
         // Load and add all Blocks to the world.
@@ -61,12 +63,13 @@ public class Screen
         int[] pos;
         for (Enemy e : enemies.keySet()) {
             pos = enemies.get(e);
-            DungeonWorld.compilePosition(pos);           
+            pos = DungeonWorld.compilePosition(pos);           
             world.addObject(
                 e.clone(),
                 pos[0],
                 pos[1]
             );
         }
+        world.activeScreen = this;
     }
 }

@@ -12,8 +12,8 @@ wall_brick,tile_ground,tile_ground,tile_ground,tile_ground,tile_ground,tile_grou
 wall_brick,tile_ground,tile_ground,tile_ground,tile_ground,tile_ground,tile_ground,tile_ground,tile_ground,tile_ground,tile_ground,tile_ground,tile_ground,tile_ground,tile_ground,tile_ground,tile_ground,tile_ground,tile_ground,tile_ground,tile_ground,wall_brick
 wall_brick,wall_brick,wall_brick,wall_brick,wall_brick,wall_brick,wall_brick,tile_ground,wall_brick,tile_ground,wall_brick,tile_ground,wall_brick,tile_ground,wall_brick,wall_brick,wall_brick,wall_brick,wall_brick,wall_brick,wall_brick,wall_brick
 ###
-up:startScreen
-down:none
-left:none
-right:none
+up:startingRoom
+down:stuff
+left:test
+right:test
 bg:tile_ground

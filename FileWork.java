@@ -10,7 +10,6 @@ public class FileWork
         return FileWork.class.getResourceAsStream(location);
     }
     
-    
     public static void savePlayer(int slot, DungeonWorld world) {
         try {
             Player p = world.getObjects(Player.class).get(0);
@@ -19,7 +18,7 @@ public class FileWork
             
             wr.write("[location]\n");
             wr.write("pos={x},{y}\n".replace("{x}", p.getX()+"").replace("{y}", p.getY()+""));
-            wr.write("screen={}\n".replace("{}",world.activeScreen));
+            wr.write("screen={}\n".replace("{}",world.activeScreen.name));
             wr.write("[cosmetics]\n");
             wr.write("skin={}\n".replace("{}", p.skin));
             wr.write("[inventory]\n");
@@ -34,7 +33,6 @@ public class FileWork
             e.printStackTrace();
         }
     }
-    
     
     /**
      * load the player into the world.
@@ -343,7 +341,7 @@ public class FileWork
                         break;
                 }
             }
-            return new Screen(rawMap, enemymap, background, blocks, adjScreens);
+            return new Screen(f.getName().replaceAll("\\.\\w+$",""), rawMap, enemymap, background, blocks, adjScreens);
         }
         catch(Exception e) {
             System.out.println("error");

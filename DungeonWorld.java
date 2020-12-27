@@ -16,7 +16,7 @@ public class DungeonWorld extends World
     public final HashMap<String, Screen> screens;
     public static final int pixelSize = 64, globalScale=pixelSize/16, height = 13, width=22;
     public final Tag data;
-    public String activeScreen;
+    public Screen activeScreen;
     public int selectedSave;
     public MusicHandler musichandler;
     /**
@@ -40,7 +40,7 @@ public class DungeonWorld extends World
         System.out.println();
         // Load damage Multipliers.
         System.out.println("Loading damage multipliers...");
-        dmgMultiplierTag = data.findTagByName("dmgMultipliers");
+        dmgMultiplierTag = data.findNextTag("dmgMultipliers");
         dmgMultiplier = FileWork.getDmgMultiplier();
         System.out.println("Loaded types: "+dmgMultiplier.keySet());
         System.out.println();
@@ -170,9 +170,18 @@ public class DungeonWorld extends World
             return ret;
     }
     
-    public static void compilePosition(int[] pos) {
+    public static int[] compilePosition(int[] pos) {
+        int[] ret = new int[pos.length];
         for (int i = 0; i < pos.length; i++) {
-            pos[i] = pos[i] * pixelSize + pixelSize/2;
+            ret[i] = pos[i] * pixelSize + pixelSize/2;
         }
+        return ret;
+    }
+    
+    public List<Actor> getObjectsExclusive(Class cls) {
+        List<Actor> things = getObjects(null);
+        List<Actor> thingsToRemove = getObjects(cls);
+        things.removeAll(thingsToRemove);
+        return things;
     }
 }

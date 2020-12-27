@@ -286,6 +286,16 @@ public class Tag {
     }
 
     /**
+     * Gets the value of the first tag with the specified name.
+     * 
+     * @param name the name to look for. May be null to look for unnamed tags.
+     * @return the value of the found Tag.
+     */
+    public Object get(String name) {
+        return findTagByName(name).getValue();
+    }
+    
+    /**
      * Find the first nested tag with specified name in a TAG_Compound.
      *
      * @param name the name to look for. May be null to look for unnamed tags.
@@ -316,6 +326,22 @@ public class Tag {
                         continue;
                     else
                         return newFound;
+            }
+        }
+        return null;
+    }
+    
+    public Tag findNextTag(String name) {
+        return findNextTag(name, null);
+    }
+    
+    public Tag findNextTag(String name, Tag found) {
+        if (type != Type.TAG_List && type != Type.TAG_Compound)
+            return null;
+        Tag[] subtags = (Tag[]) value;
+        for (Tag subtag : subtags) {
+            if ((subtag.name == null && name == null) || (subtag.name != null && subtag.name.equals(name))) {
+                return subtag;
             }
         }
         return null;
