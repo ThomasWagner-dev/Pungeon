@@ -4,6 +4,18 @@ from tkinter import filedialog
 import numpy as np
 import json
 
+allocations={
+  "888888":"wall_brick",
+  "777777":"wall_brick_cracked",
+  "666666":"wall_brick_hole",
+  "008bff":"tile_ground_egg",
+  "523d22":"tile_ground",
+  "ff0000":"trap_spikes",
+  "523d22":"tile_ground_moss",
+  "000000":"wall_void",
+  "343434":"wall_stone"
+}
+
 def rgb2hex(rgb:list) -> str:
     return "".join([str(hex(x)).removeprefix("0x") for x in rgb])
 
@@ -22,8 +34,8 @@ def file2screen(file):
     return string
     
 
-with open('allocation.json') as json_file:
-    allocations = json.load(json_file)
+#with open('allocation.json') as json_file:
+#    allocations = json.load(json_file)
 
 #filenames = tk.filedialog.askopenfilenames(title="choose files", filetypes=[("image files", ("*.png"," *.jpg", "*.gif", "*.svg"))])
 while (True):
