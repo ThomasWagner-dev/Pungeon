@@ -9,6 +9,7 @@ import java.util.*;
 public class DungeonWorld extends World
 {
     public final HashMap<String, HashMap<String, Double>> dmgMultiplier;
+    public final Tag dmgMultiplierTag;
     public final HashMap<String, Weapon> weapons;
     public final HashMap<String, Block> blocks;
     public final HashMap<String, Enemy> enemies;
@@ -34,9 +35,12 @@ public class DungeonWorld extends World
         //loading data.nbt
         System.out.println("Loading data.nbt...");
         data = FileWork.getData();
+        System.out.println("Loaded data: ");
+        data.print();
         System.out.println();
         // Load damage Multipliers.
         System.out.println("Loading damage multipliers...");
+        dmgMultiplierTag = data.findTagByName("dmgMultipliers");
         dmgMultiplier = FileWork.getDmgMultiplier();
         System.out.println("Loaded types: "+dmgMultiplier.keySet());
         System.out.println();

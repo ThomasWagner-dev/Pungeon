@@ -15,37 +15,11 @@ public class Weapon
     public final boolean isMelee;
     
     public Weapon(String name, String displayname, String description, int range, int dmg, String dmgType, int speed, int cooldown, String spriteName, String hitbox, boolean isMelee) {
-        this.range = range;
-        this.name = name;
-        this.description = description;
-        this.dmg = dmg;
-        this.dmgType = dmgType;
-        this.spriteName = spriteName;
-        this.cooldown = 0;
-        this.maxCooldown = cooldown;
-        this.speed = speed;
-        this.hitbox = hitbox;
-        this.scale = 1;
-        this.displayName = displayname;
-        this.isMelee = isMelee;
-        img = DungeonWorld.scaleImage(new GreenfootImage(spriteName),scale);
+        this(name, displayname, description, range, dmg, dmgType, speed, cooldown, spriteName, 1, hitbox, isMelee);
     }
     
     public Weapon(String name, String displayname, String description, int range, int dmg, String dmgType, int speed, int cooldown, String spriteName, double scale, String hitbox, boolean isMelee) {
-        this.range = range;
-        this.name = name;
-        this.description = description;
-        this.dmg = dmg;
-        this.dmgType = dmgType;
-        this.spriteName = spriteName;
-        this.cooldown = 0;
-        this.maxCooldown = cooldown;
-        this.speed = speed;
-        this.hitbox = hitbox;
-        this.scale = scale;
-        this.displayName = displayname;
-        this.isMelee = isMelee;
-        img = DungeonWorld.scaleImage(new GreenfootImage(spriteName),scale);
+        this(name, displayname, description, range, dmg, dmgType, speed, cooldown, spriteName, scale, hitbox, isMelee, 0);
     }
     
     public Weapon(String name, String displayname, String description, int range, int dmg, String dmgType, int speed, int cooldown, String spriteName, double scale, String hitbox, boolean isMelee, int angle) {

@@ -68,20 +68,23 @@ public abstract class Entity extends Actor
      */
     protected abstract double[][] getMovement();
     
-    protected void collide(Wpn_hitbox p) {
+    protected void takeDamage(int amount, String dmgType) {
         DungeonWorld world = (DungeonWorld) getWorld();
-        System.out.println(world.dmgMultiplier.keySet()+ " me: "+ type + " e:" +p.dmgType);
-        //System.out.println("e.dmgType: "+ e.dmgType + "; type: "+type + "; dmg: ");//+(world.dmgMultiplier.get(e.dmgType).keySet()));
-        double dmgMultiplier = world.dmgMultiplier.get(p.dmgType).get(type);
-        //reduces entity hp by the amount of damage, dependent on the damage multipliers, fetched from the dmgMultipliers.stats file.
-        System.out.println("dmg: "+p.dmg + " mulitplier: "+dmgMultiplier);
+        double dmgMultiplier = (Double) world.dmgMultiplierTag.findTagByName(dmgType).findTagByName(type).getValue();
+        System.out.println("dmg: "+ amount + " mulitplier: "+dmgMultiplier);
         System.out.println("hp before: "+hp);
-        hp -= p.dmg * dmgMultiplier;
-        System.out.println("hp after: "+hp);        
-        // kills the entity, if hp is less or equal to 0
+        hp -= amount * dmgMultiplier;
+        System.out.println("hp after: "+hp);
         if (hp <= 0) {
             die();
-        }        
+        }
+        else {
+            world.musichandler.playSound("dmg", name);
+        }
+    }
+    
+    protected void collide(Wpn_hitbox p) {
+        takeDamage(p.dmg, p.dmgType);
     }
     
     /**
@@ -94,18 +97,7 @@ public abstract class Entity extends Actor
             world.removeObject(this);
             return;
         }
-        System.out.println(world.dmgMultiplier.keySet()+ " me: "+ type + " e:" +p.dmgType);
-        //System.out.println("e.dmgType: "+ e.dmgType + "; type: "+type + "; dmg: ");//+(world.dmgMultiplier.get(e.dmgType).keySet()));
-        double dmgMultiplier = world.dmgMultiplier.get(p.dmgType).get(type);
-        //reduces entity hp by the amount of damage, dependent on the damage multipliers, fetched from the dmgMultipliers.stats file.
-        System.out.println("dmg: "+p.dmg + " mulitplier: "+dmgMultiplier);
-        System.out.println("hp before: "+hp);
-        hp -= p.dmg * dmgMultiplier;
-        System.out.println("hp after: "+hp);        
-        // kills the entity, if hp is less or equal to 0
-        if (hp <= 0) {
-            die();
-        }
+        takeDamage(p.dmg, p.dmgType);
     }
     
     /**
@@ -113,35 +105,11 @@ public abstract class Entity extends Actor
      * If hp is 0 or less afterwards, the dies and gets removed.
      */
     protected void takeDamage(Weapon w) {
-        DungeonWorld world = (DungeonWorld) getWorld();
-        System.out.println(world.dmgMultiplier.keySet()+ " me: "+ type + " e:" +w.dmgType);
-        //System.out.println("e.dmgType: "+ e.dmgType + "; type: "+type + "; dmg: ");//+(world.dmgMultiplier.get(e.dmgType).keySet()));
-        double dmgMultiplier = world.dmgMultiplier.get(w.dmgType).get(type);
-        //reduces entity hp by the amount of damage, dependent on the damage multipliers, fetched from the dmgMultipliers.stats file.
-        System.out.println("dmg: "+w.dmg + " mulitplier: "+dmgMultiplier);
-        System.out.println("hp before: "+hp);
-        hp -= w.dmg * dmgMultiplier;
-        System.out.println("hp after: "+hp);      
-        // kills the entity, if hp is less or equal to 0
-        if (hp <= 0) {
-            die();
-        }
-        else {
-            world.musichandler.playSound("dmg", name);
-        }
+        takeDamage(w.dmg, w.dmgType);
     }
     
     protected void takeDamage(Trap t) {
-        DungeonWorld world = (DungeonWorld) getWorld();
-        System.out.println(world.dmgMultiplier.keySet());
-        //System.out.println("t.dmgType: "+ t.dmgType + "; type: "+type + "; dmg: ");//+(world.dmgMultiplier.get(e.dmgType).keySet()));
-        //reduces entity hp by the amount of damage, dependent on the damage multipliers, fetched from the dmgMultipliers.stats file.
-        hp -= t.dmg * world.dmgMultiplier.get(t.dmgType).get(type);
-        
-        // kills the entity, if hp is less or equal to 0
-        if (hp <= 0) {
-            die();
-        }
+        takeDamage(t.dmg, t.dmgType);
     }
     
     /**
@@ -153,7 +121,6 @@ public abstract class Entity extends Actor
         world.musichandler.update();
         world.musichandler.playSound("die", name);
     }
-    
     
     /**
      * Calculates the movment vector, that the distance is equal to 1, to avoid overspeeding, when moving diagonal and/or getting full vector to player
