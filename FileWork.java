@@ -353,7 +353,6 @@ public class FileWork
     
     public static HashMap<Enemy, int[]> loadEnemyMap(String screenName, HashMap<String, Enemy> origin) {
         HashMap<Enemy, int[]> enemies = new HashMap<>();
-        System.out.println(screenName);
         try {
             Scanner sc = new Scanner(readFile("./data/screens/{}.enemymap".replace("{}",screenName)));
             String[] line;
@@ -369,7 +368,6 @@ public class FileWork
             System.err.println("Error while loading enemies from File");
             e.printStackTrace();
         }
-        System.out.println(enemies.keySet());
         return enemies;
     }
     
@@ -449,6 +447,33 @@ public class FileWork
         }
         
         return sounds;
+    }
+    
+    public static HashMap<String, Item> loadAllItems() {
+        HashMap<String, Item> items = new HashMap<>();
+        File dir = new File("./data/items");
+        File[] dirFiles = dir.listFiles();
+        String name;
+        if (dirFiles != null) {
+            for (File child : dirFiles) {
+                name = child.getName();
+                if (!name.endsWith(".itm")) continue;
+                items.put(name.replaceAll("\\.\\w+$",""), loadItem(child));
+            }
+        }
+        return items;
+    }
+    
+    public static Item loadItem(File f) {
+        try {
+            Scanner sc = new Scanner(f);
+            return new Item(sc.nextLine(), Boolean.parseBoolean(sc.nextLine()), sc.nextLine(), sc.nextLine(), sc.nextLine());
+        }
+        catch (Exception e) {
+            System.err.println("Error while loading Item: {}".replace("{}", f.getName()));
+            e.printStackTrace();
+            return null;
+        }
     }
     
     public static HashMap<String, GreenfootSound> loadAllMusic() {

@@ -36,6 +36,28 @@ public class Player extends Entity implements Collider{
         }
     }
     
+    public void collect(Item i) {
+        if (i.instant) {
+            switch (i.changing) {
+                case "hp":
+                    hp = Math.max(maxhp, hp+Integer.parseInt(i.amount));
+                    break;
+                case "effect":
+                    //TODO statuseffects: change effects
+                    break;
+                case "money":
+                case "gold":
+                    //TODO add gold/money system
+                    break;
+                default:
+                    break;
+            }
+        }
+        else {
+            //TODO add to inv
+        }
+    }
+    
     public void checkScreenTransition() {
         String edge = "";
         DungeonWorld world = (DungeonWorld) getWorld();

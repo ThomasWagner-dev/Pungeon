@@ -8,17 +8,19 @@ import java.util.*;
  */
 public class DungeonWorld extends World
 {
-    public final HashMap<String, HashMap<String, Double>> dmgMultiplier;
-    public final Tag dmgMultiplierTag;
+    //public final HashMap<String, HashMap<String, Double>> dmgMultiplier;
     public final HashMap<String, Weapon> weapons;
     public final HashMap<String, Block> blocks;
     public final HashMap<String, Enemy> enemies;
     public final HashMap<String, Screen> screens;
+    public final HashMap<String, Item> items;
     public static final int pixelSize = 64, globalScale=pixelSize/16, height = 13, width=22;
-    public final Tag data;
+    public final Tag data, dmgMultiplierTag, loottables;
     public Screen activeScreen;
     public int selectedSave;
     public MusicHandler musichandler;
+    public Counter hp_counter;
+    public final Random random;
     /**
      * Simple constructor to create the lobby containing Dungeon selection etc.
      */
@@ -38,11 +40,21 @@ public class DungeonWorld extends World
         System.out.println("Loaded data: ");
         data.print();
         System.out.println();
+        // create random
+        System.out.println("Generating random number generator...");
+        random = new Random(data.hashCode());
+        System.out.println();
         // Load damage Multipliers.
         System.out.println("Loading damage multipliers...");
         dmgMultiplierTag = data.findNextTag("dmgMultipliers");
-        dmgMultiplier = FileWork.getDmgMultiplier();
-        System.out.println("Loaded types: "+dmgMultiplier.keySet());
+        dmgMultiplierTag.print();
+        //dmgMultiplier = FileWork.getDmgMultiplier();
+        //System.out.println("Loaded types: "+dmgMultiplier.keySet());
+        System.out.println();
+        //Load loottables
+        System.out.println("Loading loottables...");
+        loottables = data.findNextTag("loottables");
+        loottables.print();
         System.out.println();
         // Load weapons
         System.out.println("Loading weapons...");
@@ -53,6 +65,11 @@ public class DungeonWorld extends World
         System.out.println("Loading blocks...");
         blocks = FileWork.loadAllBlocks();
         System.out.println("Loaded Blocks: "+blocks.keySet());
+        System.out.println();
+        // Load items
+        System.out.println("Loading items...");
+        items = FileWork.loadAllItems();
+        System.out.println("Loaded items: "+items.keySet());
         System.out.println();
         // Load enemies
         System.out.println("Loading enemies...");
@@ -72,9 +89,13 @@ public class DungeonWorld extends World
         System.out.println("Loading musichandler...");
         musichandler = new MusicHandler(this);
         System.out.println();
+        // Adding counter
+        System.out.println("Loading counters...");
+        Counter.load(getObjects(Player.class).get(0), this);
+        System.out.println();
         //Change paint order
         System.out.println("Changing paintorder");
-        setPaintOrder(Projectile.class, Player.class, Enemy.class, Wall.class, Trap.class, Tile.class);
+        setPaintOrder(Counter.class, Projectile.class, Player.class, Enemy.class, Wall.class, Trap.class, Tile.class);
         System.out.println();
         
         //FileWork.dmgToData(data, dmgMultiplier);

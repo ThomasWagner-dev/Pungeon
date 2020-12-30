@@ -28,7 +28,13 @@ public class Screen
         for (ArrayList<String> ttmp : rawMap) {
             tmp = new ArrayList<>();
             for (String b : ttmp) {
-                tmp.add(blocks.get(b).clone());
+                try {
+                    tmp.add(blocks.get(b).clone());
+                }
+                catch (Exception e) {
+                    System.err.println("Error while cloning block {}".replace("{}", b));
+                    throw e;
+                }
             }
             map.add(tmp);
         }
@@ -38,7 +44,7 @@ public class Screen
     public void load(DungeonWorld world) {
         List<Actor> actress = world.getObjectsExclusive(Player.class);
         //List<Actor> actress = world.getObjects(null);
-        //actress.removeAll(world.getObjects(Player.class));
+        actress.removeAll(world.getObjects(Counter.class));
         world.removeObjects(actress);
         // Render the world.
         int row = 0, x, y;
