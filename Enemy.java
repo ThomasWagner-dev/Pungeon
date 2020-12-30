@@ -1,7 +1,5 @@
- 
-
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-
+import java.util.*;
 /**
  * Superclass for all Enemies.
  * 
@@ -54,7 +52,28 @@ public abstract class Enemy extends Entity implements Collider
         return e;
     }
     
-    public Enemy clone() {System.out.println("hallo ich sollte nicht aufgerufen werden");return null;}
+    public void die() {
+        DungeonWorld world = (DungeonWorld) getWorld();
+        Random random = world.random;
+        Tag loottable = world.loottables.findNextTag(name);
+        double probability, drop;
+        int x, y;
+        Item i;
+        for (Tag t : (Tag[]) loottable.getValue()) {
+            i = world.items.get(t.getName());
+            if (i == null) continue;
+            probability = (double) t.getValue();
+            drop = random.nextDouble();
+            System.out.println("drop: " + drop + " prob: " + probability);
+            if (probability > random.nextDouble()) {
+                i.drop(getX(), getY(), world);
+            }
+            System.out.println(t.getName());
+        }
+        super.die();
+    }
+    
+    public Enemy clone() {System.err.println("this shouldn't get called (Enemy.clone())");return null;}
     
     public boolean inRange(Actor a) {
         double distance = DungeonWorld.getDistance(this, a); //fetch distance between me and actor

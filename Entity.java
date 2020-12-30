@@ -70,6 +70,7 @@ public abstract class Entity extends Actor
     
     protected void takeDamage(int amount, String dmgType) {
         DungeonWorld world = (DungeonWorld) getWorld();
+        if (this instanceof Projectile) return;
         world.dmgMultiplierTag.findNextTag(dmgType).print();
         world.dmgMultiplierTag.findNextTag(dmgType).findNextTag(type).print();
         double dmgMultiplier = (Double) (world.dmgMultiplierTag.findNextTag(dmgType).findNextTag(type).getValue());

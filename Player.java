@@ -40,7 +40,7 @@ public class Player extends Entity implements Collider{
         if (i.instant) {
             switch (i.changing) {
                 case "hp":
-                    hp = Math.max(maxhp, hp+Integer.parseInt(i.amount));
+                    hp = Math.min(maxhp, hp+Integer.parseInt(i.amount));
                     break;
                 case "effect":
                     //TODO statuseffects: change effects
@@ -56,6 +56,7 @@ public class Player extends Entity implements Collider{
         else {
             //TODO add to inv
         }
+        getWorld().removeObject(i);
     }
     
     public void checkScreenTransition() {

@@ -1,7 +1,7 @@
 name=A simple Bow
 descr=shoots out arrows
 range=5
-dmg=4
+dmg=19
 type=physical
 speed=7
 img=weapons/bow_basic.png

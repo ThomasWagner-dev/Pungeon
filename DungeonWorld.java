@@ -95,7 +95,7 @@ public class DungeonWorld extends World
         System.out.println();
         //Change paint order
         System.out.println("Changing paintorder");
-        setPaintOrder(Counter.class, Projectile.class, Player.class, Enemy.class, Wall.class, Trap.class, Tile.class);
+        setPaintOrder(Counter.class, Projectile.class, Player.class, Enemy.class, Item.class, Wall.class, Trap.class, Tile.class);
         System.out.println();
         
         //FileWork.dmgToData(data, dmgMultiplier);
