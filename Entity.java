@@ -40,7 +40,7 @@ public abstract class Entity extends Actor
         double speedmultiplier = movementValues[1][0]; //saves speedmultiplier
         double[] movementOriginal = getLimitedMovement(movementValues[0]); //limits movement to a distance of 1
         double[] movement = new double[] {movementOriginal[0]*speed*speedmultiplier, movementOriginal[1]*speed*speedmultiplier}; //calculates movementvector using the limited vector and speed
-        System.out.println(Arrays.toString(movementOriginal));
+        //System.out.println(Arrays.toString(movementOriginal));
         movement = new double[] {Math.round(movement[0]), Math.round(movement[1])};
         double oldX = getX(),
             oldY = getY(),

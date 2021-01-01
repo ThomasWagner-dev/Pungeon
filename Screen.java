@@ -4,7 +4,7 @@ import greenfoot.*;
  * 
  * 
  * @author Commentator
- * @version 2020-12-27-22-09
+ * @version 2021-01-01-22-37
  */
 public class Screen  
 {
@@ -14,15 +14,15 @@ public class Screen
     public Block backgroundBlock;
     public final String name;
     
-    public Screen(String name, ArrayList<ArrayList<String>> rawMap, HashMap<Enemy, int[]> enemies, Block background, HashMap<String, Block> blocks, HashMap<String, String> adjacentScreens) {
+    public Screen(String name, ArrayList<ArrayList<String>> rawMap, HashMap<Enemy, int[]> enemies, Block background, HashMap<String, Block> blocks, HashMap<String, String> adjacentScreens, ImageGenerator imgGen) {
         this.name = name;
-        map = loadMap(rawMap, blocks);
+        map = loadMap(rawMap, blocks, imgGen);
         this.enemies = enemies;
         this.adjacentScreens = adjacentScreens;
         backgroundBlock = background;
     }
     
-    public static ArrayList<ArrayList<Block>> loadMap(ArrayList<ArrayList<String>> rawMap, HashMap<String, Block> blocks) {
+    public static ArrayList<ArrayList<Block>> loadMapOld(ArrayList<ArrayList<String>> rawMap, HashMap<String, Block> blocks) {
         ArrayList<ArrayList<Block>> map = new ArrayList<>();
         ArrayList<Block> tmp;
         Block tmpBlock;
@@ -42,6 +42,35 @@ public class Screen
                 }
                 catch (Exception e) {
                     System.err.println("Error while cloning block {}".replace("{}", b));
+                    e.printStackTrace();
+                    throw e;
+                }
+            }
+            map.add(tmp);
+        }
+        return map;
+    }
+
+    public static ArrayList<ArrayList<Block>> loadMap(ArrayList<ArrayList<String>> rawMap, HashMap<String, Block> blocks, ImageGenerator imgGen) {
+        ArrayList<ArrayList<Block>> map = new ArrayList<>();
+        ArrayList<Block> tmp;
+        Block blk;
+        GreenfootImage img;
+        for (int y = 0; y < rawMap.size(); y++) {
+            tmp = new ArrayList<>();
+            for (int x = 0; x < rawMap.get(0).size(); x++) {
+                try {
+                    blk = blocks.get(rawMap.get(y).get(x)).clone();
+                    img = imgGen.generateWallImage(x,y, rawMap);
+                    if (img == null) {
+                        img = blk.getImage();
+                    }
+                    img.scale(DungeonWorld.pixelSize, DungeonWorld.pixelSize);
+                    blk.setImage(img);
+                    tmp.add(blk);
+                }
+                catch (Exception e) {
+                    System.err.println("Error while cloning block {}".replace("{}", rawMap.get(y).get(x)));
                     throw e;
                 }
             }

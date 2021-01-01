@@ -1,30 +1,167 @@
 import greenfoot.GreenfootImage;
 import greenfoot.World;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class ImageGenerator {
     //corners, together they form a complete part
     private GreenfootImage wallCorner = new GreenfootImage("map/wall/connectedTextures/WallCorner.png");
     private GreenfootImage wallEnd = new GreenfootImage("map/wall/connectedTextures/WallEnd.png");
-    private GreenfootImage wallPart1 = new GreenfootImage("map/wall/connectedTextures/WallPart1.png");
-    private GreenfootImage wallPart2 = new GreenfootImage("map/wall/connectedTextures/WallPart2.png");
+    private GreenfootImage wallMiddle = new GreenfootImage("map/wall/connectedTextures/WallMiddle.png");
 
-    private HashMap<WallType, HashMap<WallConnection[], GreenfootImage>> cacheMap = new HashMap<>(); //todo caching
+    private HashMap<WallType, HashMap<WallConnection[], GreenfootImage>> cacheMap = new HashMap<>();
 
-    public GreenfootImage generateWallImage(int x, int y, List<List<Block>> blocks) {
-        //todo
-        return null;
+    public WallType getWallType(String string) {
+        string = string.toLowerCase();
+        if (!string.startsWith("wall_")) {
+            return null;
+        }
+        if (string.contains("crack")) {
+            return WallType.CRACKED;
+        }
+        if (string.contains("hole")) {
+            return WallType.HOLE;
+        }
+        return WallType.NORMAL;
+    }
+
+    public WallType getWallType(int x, int y, ArrayList<ArrayList<String>> blocks) {
+        //check if x and y are in bounds
+        if (y < 0 || y >= blocks.size()) {
+            return null;
+        }
+        if (x < 0 || x >= blocks.get(y).size()) {
+            return null;
+        }
+        return getWallType(blocks.get(y).get(x));
+    }
+
+    public void addAllToWorld(World world, ArrayList<ArrayList<String>> blocks) {
+        for (int y = 0; y < blocks.size(); y++) {
+            for (int x = 0; x < blocks.size(); x++) {
+                GreenfootImage image = generateWallImage(x, y, blocks);
+                if (image == null) {
+                    continue;
+                }
+                image.scale(world.getCellSize(), world.getCellSize()); //removed due to scaling in Screen
+                Block block = new Wall();
+                block.setImage(image);
+                world.addObject(block, x, y);
+            }
+        }
+    }
+
+    public GreenfootImage generateWallImage(int x, int y, ArrayList<ArrayList<String>> blocks) {
+        //check if x and y are in bounds
+        if (y < 0 || y >= blocks.size()) {
+            return null;
+        }
+        if (x < 0 || x >= blocks.get(y).size()) {
+            return null;
+        }
+
+        HashSet<WallConnection> connections = new HashSet<>();
+        WallType wallType = getWallType(blocks.get(y).get(x));
+
+        if (wallType == null) {
+            return null;
+        }
+
+        boolean left = getWallType(x - 1, y, blocks) != null;
+        boolean right = getWallType(x + 1, y, blocks) != null;
+        boolean top = getWallType(x, y - 1, blocks) != null;
+        boolean bottom = getWallType(x, y + 1, blocks) != null;
+
+        //block is encased by other walls
+        if (top && left) {
+            if (getWallType(x - 1, y - 1, blocks) == null) {
+                connections.add(WallConnection.CORNER_TOP_LEFT);
+            }
+        }
+        if (top && right) {
+            if (getWallType(x + 1, y - 1, blocks) == null) {
+                connections.add(WallConnection.CORNER_TOP_RIGHT);
+            }
+        }
+        if (bottom && left) {
+            if (getWallType(x - 1, y + 1, blocks) == null) {
+                connections.add(WallConnection.CORNER_BOTTOM_LEFT);
+            }
+        }
+        if (bottom && right) {
+            if (getWallType(x + 1, y + 1, blocks) == null) {
+                connections.add(WallConnection.CORNER_BOTTOM_RIGHT);
+            }
+        }
+
+        //block is at edge of map
+        if (y == 0) {
+            connections.add(WallConnection.CORNER_TOP_LEFT);
+            connections.add(WallConnection.TOP);
+            connections.add(WallConnection.CORNER_TOP_RIGHT);
+        }
+        if (y == blocks.size() - 1) {
+            connections.add(WallConnection.CORNER_BOTTOM_LEFT);
+            connections.add(WallConnection.BOTTOM);
+            connections.add(WallConnection.CORNER_BOTTOM_RIGHT);
+        }
+        if (x == 0) {
+            connections.add(WallConnection.CORNER_TOP_LEFT);
+            connections.add(WallConnection.LEFT);
+            connections.add(WallConnection.CORNER_BOTTOM_LEFT);
+        }
+        if (x == blocks.get(y).size() - 1) {
+            connections.add(WallConnection.CORNER_TOP_RIGHT);
+            connections.add(WallConnection.RIGHT);
+            connections.add(WallConnection.CORNER_BOTTOM_RIGHT);
+        }
+
+        //block is in map
+        if (!left) {
+            connections.add(WallConnection.CORNER_TOP_LEFT);
+            connections.add(WallConnection.LEFT);
+            connections.add(WallConnection.CORNER_BOTTOM_LEFT);
+        }
+        if (!right) {
+            connections.add(WallConnection.CORNER_TOP_RIGHT);
+            connections.add(WallConnection.RIGHT);
+            connections.add(WallConnection.CORNER_BOTTOM_RIGHT);
+        }
+        if (!top) {
+            connections.add(WallConnection.CORNER_TOP_LEFT);
+            connections.add(WallConnection.TOP);
+            connections.add(WallConnection.CORNER_TOP_RIGHT);
+        }
+        if (!bottom) {
+            connections.add(WallConnection.CORNER_BOTTOM_LEFT);
+            connections.add(WallConnection.BOTTOM);
+            connections.add(WallConnection.CORNER_BOTTOM_RIGHT);
+        }
+
+        return generateWallImage(wallType, connections);
+    }
+
+    public GreenfootImage generateWallImage(WallType wallType, Collection<WallConnection> connections) {
+        return generateWallImage(wallType, connections.toArray(new WallConnection[0]));
     }
 
     public GreenfootImage generateWallImage(WallType wallType, WallConnection[] connections) {
+        if (wallType == null) {
+            return null;
+        }
+
+        HashMap<WallConnection[], GreenfootImage> map = cacheMap.get(wallType);
+        if (map != null) {
+            GreenfootImage image = map.get(connections);
+            if (image != null) {
+                return image;
+            }
+        }
+
         GreenfootImage base = new GreenfootImage(wallType.getImage());
         GreenfootImage corner = new GreenfootImage(wallCorner);
         GreenfootImage end = new GreenfootImage(wallEnd);
-        GreenfootImage part1 = new GreenfootImage(wallPart1);
-        GreenfootImage part2 = new GreenfootImage(wallPart2);
+        GreenfootImage middle = new GreenfootImage(wallMiddle);
 
 
         //maybe create copies instead of rotating?
@@ -52,8 +189,8 @@ public class ImageGenerator {
                     }
                     break;
                 case TOP:
-                    base.drawImage(part1, 4, 0);
-                    base.drawImage(part2, 8, 0);
+                    base.drawImage(middle, 4, 0);
+                    base.drawImage(middle, 8, 0);
                     break;
                 case CORNER_TOP_RIGHT:
                     right = Arrays.stream(connections).anyMatch(it -> it == WallConnection.RIGHT);
@@ -63,9 +200,9 @@ public class ImageGenerator {
                         base.drawImage(corner, 12, 0);
                         corner.rotate(270);
                     } else if (right) {
-                        end.rotate(90);
-                        base.drawImage(end, 12, 0);
                         end.rotate(270);
+                        base.drawImage(end, 12, 0);
+                        end.rotate(90);
                     } else if (top) {
                         base.drawImage(end, 12, 0);
                     } else {
@@ -75,15 +212,10 @@ public class ImageGenerator {
                     }
                     break;
                 case RIGHT:
-                    part1.rotate(90);
-                    part2.rotate(90);
-                    part2.mirrorVertically();
-                    base.drawImage(part2, 12, 4);
-                    base.drawImage(part1, 12, 8);
-                    part1.rotate(270);
-                    part2.rotate(270);
-                    part2.mirrorVertically();
-                    break;
+                    middle.rotate(90);
+                    base.drawImage(middle, 12, 4);
+                    base.drawImage(middle, 12, 8);
+                    middle.rotate(270);
                 case CORNER_BOTTOM_RIGHT:
                     right = Arrays.stream(connections).anyMatch(it -> it == WallConnection.RIGHT);
                     bottom = Arrays.stream(connections).anyMatch(it -> it == WallConnection.BOTTOM);
@@ -92,9 +224,9 @@ public class ImageGenerator {
                         base.drawImage(corner, 12, 12);
                         corner.rotate(180);
                     } else if (right) {
-                        end.rotate(270);
-                        base.drawImage(end, 12, 12);
                         end.rotate(90);
+                        base.drawImage(end, 12, 12);
+                        end.rotate(270);
                     } else if (bottom) {
                         base.drawImage(end, 12, 12);
                     } else {
@@ -104,12 +236,10 @@ public class ImageGenerator {
                     }
                     break;
                 case BOTTOM:
-                    part1.rotate(180);
-                    part2.rotate(180);
-                    base.drawImage(part1, 4, 12);
-                    base.drawImage(part2, 8, 12);
-                    part1.rotate(180);
-                    part2.rotate(180);
+                    middle.rotate(180);
+                    base.drawImage(middle, 4, 12);
+                    base.drawImage(middle, 8, 12);
+                    middle.rotate(180);
                     break;
                 case CORNER_BOTTOM_LEFT:
                     left = Arrays.stream(connections).anyMatch(it -> it == WallConnection.LEFT);
@@ -129,31 +259,29 @@ public class ImageGenerator {
                         base.drawImage(end, 0, 12);
                         end.rotate(180);
                     } else {
-                        corner.rotate(180);
+                        corner.rotate(270);
                         base.drawImage(corner, 0, 12);
-                        corner.rotate(180);
+                        corner.rotate(90);
                     }
                     break;
                 case LEFT:
-                    part1.rotate(270);
-                    part2.rotate(270);
-                    part2.mirrorVertically();
-                    base.drawImage(part1, 0, 4);
-                    base.drawImage(part2, 0, 8);
-                    part1.rotate(270);
-                    part2.rotate(270);
-                    part2.mirrorVertically();
+                    middle.rotate(270);
+                    base.drawImage(middle, 0, 4);
+                    base.drawImage(middle, 0, 8);
+                    middle.rotate(270);
                     break;
             }
         }
 
-
+        cacheMap.putIfAbsent(wallType, new HashMap<>());
+        cacheMap.get(wallType).put(connections, base);
         return base;
     }
 
-    public void GenerationTest(World world) {
-        int x = 20;
-        int y = 20;
+    public void GenerationTest(World world, int scale) {
+        int mod = scale / world.getCellSize() + scale / world.getCellSize() / 4;
+        int x = mod;
+        int y = mod;
         WallType baseType = WallType.NORMAL;
 
         WallConnection[] allConnections = WallConnection.values();
@@ -170,12 +298,13 @@ public class ImageGenerator {
 
             Block block = new Wall();
             GreenfootImage image = generateWallImage(baseType, connections);
+            image.scale(scale, scale);
             block.setImage(image);
             world.addObject(block, x, y);
-            x += 20;
-            if (x >= world.getWidth() - 16) {
-                y += 20;
-                x = 20;
+            x += mod;
+            if (x >= world.getWidth() - (scale / world.getCellSize())) {
+                y += mod;
+                x = mod;
             }
         }
     }

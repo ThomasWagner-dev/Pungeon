@@ -77,9 +77,14 @@ public class DungeonWorld extends World
         enemies = FileWork.loadAllEnemies(weapons);
         System.out.println("Loaded enemies: "+enemies.keySet());
         System.out.println();
+        //loading Image generator
+        System.out.println("Loading Imagegenerator...");
+        imgG = new ImageGenerator();
+        //imgG.GenerationTest(this);
+        System.out.println();
         // Load screens
         System.out.println("Loading all Screens");
-        screens = FileWork.loadAllScreens(blocks, enemies);
+        screens = FileWork.loadAllScreens(blocks, enemies, imgG);
         System.out.println("Loaded screens: "+screens.keySet());
         System.out.println();
         // Load the world.
@@ -93,11 +98,6 @@ public class DungeonWorld extends World
         // Adding counter
         System.out.println("Loading counters...");
         Counter.load(getObjects(Player.class).get(0), this);
-        System.out.println();
-        //loading Image generator
-        System.out.println("Loading Imagegenerator...");
-        imgG = new ImageGenerator();
-        //imgG.GenerationTest(this);
         System.out.println();
         //Change paint order
         System.out.println("Changing paintorder");

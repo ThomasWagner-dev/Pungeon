@@ -30,37 +30,11 @@ def file2screen(file):
     #print(pic)
     pic = pic2hex(pic)
     screen = pic2screenmap(pic)
-    [[rotateWall(x,y, screen) for x in range(len(screen[0])) if screen[y][x].startswith("wall")] for y in range(len(screen))]
     string = "\n".join([",".join(x) for x in screen])
     #print(string)
     return string
     
 
-def rotateWall(x, y, screen):
-    #print(x,y)
-    ending = ""
-    if y == 0 or not screen[y-1][x].startswith("wall"):
-        ending += "top"
-        if (y == len(screen)-1):
-            ending = "bot"
-    elif y == len(screen)-1 or not screen[y+1][x].startswith("wall"):
-        ending += "bot"
-    if x == 0 or not screen[y][x-1].startswith("wall"):
-        ending += "left"
-        if (x == len(screen[0])-1):
-            ending = ending[:-4] + "right"
-    elif x == len(screen[0])-1 or not screen[y][x+1].startswith("wall"):
-        ending += "right"
-    #print(ending)
-    #print(len(ending))
-    if len(ending) > 5:
-        #print(len(ending))
-        ending = "corner_" + ending
-    if ending != "":
-        ending = "_" + ending
-    screen[y][x] += ending
-    #print(screen[y][x])
-    #return screen[y][x]
 
 #with open('allocation.json') as json_file:
 #    allocations = json.load(json_file)

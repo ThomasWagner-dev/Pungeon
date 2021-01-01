@@ -65,7 +65,7 @@ public class Projectile extends Entity
     
     public Projectile(double[] direction, int dmg, String dmgType, int speed, boolean isReflective, String spriteName, int lifespan, Actor me) {
         //setRotation((int) Math.acos((direction[0])/(Math.sqrt(direction[0]*direction[0]+direction[1]*direction[1])))*90+90);
-        System.out.println(getRotation());
+        //System.out.println(getRotation());
         this.direction = direction; 
         this.dmg = dmg;
         this.dmgType = dmgType;

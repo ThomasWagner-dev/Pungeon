@@ -305,20 +305,20 @@ public class FileWork
         return dmgMultiplier;
     }
     
-    public static HashMap<String, Screen> loadAllScreens(HashMap<String, Block> blocks, HashMap<String, Enemy> enemies) {
+    public static HashMap<String, Screen> loadAllScreens(HashMap<String, Block> blocks, HashMap<String, Enemy> enemies, ImageGenerator imgGen) {
         HashMap<String, Screen> screens = new HashMap<>();
         File dir = new File("./data/screens");
         File[] directoryListing = dir.listFiles();
         if (directoryListing != null) {
             for (File child : directoryListing) {
                 if (!child.getName().endsWith(".world")) continue; // skips enemymaps at first, those are read in specific loaded
-                screens.put(child.getName().replaceAll("\\.\\w+$",""), loadScreen(child, blocks, enemies));
+                screens.put(child.getName().replaceAll("\\.\\w+$",""), loadScreen(child, blocks, enemies, imgGen));
             }
         }
         return screens;
     }
     
-    public static Screen loadScreen(File f, HashMap<String, Block> blocks, HashMap<String, Enemy> enemies) {
+    public static Screen loadScreen(File f, HashMap<String, Block> blocks, HashMap<String, Enemy> enemies, ImageGenerator imgGen) {
         try {
             Scanner sc = new Scanner(f);
             ArrayList<ArrayList<String>> rawMap= new ArrayList<>();
@@ -341,7 +341,7 @@ public class FileWork
                         break;
                 }
             }
-            return new Screen(f.getName().replaceAll("\\.\\w+$",""), rawMap, enemymap, background, blocks, adjScreens);
+            return new Screen(f.getName().replaceAll("\\.\\w+$",""), rawMap, enemymap, background, blocks, adjScreens, imgGen);
         }
         catch(Exception e) {
             System.out.println("error");
