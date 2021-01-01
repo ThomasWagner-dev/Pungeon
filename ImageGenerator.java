@@ -268,7 +268,7 @@ public class ImageGenerator {
                     middle.rotate(270);
                     base.drawImage(middle, 0, 4);
                     base.drawImage(middle, 0, 8);
-                    middle.rotate(270);
+                    middle.rotate(90);
                     break;
             }
         }
