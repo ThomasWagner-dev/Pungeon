@@ -269,7 +269,7 @@ public class FileWork
             }
             //Read image.
             GreenfootImage img = new GreenfootImage("./images/" + sc.nextLine());
-            img.scale(DungeonWorld.pixelSize, DungeonWorld.pixelSize);
+            //img.scale(DungeonWorld.pixelSize, DungeonWorld.pixelSize);
             block.setImage(img);
         }
         catch(Exception e) {
@@ -395,11 +395,12 @@ public class FileWork
             Scanner sc = new Scanner(f);
             String[] line = sc.nextLine().split("=");
             switch(line[1]) {
-                case "melee":
-                    en = new Melee(f.getName().replaceAll("\\.\\w+$",""));
+                case "collider":
+                    en = new CollidingEnemy(f.getName().replaceAll("\\.\\w+$",""));
                     break;
-                case "ranged":
-                    en = null; //new Skeleton();
+                case "everythingelse":
+                default:
+                    en = new NonCollidingEnemy(f.getName().replaceAll("\\.\\w+$", ""));; //new Skeleton();
                     break;
             }
             while(sc.hasNextLine()) {

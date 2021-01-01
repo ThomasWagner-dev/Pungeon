@@ -1,0 +1,9 @@
+name=Ice attack for melees
+descr=not available to players
+range=0
+dmg=5
+type=ice
+speed=1
+img=Invis.png
+hitbox=weapons/hitboxes/sword.png
+cooldown=100

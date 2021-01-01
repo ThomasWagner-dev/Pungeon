@@ -1,4 +1,4 @@
-type=melee
+type=collider
 speed=3
 type=fire
 hp=25

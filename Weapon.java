@@ -58,6 +58,10 @@ public class Weapon
     
     public void attack(DungeonWorld world, Actor owner, double[] direction) { //double[] direction, int dmg, String dmgType, int speed, boolean isReflective, String spriteName, int lifespan, Actor me
         if (!checkCooldown()) return;
+        if (owner instanceof Enemy)  {
+            Enemy e = (Enemy) owner;
+            if (e.getObjectAtOffset(0, 0, Collider.class).size() != 0) return;
+        }
         resetCooldown();
         Projectile p;
         //System.out.println(isMelee);

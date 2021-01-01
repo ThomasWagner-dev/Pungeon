@@ -10,7 +10,8 @@ public abstract class Entity extends Actor
     protected String type;
     protected ArrayList<String> activeEffects;
     public String name;
-    
+    public GifImage img;
+
     /**
      * creates objects for everything which is the same everywhere
      */
@@ -26,6 +27,9 @@ public abstract class Entity extends Actor
      */
     public void act() {
         move();
+        if (img != null) {
+            setSprite(img.getCurrentImage());
+        }
     }
     
     /**
@@ -36,7 +40,8 @@ public abstract class Entity extends Actor
         double speedmultiplier = movementValues[1][0]; //saves speedmultiplier
         double[] movementOriginal = getLimitedMovement(movementValues[0]); //limits movement to a distance of 1
         double[] movement = new double[] {movementOriginal[0]*speed*speedmultiplier, movementOriginal[1]*speed*speedmultiplier}; //calculates movementvector using the limited vector and speed
-        //System.out.println(Arrays.toString(movementOriginal));
+        System.out.println(Arrays.toString(movementOriginal));
+        movement = new double[] {Math.round(movement[0]), Math.round(movement[1])};
         double oldX = getX(),
             oldY = getY(),
             newX = oldX + movement[0],
@@ -160,7 +165,7 @@ public abstract class Entity extends Actor
         setSprite(spriteName, 1);
     }
     
-    protected void setSprite(GreenfootImage tmp, int scale) {
+    protected void setSprite(GreenfootImage tmp, double scale) {
         tmp.scale((int) (tmp.getWidth()*scale*DungeonWorld.globalScale), (int) (tmp.getHeight()*scale*DungeonWorld.globalScale));
         setImage(tmp);//sets image        
     }
@@ -172,4 +177,10 @@ public abstract class Entity extends Actor
         setSprite(spriteName, 1);
     }
     
+    /**
+     * public version of getObjectAtOffset()
+     */
+    public <T>List<T> getObjectAtOffset(int dx, int dy, Class cls) {
+        return getObjectsAtOffset(dx, dy, cls);
+    }
 }

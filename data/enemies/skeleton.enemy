@@ -1,4 +1,4 @@
-type=melee
+type=collider
 img=entity/enemies/skeleton.png
 weapon=bow_basic
 type=physical

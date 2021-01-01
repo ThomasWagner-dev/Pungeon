@@ -1,26 +1,15 @@
- 
-
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Superclass for all Melee enemies. 
+ * Write a description of class NonCollidingEnemy here.
  * 
- * @author Commentator
+ * @author (your name) 
+ * @version (a version number or a date)
  */
-public class Melee extends Enemy
+public class NonCollidingEnemy extends Enemy
 {
-    
-    public Melee(String name) {
+    public NonCollidingEnemy(String name) {
         super(name);
-    }
-    
-    /**
-     * Act - do whatever the Zombie wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
-    public void act() 
-    {
-        super.act();
     }
     
     /**
@@ -37,6 +26,6 @@ public class Melee extends Enemy
      * returns a clone of this enemy
      */
     public Enemy clone() {
-        return super.topClone(new Melee(name), this);
+        return super.topClone(new NonCollidingEnemy(name), this);
     }
 }

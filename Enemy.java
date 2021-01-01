@@ -5,7 +5,7 @@ import java.util.*;
  * 
  * @author Commentator 
  */
-public abstract class Enemy extends Entity implements Collider
+public abstract class Enemy extends Entity implements Cloneable
 {
     protected Weapon weapon;
     //public final String name;
@@ -57,23 +57,27 @@ public abstract class Enemy extends Entity implements Collider
         Random random = world.random;
         Tag loottable = world.loottables.findNextTag(name);
         double probability, drop;
-        int x, y;
         Item i;
-        for (Tag t : (Tag[]) loottable.getValue()) {
-            i = world.items.get(t.getName());
-            if (i == null) continue;
-            probability = (double) t.getValue();
-            drop = random.nextDouble();
-            System.out.println("drop: " + drop + " prob: " + probability);
-            if (probability > random.nextDouble()) {
-                i.drop(getX(), getY(), world);
+        if (loottable == null) {
+            System.err.println("No loottable defined for {}".replace("{}", name));
+        }
+        else {
+            for (Tag t : (Tag[]) loottable.getValue()) {
+                i = world.items.get(t.getName());
+                if (i == null) continue;
+                probability = (double) t.getValue();
+                drop = random.nextDouble();
+                System.out.println("drop: " + drop + " prob: " + probability);
+                if (probability > random.nextDouble()) {
+                    i.drop(getX(), getY(), world);
+                }
+                System.out.println(t.getName());
             }
-            System.out.println(t.getName());
         }
         super.die();
     }
     
-    public Enemy clone() {System.err.println("this shouldn't get called (Enemy.clone())");return null;}
+    public abstract Enemy clone();
     
     public boolean inRange(Actor a) {
         double distance = DungeonWorld.getDistance(this, a); //fetch distance between me and actor

@@ -21,6 +21,7 @@ public class DungeonWorld extends World
     public MusicHandler musichandler;
     public Counter hp_counter;
     public final Random random;
+    public final ImageGenerator imgG;
     /**
      * Simple constructor to create the lobby containing Dungeon selection etc.
      */
@@ -93,6 +94,11 @@ public class DungeonWorld extends World
         System.out.println("Loading counters...");
         Counter.load(getObjects(Player.class).get(0), this);
         System.out.println();
+        //loading Image generator
+        System.out.println("Loading Imagegenerator...");
+        imgG = new ImageGenerator();
+        //imgG.GenerationTest(this);
+        System.out.println();
         //Change paint order
         System.out.println("Changing paintorder");
         setPaintOrder(Counter.class, Projectile.class, Player.class, Enemy.class, Item.class, Wall.class, Trap.class, Tile.class);
@@ -109,7 +115,7 @@ public class DungeonWorld extends World
      * Gets the closest Object of a specific class to the calling Actor.
      * 
      * @param cls The class elegible for the clostest object. Use null to make all classes elegible.
-     * @param me The calling Actor.
+     * @param caller The calling Actor.
      * 
      * @return The closest Object of the class "cls" to the calling Actor "me".
      * 
@@ -123,7 +129,7 @@ public class DungeonWorld extends World
         // Save the x and y coordinates of the calling Actor for computational efficiency.
         int x = caller.getX();
         int y = caller.getY();
-        // Assume the first actor is the closest one till proofen otherwise.
+        // Assume the first actor is the closest one till proven otherwise.
         Actor closest = actors.get(0);
         double mindistance = getDistance(x, y, closest.getX(), closest.getY());
         double distance = 0;

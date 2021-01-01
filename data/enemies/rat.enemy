@@ -1,4 +1,4 @@
-type=melee
+type=collider
 img=entity/enemies/rat.png
 speed=2
 type=physical

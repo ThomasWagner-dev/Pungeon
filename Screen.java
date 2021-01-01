@@ -25,10 +25,19 @@ public class Screen
     public static ArrayList<ArrayList<Block>> loadMap(ArrayList<ArrayList<String>> rawMap, HashMap<String, Block> blocks) {
         ArrayList<ArrayList<Block>> map = new ArrayList<>();
         ArrayList<Block> tmp;
+        Block tmpBlock;
+        GreenfootImage img;
         for (ArrayList<String> ttmp : rawMap) {
             tmp = new ArrayList<>();
             for (String b : ttmp) {
                 try {
+                    tmpBlock = blocks.get(b).clone();
+                    img = tmpBlock.getImage();
+                    //if (tmpBlock instanceof Wall) {
+                    //    img = DungeonWorld.imgG.generateWallImage(rawMap.indexOf(ttmp), ttmp.indexOf(b), rawMap);
+                    //}
+                    img.scale(64,64);
+                    tmpBlock.setImage(img);
                     tmp.add(blocks.get(b).clone());
                 }
                 catch (Exception e) {

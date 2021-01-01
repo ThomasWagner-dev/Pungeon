@@ -8,7 +8,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public abstract class Block extends Actor
+public abstract class Block extends Actor implements Cloneable
 {
     /**
      * A public version of the protected clone() method of Object. Allows blocks to be cloned, to make map-loading easier.
