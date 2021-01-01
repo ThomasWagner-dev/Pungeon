@@ -19,7 +19,7 @@ public class MusicHandler
         System.out.println("Loaded sound effects: "+sounds.keySet());
         this.world = world;
         currentSound = musics.get("ow_combat");
-        //currentSound.playLoop();
+        currentSound.playLoop();
         currentSound.setVolume(50);
         update();
     }
