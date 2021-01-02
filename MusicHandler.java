@@ -20,7 +20,7 @@ public class MusicHandler
         this.world = world;
         currentSound = musics.get("ow_combat");
         currentSound.playLoop();
-        currentSound.setVolume(50);
+        currentSound.setVolume(25);
         update();
     }
     
