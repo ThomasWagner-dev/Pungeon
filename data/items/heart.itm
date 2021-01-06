@@ -1,5 +1,5 @@
-Heart
-true
-hp
-5
-item/heart.png
+name=Heart
+instant=true
+changing=hp
+amount=5
+img=item/heart.png

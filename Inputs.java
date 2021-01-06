@@ -1,25 +1,25 @@
- 
+
 
 import greenfoot.*;
+
 /**
  * Class to fetch inputs.
  * Required to make controlleraccessebility easier to add afterwards.
- * 
+ *
  * @author Commentator
  */
-public class Inputs  
-{
+public class Inputs {
     KeyLayout keybinds;
-    
-    
+
+
     public Inputs(KeyLayout keybinds) {
         this.keybinds = keybinds;
     }
-    
-    
+
+
     /**
      * fetches momement multiplier.
-     * 
+     *
      * @return movement multiplier as [[x,y],[speedmultiplier]]
      */
     public double[][] getMovement() {
@@ -37,7 +37,7 @@ public class Inputs
         if (Greenfoot.isKeyDown("d")) {
             movement[0] += 1;
         }
-        
+
         if (Greenfoot.isKeyDown("shift")) {
             speedmultiplier = 2;
         }
@@ -45,9 +45,9 @@ public class Inputs
             speedmultiplier = 0.5;
         }
         //System.out.println(movement[0] + "," + movement[1]);
-        return new double[][] {movement,new double[]{speedmultiplier}};
+        return new double[][]{movement, new double[]{speedmultiplier}};
     }
-    
+
     /**
      * checks if Attack key is pressed.
      */

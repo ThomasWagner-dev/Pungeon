@@ -1,4 +1,4 @@
-trap
+type=trap
 trigger=contact
 dmg=7
 dmgType=physical

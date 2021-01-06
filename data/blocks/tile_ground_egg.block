@@ -1,2 +1,2 @@
-tile
-map/tile/tile_ground_egg.png
+type=tile
+img=map/tile/tile_ground_egg.png

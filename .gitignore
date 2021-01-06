@@ -3,6 +3,7 @@
 *.ctxt
 *.class
 *.docx
+standalone.properties
 out
 .idea
 WorkDocs

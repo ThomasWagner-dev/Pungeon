@@ -1,3 +1,2 @@
-tile
-map/tile/tile_ground1.png
-// Add further information here.
+type=tile
+img=map/tile/tile_ground1.png

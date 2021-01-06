@@ -1,4 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,41 +10,50 @@ import java.util.ArrayList;
 /**
  * This class can be used to read animated gif image files and extract the individual
  * images of the animation sequence.
- * 
+ *
  * @author Michael Berry
  * @author Neil Brown
- * 
+ * <p>
  * Copyright (c) 2011,2013,2014,2018
  */
-public class GifImage
-{
-    /** The images used in the animation. */
+public class GifImage {
+    /**
+     * The images used in the animation.
+     */
     private GreenfootImage[] images;
-    /** The delay between each frame. */
+    /**
+     * The delay between each frame.
+     */
     private int[] delay;
-    /** The index of the current frame in the GIF file. */
+    /**
+     * The index of the current frame in the GIF file.
+     */
     private int currentIndex;
-    /** The time passed since the last frame in ms. */
+    /**
+     * The time passed since the last frame in ms.
+     */
     private long time;
-    /** The GIF file that contains the animation. */
+    /**
+     * The GIF file that contains the animation.
+     */
     private String file;
-    /** Whether the animation is paused or not. */
+    /**
+     * Whether the animation is paused or not.
+     */
     private boolean pause;
 
     /**
      * Set the image of the actor. If the image is a normal picture, it will be displayed as normal.
      * If it's an animated GIF file then it will be displayed as an animated actor.
      */
-    public GifImage(String file)
-    {
+    public GifImage(String file) {
         this.file = file;
         pause = false;
-        if(file.toLowerCase().endsWith(".gif")) {
+        if (file.toLowerCase().endsWith(".gif")) {
             loadImages();
-        }
-        else {
-            images = new GreenfootImage[] {new GreenfootImage(file)};
-            delay = new int[] {1000}; // Doesn't matter, as long as it's not zero
+        } else {
+            images = new GreenfootImage[]{new GreenfootImage(file)};
+            delay = new int[]{1000}; // Doesn't matter, as long as it's not zero
             currentIndex = 0;
             time = System.currentTimeMillis();
         }
@@ -51,12 +61,12 @@ public class GifImage
 
     /**
      * Get all the images used in the animation
+     *
      * @return a list of GreenfootImages, corresponding to each frame.
      */
-    public List<GreenfootImage> getImages()
-    {
+    public List<GreenfootImage> getImages() {
         ArrayList<GreenfootImage> images = new ArrayList<GreenfootImage>(this.images.length);
-        for(GreenfootImage image : this.images) {
+        for (GreenfootImage image : this.images) {
             images.add(image);
         }
         return images;
@@ -65,37 +75,34 @@ public class GifImage
     /**
      * Pause the animation.
      */
-    public void pause()
-    {
+    public void pause() {
         pause = true;
     }
 
     /**
      * Resume the animation.
      */
-    public void resume()
-    {
+    public void resume() {
         pause = false;
         time = System.currentTimeMillis();
     }
 
     /**
      * Determines whether the animation is running
+     *
      * @return true if the animation is running, false otherwise
      */
-    public boolean isRunning()
-    {
+    public boolean isRunning() {
         return !pause;
     }
 
-    public GreenfootImage getCurrentImage()
-    {
+    public GreenfootImage getCurrentImage() {
         long delta = System.currentTimeMillis() - time;
 
         while (delta >= delay[currentIndex] && !pause) {
             delta -= delay[currentIndex];
             time += delay[currentIndex];
-            currentIndex = (currentIndex+1) % images.length;
+            currentIndex = (currentIndex + 1) % images.length;
         }
         return images[currentIndex];
     }
@@ -103,21 +110,19 @@ public class GifImage
     /**
      * Load the images
      */
-    private void loadImages()
-    {
+    private void loadImages() {
         GifDecoder decode = new GifDecoder();
         decode.read(file);
         int numFrames = decode.getFrameCount();
-        if(numFrames>0) {
+        if (numFrames > 0) {
             images = new GreenfootImage[numFrames];
             delay = new int[numFrames];
-        }
-        else {
+        } else {
             images = new GreenfootImage[1];
             images[0] = new GreenfootImage(1, 1);
         }
 
-        for (int i=0 ; i<numFrames ; i++) {
+        for (int i = 0; i < numFrames; i++) {
             GreenfootImage image = new GreenfootImage(decode.getFrame(i).getWidth(), decode.getFrame(i).getHeight());
             image.drawImage(decode.getFrame(i), 0, 0);
             delay[i] = decode.getDelay(i);
@@ -130,25 +135,23 @@ public class GifImage
      * The Rectangle class represents rectangles. This is essentially a re-implementation
      * of the java.awt.Rectangle class, created in order to avoid any dependency on AWT.
      */
-    private static class Rectangle
-    {
+    private static class Rectangle {
         public int x;
         public int y;
         public int width;
         public int height;
-        
-        public Rectangle(int x, int y, int width, int height)
-        {
+
+        public Rectangle(int x, int y, int width, int height) {
             this.x = x;
             this.y = y;
             this.width = width;
             this.height = height;
         }
     }
-    
+
     /**
      * Class GifDecoder - Decodes a GIF file into one or more frames. <br><br>
-     * 
+     *
      * <i>I (Michael) edited this slightly on 10/09/08 to bring class up to date with generics and therefore remove warnings.
      * Also edited so that resources are grabbed from the jar file and not externally, so no security exceptions.</i>
      * <br><br>
@@ -163,18 +166,16 @@ public class GifImage
      *        // do something with frame
      *     }
      * </pre>
-     * 
+     * <p>
      * No copyright asserted on the source code of this class. May be used for any
      * purpose, however, refer to the Unisys LZW patent for any additional
      * restrictions. Please forward any corrections to kweiner@fmsware.com.
-     * 
+     *
      * @author Kevin Weiner, FM Software; LZW decoder adapted from John Cristy's
-     *         ImageMagick.
+     * ImageMagick.
      * @version 1.03 November 2003
-     * 
      */
-    private class GifDecoder
-    {
+    private class GifDecoder {
         /**
          * File read status: No errors.
          */
@@ -282,19 +283,17 @@ public class GifImage
         /**
          * Convert an RGB integer value to a Color.
          */
-        private Color colorFromInt(int rgb)
-        {
+        private Color colorFromInt(int rgb) {
             int r = (rgb & 0xFF0000) >> 16;
             int g = (rgb & 0xFF00) >> 8;
             int b = (rgb & 0xFF);
-            return new Color(r,g,b);
+            return new Color(r, g, b);
         }
-        
+
         /**
          * Gets display duration for specified frame.
-         * 
-         * @param n
-         *          int index of frame
+         *
+         * @param n int index of frame
          * @return delay in milliseconds
          */
         public int getDelay(int n) {
@@ -308,7 +307,7 @@ public class GifImage
 
         /**
          * Gets the number of frames read from file.
-         * 
+         *
          * @return frame count
          */
         public int getFrameCount() {
@@ -317,7 +316,7 @@ public class GifImage
 
         /**
          * Gets the first (or only) image read.
-         * 
+         *
          * @return BufferedImage containing first frame, or null if none.
          */
         public GreenfootImage getImage() {
@@ -327,7 +326,7 @@ public class GifImage
         /**
          * Gets the "Netscape" iteration count, if any. A count of 0 means repeat
          * indefinitiely.
-         * 
+         *
          * @return iteration count if one was specified, else 1.
          */
         public int getLoopCount() {
@@ -354,7 +353,7 @@ public class GifImage
                 if (lastImage != null) {
                     image.clear();
                     image.drawImage(lastImage, 0, 0);
-                    
+
                     // copy pixels
 
                     if (lastDispose == 2) {
@@ -365,10 +364,8 @@ public class GifImage
                         } else {
                             c = lastBgColor; // use given background color
                         }
-                        for (int x = 0; x < lastRect.width; x++)
-                        {
-                            for (int y = 0; y < lastRect.height; y++)
-                            {
+                        for (int x = 0; x < lastRect.width; x++) {
+                            for (int y = 0; y < lastRect.height; y++) {
                                 image.setColorAt(lastRect.x + x, lastRect.y + y, c);
                             }
                         }
@@ -386,16 +383,16 @@ public class GifImage
                     if (iline >= ih) {
                         pass++;
                         switch (pass) {
-                        case 2:
-                            iline = 4;
-                            break;
-                        case 3:
-                            iline = 2;
-                            inc = 4;
-                            break;
-                        case 4:
-                            iline = 1;
-                            inc = 2;
+                            case 2:
+                                iline = 4;
+                                break;
+                            case 3:
+                                iline = 2;
+                                inc = 4;
+                                break;
+                            case 4:
+                                iline = 1;
+                                inc = 2;
                         }
                     }
                     line = iline;
@@ -406,7 +403,7 @@ public class GifImage
                     int k = line * width;
                     int dlim = Math.min(ix + iw, width);
                     int sx = i * iw;
-                    
+
                     for (int dx = ix; dx < dlim; dx++) {
                         int index = ((int) pixels[sx++]) & 0xff;
                         int c = act[index];
@@ -420,7 +417,7 @@ public class GifImage
 
         /**
          * Gets the image contents of frame n.
-         * 
+         *
          * @return BufferedImage representation of frame, or null if n is invalid.
          */
         public GreenfootImage getFrame(int n) {
@@ -433,7 +430,7 @@ public class GifImage
 
         /**
          * Gets image size.
-         * 
+         *
          * @return GIF image dimensions as an array - [0] = width, [1] = height
          */
         public int[] getFrameSize() {
@@ -442,9 +439,8 @@ public class GifImage
 
         /**
          * Reads GIF image from stream
-         * 
-         * @param BufferedInputStream
-         *          containing GIF file.
+         *
+         * @param BufferedInputStream containing GIF file.
          * @return read status code (0 = no errors)
          */
         public int read(BufferedInputStream is) {
@@ -470,9 +466,8 @@ public class GifImage
 
         /**
          * Reads GIF image from stream
-         * 
-         * @param InputStream
-         *          containing GIF file.
+         *
+         * @param InputStream containing GIF file.
          * @return read status code (0 = no errors)
          */
         public int read(InputStream is) {
@@ -501,9 +496,8 @@ public class GifImage
         /**
          * Reads GIF file from specified file/URL source (URL assumed if name contains
          * ":/" or "file:")
-         * 
-         * @param name
-         *          String containing source
+         *
+         * @param name String containing source
          * @return read status code (0 = no errors)
          */
         public int read(String name) {
@@ -559,7 +553,7 @@ public class GifImage
 
             datum = bits = count = first = top = pi = bi = 0;
 
-            for (i = 0; i < npix;) {
+            for (i = 0; i < npix; ) {
                 if (top == 0) {
                     if (bits < code_size) {
                         // Load bytes until there are enough bits for a code.
@@ -581,50 +575,50 @@ public class GifImage
 
                     code = datum & code_mask;
                     datum >>= code_size;
-                        bits -= code_size;
+                    bits -= code_size;
 
-                        // Interpret the code
+                    // Interpret the code
 
-                        if ((code > available) || (code == end_of_information))
-                            break;
-                        if (code == clear) {
-                            // Reset decoder.
-                            code_size = data_size + 1;
-                            code_mask = (1 << code_size) - 1;
-                            available = clear + 2;
-                            old_code = NullCode;
-                            continue;
-                        }
-                        if (old_code == NullCode) {
-                            pixelStack[top++] = suffix[code];
-                            old_code = code;
-                            first = code;
-                            continue;
-                        }
-                        in_code = code;
-                        if (code == available) {
-                            pixelStack[top++] = (byte) first;
-                            code = old_code;
-                        }
-                        while (code > clear) {
-                            pixelStack[top++] = suffix[code];
-                            code = prefix[code];
-                        }
-                        first = ((int) suffix[code]) & 0xff;
-
-                        // Add a new string to the string table,
-
-                        if (available >= MaxStackSize)
-                            break;
+                    if ((code > available) || (code == end_of_information))
+                        break;
+                    if (code == clear) {
+                        // Reset decoder.
+                        code_size = data_size + 1;
+                        code_mask = (1 << code_size) - 1;
+                        available = clear + 2;
+                        old_code = NullCode;
+                        continue;
+                    }
+                    if (old_code == NullCode) {
+                        pixelStack[top++] = suffix[code];
+                        old_code = code;
+                        first = code;
+                        continue;
+                    }
+                    in_code = code;
+                    if (code == available) {
                         pixelStack[top++] = (byte) first;
-                        prefix[available] = (short) old_code;
-                        suffix[available] = (byte) first;
-                        available++;
-                        if (((available & code_mask) == 0) && (available < MaxStackSize)) {
-                            code_size++;
-                            code_mask += available;
-                        }
-                        old_code = in_code;
+                        code = old_code;
+                    }
+                    while (code > clear) {
+                        pixelStack[top++] = suffix[code];
+                        code = prefix[code];
+                    }
+                    first = ((int) suffix[code]) & 0xff;
+
+                    // Add a new string to the string table,
+
+                    if (available >= MaxStackSize)
+                        break;
+                    pixelStack[top++] = (byte) first;
+                    prefix[available] = (short) old_code;
+                    suffix[available] = (byte) first;
+                    available++;
+                    if (((available & code_mask) == 0) && (available < MaxStackSize)) {
+                        code_size++;
+                        code_mask += available;
+                    }
+                    old_code = in_code;
                 }
 
                 // Pop a pixel off the pixel stack.
@@ -673,7 +667,7 @@ public class GifImage
 
         /**
          * Reads next variable length block from input.
-         * 
+         *
          * @return number of bytes stored in "buffer"
          */
         protected int readBlock() {
@@ -700,9 +694,8 @@ public class GifImage
 
         /**
          * Reads color table as 256 RGB integer values
-         * 
-         * @param ncolors
-         *          int number of colors to read
+         *
+         * @param ncolors int number of colors to read
          * @return int array containing 256 colors (packed ARGB with full alpha)
          */
         protected int[] readColorTable(int ncolors) {
@@ -740,43 +733,43 @@ public class GifImage
                 int code = read();
                 switch (code) {
 
-                case 0x2C: // image separator
-                    readImage();
-                    break;
-
-                case 0x21: // extension
-                    code = read();
-                    switch (code) {
-                    case 0xf9: // graphics control extension
-                        readGraphicControlExt();
+                    case 0x2C: // image separator
+                        readImage();
                         break;
 
-                    case 0xff: // application extension
-                        readBlock();
-                        String app = "";
-                        for (int i = 0; i < 11; i++) {
-                            app += (char) block[i];
+                    case 0x21: // extension
+                        code = read();
+                        switch (code) {
+                            case 0xf9: // graphics control extension
+                                readGraphicControlExt();
+                                break;
+
+                            case 0xff: // application extension
+                                readBlock();
+                                String app = "";
+                                for (int i = 0; i < 11; i++) {
+                                    app += (char) block[i];
+                                }
+                                if (app.equals("NETSCAPE2.0")) {
+                                    readNetscapeExt();
+                                } else
+                                    skip(); // don't care
+                                break;
+
+                            default: // uninteresting extension
+                                skip();
                         }
-                        if (app.equals("NETSCAPE2.0")) {
-                            readNetscapeExt();
-                        } else
-                            skip(); // don't care
                         break;
 
-                    default: // uninteresting extension
-                        skip();
-                    }
-                    break;
+                    case 0x3b: // terminator
+                        done = true;
+                        break;
 
-                case 0x3b: // terminator
-                    done = true;
-                    break;
+                    case 0x00: // bad byte, but keep going and see what happens
+                        break;
 
-                case 0x00: // bad byte, but keep going and see what happens
-                    break;
-
-                default:
-                    status = STATUS_FORMAT_ERROR;
+                    default:
+                        status = STATUS_FORMAT_ERROR;
                 }
             }
         }

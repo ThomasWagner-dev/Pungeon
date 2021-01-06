@@ -1,5 +1,7 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+
 import java.util.*;
+
 /**
  * The Superclass for all Enemies.
  */

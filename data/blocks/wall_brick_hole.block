@@ -1,3 +1,3 @@
-wall
-false
-map/wall/hole.png
+type=wall
+breakable=false
+img=map/wall/hole.png

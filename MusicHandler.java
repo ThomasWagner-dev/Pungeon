@@ -1,45 +1,46 @@
 import java.util.*;
+
 import greenfoot.*;
+
 /**
  * Handles the music of the game
- * 
+ *
  * @author Commentator
  * @version 2020-12-26-23-21
  */
-public class MusicHandler  
-{
+public class MusicHandler {
     public final HashMap<String, GreenfootSound> musics, sounds;
     public final DungeonWorld world;
     public GreenfootSound currentSound;
+
     public MusicHandler(DungeonWorld world) {
         System.out.println("Loading music...");
         musics = FileWork.loadAllMusic();
-        System.out.println("Loaded sound tracks: "+musics.keySet());
+        System.out.println("Loaded sound tracks: " + musics.keySet());
         sounds = FileWork.loadAllSounds();
-        System.out.println("Loaded sound effects: "+sounds.keySet());
+        System.out.println("Loaded sound effects: " + sounds.keySet());
         this.world = world;
         currentSound = musics.get("ow_combat");
         currentSound.playLoop();
         currentSound.setVolume(25);
         update();
     }
-    
+
     /**
      * updates the currently played music
      */
     public void update() {
-        String name="";
+        String name = "";
         ArrayList<String> soundNameComposite = new ArrayList<>();
         //checks dungeon style(?)
         soundNameComposite.add("ow");
-        name +="ow_";
-        
+        name += "ow_";
+
         //checks if enemies are left
         if (world.getObjects(Enemy.class).size() <= 0) {
-            soundNameComposite.add("test");
-            name += "test";
-        }
-        else {
+            soundNameComposite.add("combat");
+            name += "combat";
+        } else {
             soundNameComposite.add("combat");
             name += "combat";
         }
@@ -50,14 +51,13 @@ public class MusicHandler
             currentSound.playLoop();
         }
     }
-    
+
     public void playSound(String event, String caller) {
-        String name ="snd_"+event+"_"+caller;
+        String name = "snd_" + event + "_" + caller;
         try {
             sounds.get(name).play();
-        }
-        catch(Exception ex) {
-            System.out.println("unknown sound: "+name);
+        } catch (Exception ex) {
+            System.out.println("unknown sound: " + name);
         }
     }
 }
