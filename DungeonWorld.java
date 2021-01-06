@@ -3,8 +3,6 @@ import java.util.*;
 
 /**
  * This is the world...
- * 
- * @author Commentator
  */
 public class DungeonWorld extends World
 {
@@ -22,26 +20,27 @@ public class DungeonWorld extends World
     public Counter hp_counter;
     public final Random random;
     public final ImageGenerator imgG;
+
     /**
      * Simple constructor to create the lobby containing Dungeon selection etc.
      */
     public DungeonWorld()
     {    
-        // Create a new world with 1425x850 cells with a cell size of 1x1 pixels.
+        // Create a new world with 1408x832 cells with a cell size of 1x1 pixels.
         super(width*pixelSize, height*pixelSize, 1);
-        //TODO: put save selection here
+        //TODO: put save selection here.
         selectedSave = 0;
         
         // Inform the player of the loading process.
         System.out.println("Starting world generation...");
         System.out.println();
-        //loading data.nbt
-        System.out.println("Loading data.nbt...");
+        // Load data.nbt.
+        System.out.println("Loading data...");
         data = FileWork.getData();
         System.out.println("Loaded data: ");
         data.print();
         System.out.println();
-        // create random
+        // Create random.
         System.out.println("Generating random number generator...");
         random = new Random(data.hashCode());
         System.out.println();
@@ -52,37 +51,37 @@ public class DungeonWorld extends World
         //dmgMultiplier = FileWork.getDmgMultiplier();
         //System.out.println("Loaded types: "+dmgMultiplier.keySet());
         System.out.println();
-        //Load loottables
+        //Load loottables.
         System.out.println("Loading loottables...");
         loottables = data.findNextTag("loottables");
         loottables.print();
         System.out.println();
-        // Load weapons
+        // Load weapons.
         System.out.println("Loading weapons...");
         weapons = FileWork.loadAllWeapons();
         System.out.println("Loaded Weapons: "+weapons.keySet());
         System.out.println();
-        // Load all blocks availabel for map generation.
+        // Load all blocks available for map generation.
         System.out.println("Loading blocks...");
         blocks = FileWork.loadAllBlocks();
         System.out.println("Loaded Blocks: "+blocks.keySet());
         System.out.println();
-        // Load items
+        // Load items.
         System.out.println("Loading items...");
         items = FileWork.loadAllItems();
         System.out.println("Loaded items: "+items.keySet());
         System.out.println();
-        // Load enemies
+        // Load enemies.
         System.out.println("Loading enemies...");
         enemies = FileWork.loadAllEnemies(weapons);
         System.out.println("Loaded enemies: "+enemies.keySet());
         System.out.println();
-        //loading Image generator
+        // Load Image generator.
         System.out.println("Loading Imagegenerator...");
         imgG = new ImageGenerator();
         //imgG.GenerationTest(this);
         System.out.println();
-        // Load screens
+        // Load screens.
         System.out.println("Loading all Screens");
         screens = FileWork.loadAllScreens(blocks, enemies, imgG);
         System.out.println("Loaded screens: "+screens.keySet());
@@ -91,15 +90,15 @@ public class DungeonWorld extends World
         System.out.println("Loading save...");
         FileWork.loadPlayer(selectedSave, this);
         System.out.println();
-        // Load music
+        // Load music.
         System.out.println("Loading musichandler...");
         musichandler = new MusicHandler(this);
         System.out.println();
-        // Adding counter
+        // Load counters.
         System.out.println("Loading counters...");
         Counter.load(getObjects(Player.class).get(0), this);
         System.out.println();
-        //Change paint order
+        // Change paint order.
         System.out.println("Changing paintorder");
         setPaintOrder(Counter.class, Projectile.class, Player.class, Enemy.class, Item.class, Wall.class, Trap.class, Tile.class);
         System.out.println();
@@ -117,9 +116,7 @@ public class DungeonWorld extends World
      * @param cls The class elegible for the clostest object. Use null to make all classes elegible.
      * @param caller The calling Actor.
      * 
-     * @return The closest Object of the class "cls" to the calling Actor "me".
-     * 
-     * TODO Get intet of Method
+     * @return The closest Object of the given class "cls" to the calling Actor.
      */
     public Actor getClosestObject(Class cls, Actor caller) {
         // Retrieve all objects of the class "cls" currently present in the world and save them to a list.
@@ -147,7 +144,7 @@ public class DungeonWorld extends World
     }
     
     /**
-     * Calculates the distance between two points using the Pythagorean equation
+     * Calculates the distance between two points using the Pythagorean equation.
      * 
      * @param x1 The x coordinate of the first point.
      * @param y1 The y coordinate of the first point.
@@ -161,23 +158,33 @@ public class DungeonWorld extends World
     }
     
     /**
-    * returns the distance betweeen 2 actors. see method above for further information
+    * Returns the distance betweeen 2 actors using the Pythagorean equation.
+     *
+     * @param a The first Actor.
+     * @param b The second Actor.
+     *
+     * @return The distance between Actor a and Actor b as double.
     */
     public static double getDistance(Actor a, Actor b) {
         return Math.sqrt(Math.pow(a.getX()-b.getX(),2)+Math.pow(a.getY()-b.getY(),2));
     }
     
     /**
-    * saves the player to the given save slot
+    * Saves the player to the given save slot.
+     *
+     * @param slot The slot to save the player to.
     */
     public void save(int slot) {
         FileWork.savePlayer(slot, this);
     }
     
     /**
-    * scales the given image to fit the world
-    * @param img Image to be scaled
-    * @param scale The scale it should get scaled to (in addition to the worlds global scale)
+    * Scales the given image to fit the world.
+     *
+    * @param img Image to be scaled.
+    * @param scale The scale to scale the image to (in addition to the worlds global scale).
+     *
+     * @return The scaled image.
     */
     public static GreenfootImage scaleImage(GreenfootImage img, double scale) {
         img.scale((int) (img.getWidth()*scale*globalScale), (int) (img.getHeight()*scale*globalScale));
@@ -185,7 +192,11 @@ public class DungeonWorld extends World
     }
     
     /**
-    * gets the angel an Actor has to be rotated to, to fit the movement vector
+     * Returns the angle fitting the movement Vector of a given Actor.
+     *
+     * @param dir The movement Vector of the player.
+     *
+     * @return The fitting angle.
     */
     public static int getRotationAngle(double[] dir) {
         double den = (Math.sqrt(Math.pow(dir[0], 2) + Math.pow(dir[1], 2)));
@@ -196,7 +207,14 @@ public class DungeonWorld extends World
         else
             return ret;
     }
-    
+
+    /**
+     * Compiles a given position.
+     *
+     * @param pos The position to be compiled.
+     *
+     * @return The compiled posotion.
+     */
     public static int[] compilePosition(int[] pos) {
         int[] ret = new int[pos.length];
         for (int i = 0; i < pos.length; i++) {
@@ -204,10 +222,20 @@ public class DungeonWorld extends World
         }
         return ret;
     }
-    
+
+    /**
+     * Returns all Objects NOT of the given class.
+     *
+     * @param cls The class to be excluded
+     *
+     * @return The List of Objects.
+     */
     public List<Actor> getObjectsExclusive(Class cls) {
+        // Get a list of all Objects.
         List<Actor> things = getObjects(null);
+        // Get a list of all Objects to be removed.
         List<Actor> thingsToRemove = getObjects(cls);
+        // Remove all Objects which are to be excluded.
         things.removeAll(thingsToRemove);
         return things;
     }

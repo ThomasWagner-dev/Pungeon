@@ -33,13 +33,20 @@ public abstract class Entity extends Actor
     }
     
     /**
-     * moves the entity. If it is a Collider, it steps back elsewise colliding with an Object
+     * Moves the entity.
+     * If the entity is a Collider:
+     * Moves the entity back till the entity is not colliding with another entity anymore.
      */
     protected void move() {
-        double[][] movementValues = getMovement(); //fetch movementvalues as [[x,y],[speedmultiplier]]
-        double speedmultiplier = movementValues[1][0]; //saves speedmultiplier
-        double[] movementOriginal = getLimitedMovement(movementValues[0]); //limits movement to a distance of 1
-        double[] movement = new double[] {movementOriginal[0]*speed*speedmultiplier, movementOriginal[1]*speed*speedmultiplier}; //calculates movementvector using the limited vector and speed
+        // Fetch movementvalues as [[x,y],[speedmultiplier]].
+        double[][] movementValues = getMovement();
+        // Save speedmultiplier for later use.
+        double speedmultiplier = movementValues[1][0];
+        // Limit the movement to a distance of 1.
+        double[] movementOriginal = getLimitedMovement(movementValues[0]);
+        // Calculates the movementvector using the limited vector and speed.
+        double[] movement = new double[] {movementOriginal[0]*speed*speedmultiplier,
+                movementOriginal[1]*speed*speedmultiplier};
         //System.out.println(Arrays.toString(movementOriginal));
         movement = new double[] {Math.round(movement[0]), Math.round(movement[1])};
         double oldX = getX(),
@@ -49,13 +56,13 @@ public abstract class Entity extends Actor
         
         double workX = newX,
             workY = newY;
-        //moves Entity to final location
+        // Move the Entity to assumed final location.
         setLocation((int) Math.round(newX), (int) Math.round(newY));
         
-        //skips back movement if the entity doesn't have collision
+        // Skips collision check if the entity isn't a collider.
         if (!(this instanceof Collider)) return;
         
-        //checks goes back, until Entity ain't colliding anymore
+        // Move the entity backwards until it's not colliding with another Entity anymore.
         while (isTouching(Collider.class)) {
             if (workX == oldX && workY == oldY) 
                 break;
