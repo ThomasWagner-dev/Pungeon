@@ -1,6 +1,0 @@
-type=collider
-img=entity/enemies/slime_blue.png
-speed=1
-type=ice
-hp=10
-weapon=ice_melee

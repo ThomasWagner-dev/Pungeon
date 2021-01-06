@@ -1,6 +1,0 @@
-type=non-collider
-img=entity/enemies/ghost_fire.png
-weapon=magic_fire
-speed=3
-hp=15
-type=fire
