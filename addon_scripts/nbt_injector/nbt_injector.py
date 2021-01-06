@@ -192,4 +192,4 @@ def inject_all():
     
 inject_all()
 print(data.pretty_tree())
-data.write_file("data.nbt")
+data.write_file("../../data.nbt")

@@ -1,4 +1,10 @@
-import cv2 as cv
+import os
+try:
+    import cv2 as cv
+except:
+    print("installing opencv, as it wasn't present before")
+    os.system("python -m pip install opencv-python")
+    import cv2 as cv
 import tkinter as tk
 from tkinter import filedialog
 import numpy as np
