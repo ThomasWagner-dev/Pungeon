@@ -60,7 +60,9 @@ public class Weapon {
         if (!checkCooldown()) return;
         if (owner instanceof Enemy) {
             Enemy e = (Enemy) owner;
-            if (e.getObjectAtOffset(0, 0, Collider.class).size() != 0) return;
+            int cap = 0;
+            if (e instanceof Collider) cap = 1;
+            if (e.getObjectAtOffset(0, 0, Collider.class).size() != cap) return;
         }
         resetCooldown();
         Projectile p;

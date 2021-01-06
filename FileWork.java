@@ -636,8 +636,8 @@ public class FileWork {
     public static Enemy loadEnemy(Tag t, HashMap<String, Weapon> weapons) {
         Enemy en = null;
         try {
-            switch ((String) t.get("type")) {
-                case "collider":
+            switch ((String) t.get("col")) {
+                case "true":
                     en = new CollidingEnemy(t.getName().replaceAll("\\.\\w+$", ""));
                     break;
                 case "everythingelse":

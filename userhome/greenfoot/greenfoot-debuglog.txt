@@ -1340,3 +1340,18 @@ Opening project: E:\Schulfaecher\Info\App_Programierung\GreenfootStuff
 1609546646740: Listening for JDWP connection on address: javadebug
 Connected to debug VM via dt_shmem transport...
 Communication with debug VM fully established.
+====
+
+====
+Greenfoot run started: Thu Jan 07 00:31:40 CET 2021
+Greenfoot version: 3.6.1
+Java version 11.0.2
+JavaFX version 11.0.2+1
+Virtual machine: OpenJDK 64-Bit Server VM 11.0.2+9 (Oracle Corporation)
+Running on: Windows 10 10.0 (amd64)
+Java Home: E:\Apps\greenfoot\jdk
+----
+Opening project: E:\Schulfaecher\Info\App_Programierung\GreenfootStuff
+1609975908024: Listening for JDWP connection on address: javadebug
+Connected to debug VM via dt_shmem transport...
+Communication with debug VM fully established.
