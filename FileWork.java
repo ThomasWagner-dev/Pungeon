@@ -800,4 +800,26 @@ public class FileWork {
             e.printStackTrace();
         }
     }
+
+    public static HashMap<String, Font> loadAllFonts() {
+        HashMap<String, Font> fonts = new HashMap<>();
+        HashMap<String, Item> items = new HashMap<>();
+        File dir = new File("./assets");
+        File[] dirFiles = dir.listFiles();
+        String name;
+        if (dirFiles != null) {
+            for (File child : dirFiles) {
+                name = child.getName();
+                if (!name.endsWith(".ttf")) continue;
+                try {
+                    fonts.put(name.replaceAll("\\.\\w+$", ""), FontLoader.loadFont(child, 24));
+                }
+                catch (Exception e) {
+                    System.err.println("Error while loading font {}".replace("{}", name));
+                    e.printStackTrace();
+                }
+            }
+        }
+        return fonts;
+    }
 }

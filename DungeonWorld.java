@@ -12,6 +12,7 @@ public class DungeonWorld extends World {
     public final HashMap<String, Enemy> enemies;
     public final HashMap<String, Screen> screens;
     public final HashMap<String, Item> items;
+    public final HashMap<String, Font> fonts;
     public static final int pixelSize = 64, globalScale = pixelSize / 16, height = 13, width = 22;
     public final Tag data, loottables;
     public Screen activeScreen;
@@ -20,6 +21,7 @@ public class DungeonWorld extends World {
     public Counter hp_counter;
     public final Random random;
     public final ImageGenerator imgG;
+    public final Menuscreen menuscrn;
 
     /**
      * Simple constructor to create the lobby containing Dungeon selection etc.
@@ -33,6 +35,7 @@ public class DungeonWorld extends World {
         // Inform the player of the loading process.
         System.out.println("Starting world generation...");
         System.out.println();
+        // Generate blackscreen for information and menu screen
         // Load data.nbt.
         System.out.println("Loading data...");
         data = FileWork.getData();
@@ -97,6 +100,11 @@ public class DungeonWorld extends World {
         System.out.println("Loading counters...");
         Counter.load(getObjects(Player.class).get(0), this);
         System.out.println();
+        // Load fonts
+        System.out.println("Loading fonts...");
+        fonts = FileWork.loadAllFonts();
+        System.out.println("Loaded fonts: " + fonts.keySet());
+        System.out.println();
         // Change paint order.
         System.out.println("Changing paintorder");
         setPaintOrder(Counter.class, Projectile.class, Player.class, Enemy.class, Item.class, Wall.class, Trap.class, Tile.class);
@@ -107,6 +115,17 @@ public class DungeonWorld extends World {
 
         // Inform the player of the end of the loading process.
         System.out.println("Finished loading.");
+
+        menuscrn = new Menuscreen(this);
+        Greenfoot.setWorld(menuscrn);
+        menuscrn.showKeybinds(getObjects(Player.class).get(0).inputs.keybinds);
+        Greenfoot.start();
+    }
+
+    public void act() {
+        if (Greenfoot.isKeyDown("escape")) {
+            menuscrn.showKeybinds(getObjects(Player.class).get(0).inputs.keybinds);
+        }
     }
 
     /**

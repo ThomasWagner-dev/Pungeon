@@ -37,15 +37,15 @@ public class KeyLayout {
     public String getKeysOfActionGroup(ActionGroup ag) {
         switch (ag) {
             case MOVEMENT:
-                return String.join(",", new String[]{up, down, left, right, run, sneak});
+                return String.join(", ", new String[]{up, down, left, right, run, sneak});
             case USE:
                 return use;
             case ATTACK:
                 return attack;
             case ITEMS:
-                return String.join(",", new String[]{i_cycle_f, i_cycle_b});
+                return String.join(", ", new String[]{i_cycle_f, i_cycle_b});
             case WEAPONS:
-                return String.join(",", new String[]{w_cycle_f, w_cycle_b});
+                return String.join(", ", new String[]{w_cycle_f, w_cycle_b});
             default:
                 return "";
         }
