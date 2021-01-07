@@ -116,15 +116,15 @@ public class DungeonWorld extends World {
         // Inform the player of the end of the loading process.
         System.out.println("Finished loading.");
 
-        menuscrn = new Menuscreen(this);
+        menuscrn = new Menuscreen(this, getObjects(Player.class).get(0).inputs.keybinds);
         Greenfoot.setWorld(menuscrn);
-        menuscrn.showKeybinds(getObjects(Player.class).get(0).inputs.keybinds);
+        menuscrn.showKeybinds();
         Greenfoot.start();
     }
 
     public void act() {
-        if (Greenfoot.isKeyDown("escape")) {
-            menuscrn.showKeybinds(getObjects(Player.class).get(0).inputs.keybinds);
+        if (Greenfoot.isKeyDown(menuscrn.kl.pause)) {
+            menuscrn.showKeybinds();
         }
     }
 

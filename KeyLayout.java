@@ -18,14 +18,16 @@ public class KeyLayout {
             w_cycle_f = "y",
             w_cycle_b = "x",
             i_cycle_f = "f",
-            i_cycle_b = "r";
+            i_cycle_b = "r",
+            pause = "escape";
 
     enum ActionGroup {
         MOVEMENT,
         USE,
         ATTACK,
         ITEMS,
-        WEAPONS
+        WEAPONS,
+        PAUSE
     }
 
     /**
@@ -46,6 +48,8 @@ public class KeyLayout {
                 return String.join(", ", new String[]{i_cycle_f, i_cycle_b});
             case WEAPONS:
                 return String.join(", ", new String[]{w_cycle_f, w_cycle_b});
+            case PAUSE:
+                return pause;
             default:
                 return "";
         }
