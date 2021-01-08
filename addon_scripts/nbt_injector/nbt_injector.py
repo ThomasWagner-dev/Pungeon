@@ -12,8 +12,10 @@ data = nbt.NBTFile("../data.nbt", "rb")
 def inject_weapons():
     print("start injecting weapons...")
     header = "../../data/weapons/"
-    weapons_tag = nbt.TAG_Compound()
-    weapons_tag.name = "weapons"
+    weapons_tag = data.get("weapons")
+    if weapons_tag == None:
+        weapons_tag = nbt.TAGCompound()
+        weapons_tag.name = "weapons"
     data.tags.append(weapons_tag)
     
     #print(data.pretty_tree())
@@ -48,8 +50,10 @@ def inject_weapons():
 def inject_blocks():
     print("start injecting blocks...")
     header = "../../data/blocks/"
-    blocks_tag = nbt.TAG_Compound()
-    blocks_tag.name = "blocks"
+    blocks_tag = data.get("blocks")
+    if blocks_tag == None:
+        blocks_tag = nbt.TAGCompound()
+        blocks_tag.name = "weapons"
     
     for blk in os.listdir(header):
         if blk.endswith(".template"): 
@@ -77,8 +81,10 @@ def inject_blocks():
 def inject_maps():
     print("start injecting maps...")
     header = "../../data/screens/"
-    screens_tag = nbt.TAG_Compound()
-    screens_tag.name = "screens"
+    screens_tag = data.get("screens")
+    if screens_tag == None:
+        screens_tag = nbt.TAG_Compound()
+        screens_tag.name = "screens"
     
     for scr in os.listdir(header):
         if scr.endswith(".template") or scr.endswith(".enemymap"):
@@ -107,6 +113,8 @@ def inject_maps():
         enm.name = "enemymap"
         i = 0
         for line in enemymap.read().split("\n"):
+            if (line == ""):
+                continue
             line = line.split("=")
             ene = nbt.TAG_Compound()
             ene.name = str(i)
@@ -125,8 +133,10 @@ def inject_maps():
 def inject_enemies():
     print("start injecting enemies...")
     header = "../../data/enemies/"
-    enemies_tag = nbt.TAG_Compound()
-    enemies_tag.name = "enemies"
+    enemies_tag = data.get("enemies")
+    if enemies_tag == None:
+        enemies_tag = nbt.TAG_Compound()
+        enemies_tag.name = "enemies"
     
     for en in os.listdir(header):
         if not en.endswith(".enemy"):
@@ -156,8 +166,10 @@ def inject_enemies():
 def inject_items():
     print("start injecting items...")
     header = "../../data/items/"
-    items_tag = nbt.TAG_Compound()
-    items_tag.name = "items"
+    items_tag = data.get("items")
+    if items_tag == None:
+        items_tag = nbt.TAG_Compound()
+        items_tag.name = "items"
     
     for itm in os.listdir(header):
         if not itm.endswith(".itm"):
@@ -189,7 +201,8 @@ def inject_all():
     inject_enemies()
     inject_blocks()
     inject_items()
-    
-inject_all()
-print(data.pretty_tree())
-data.write_file("../../data.nbt")
+
+if __name__ == "__main__":
+    inject_all()
+    print(data.pretty_tree())
+    data.write_file("../../data.nbt")

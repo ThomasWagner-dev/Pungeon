@@ -19,11 +19,12 @@ allocations={
   "ff0000":"trap_spikes",
   "697c69":"tile_ground_moss",
   "000000":"wall_void",
-  "343434":"wall_stone"
+  "343434":"wall_stone",
+#  "de8e00":"chest_gold",
 }
 
 def rgb2hex(rgb:list) -> str:
-    return "".join([str(hex(x)).removeprefix("0x") for x in rgb])
+    return "".join([str(hex(x)).removeprefix("0x").zfill(2) for x in rgb])
 
 def pic2hex(pic):
     return [[rgb2hex(y) for y in x] for x in pic]
@@ -33,6 +34,7 @@ def pic2screenmap(pic):
 
 def file2screen(file):
     pic = cv.imread(file)
+    pic = cv.cvtColor(pic, cv.COLOR_BGR2RGB)
     #print(pic)
     pic = pic2hex(pic)
     screen = pic2screenmap(pic)
@@ -46,13 +48,14 @@ def file2screen(file):
 #    allocations = json.load(json_file)
 
 #filenames = tk.filedialog.askopenfilenames(title="choose files", filetypes=[("image files", ("*.png"," *.jpg", "*.gif", "*.svg"))])
-while (True):
-    picname = tk.filedialog.askopenfilename(title="choose files", initialdir="screenImgs", filetypes=[("image files", ("*.png"," *.jpg", "*.gif", "*.svg"))])
-    if (picname == ""):
-        exit()
-    string = file2screen(picname)+"\n###\n"
-    savefile = tk.filedialog.asksaveasfile(title="save file", initialdir="../../data/screens", defaultextension=".world", filetype=[("screenfile", ("*.world"))])
-    #print(type(savefile))
-    savefile.write(string)
-    savefile.close()
-    #savefile.write(string)
+if (__name__ == "__main__"):
+    while (True):
+        picname = tk.filedialog.askopenfilename(title="choose files", initialdir="screenImgs", filetypes=[("image files", ("*.png"," *.jpg", "*.gif", "*.svg"))])
+        if (picname == ""):
+            exit()
+        string = file2screen(picname)+"\n###\n"
+        savefile = tk.filedialog.asksaveasfile(title="save file", initialdir="../../data/screens", defaultextension=".world", filetype=[("screenfile", ("*.world"))])
+        #print(type(savefile))
+        savefile.write(string)
+        savefile.close()
+        #savefile.write(string)

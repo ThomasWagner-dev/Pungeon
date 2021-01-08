@@ -251,7 +251,6 @@ public class FileWork {
                         isMelee = tag.getValue().equals("false");
                 }
             }
-            System.out.println(angle);
             return new Weapon(t.getName().replace(".wpn", ""), name, descr, range, dmg, type, speed, cooldown, img, scale, hitbox, isMelee, angle);
         } catch (Exception e) {
             System.err.println("Error while loading weapon from tag {}".replace("{}", t.getName()));
@@ -505,6 +504,7 @@ public class FileWork {
     public static HashMap<String, Screen> loadAllScreens(Tag screens, HashMap<String, Block> blocks, HashMap<String, Enemy> enemies, ImageGenerator imgGen, DungeonWorld world) {
         HashMap<String, Screen> scrs = new HashMap<>();
         for (Tag scr : (Tag[]) screens.getValue()) {
+            System.out.println(scr.getName());
             if (scr.getName() == null) continue;
             scrs.put(scr.getName(), loadScreen(scr, blocks, enemies, imgGen, world));
         }
@@ -518,7 +518,7 @@ public class FileWork {
             HashMap<String, String> adjScreens = new HashMap<>();
             Block background = new Tile();
             HashMap<Enemy, int[]> enemymap = new HashMap<>();
-
+            System.out.println("loading screen {}".replace("{}", scr.getName()));
             for (Tag t : (Tag[]) scr.getValue()) {
                 if (t.getName() == null) continue;
                 switch (t.getName()) {

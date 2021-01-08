@@ -271,7 +271,6 @@ public class DungeonWorld extends World {
         for (Tag t : (Tag[]) noise.getValue()) {
             if (t.getName() == null) continue;
             if ((Double) t.getValue() > random.nextDouble()) {
-                System.out.println("applied noise: "+ t.getName());
                 return t.getName();
             }
         }
