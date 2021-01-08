@@ -36,8 +36,7 @@ public class FileWork {
     /**
      * load the player into the world.
      */
-    public static void loadPlayer(int slot, DungeonWorld world) {
-        Player player = new Player();
+    public static void loadPlayer(int slot, DungeonWorld world, Player player) {
         try {
             Scanner sc = new Scanner(readFile("./data/saves/{}/player.sav".replace("{}", slot + "")));
             String[] line;
@@ -803,7 +802,6 @@ public class FileWork {
 
     public static HashMap<String, Font> loadAllFonts() {
         HashMap<String, Font> fonts = new HashMap<>();
-        HashMap<String, Item> items = new HashMap<>();
         File dir = new File("./assets");
         File[] dirFiles = dir.listFiles();
         String name;
@@ -813,6 +811,26 @@ public class FileWork {
                 if (!name.endsWith(".ttf")) continue;
                 try {
                     fonts.put(name.replaceAll("\\.\\w+$", ""), FontLoader.loadFont(child, 24));
+                }
+                catch (Exception e) {
+                    System.err.println("Error while loading font {}".replace("{}", name));
+                    e.printStackTrace();
+                }
+            }
+        }
+        return fonts;
+    }
+    public static HashMap<String, java.awt.Font> loadAwtFonts() {
+        HashMap<String, java.awt.Font> fonts = new HashMap<>();
+        File dir = new File("./assets");
+        File[] dirFiles = dir.listFiles();
+        String name;
+        if (dirFiles != null) {
+            for (File child : dirFiles) {
+                name = child.getName();
+                if (!name.endsWith(".ttf")) continue;
+                try {
+                    fonts.put(name.replaceAll("\\.\\w+$", ""), java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, child));
                 }
                 catch (Exception e) {
                     System.err.println("Error while loading font {}".replace("{}", name));

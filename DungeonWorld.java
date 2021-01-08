@@ -12,7 +12,8 @@ public class DungeonWorld extends World {
     public final HashMap<String, Enemy> enemies;
     public final HashMap<String, Screen> screens;
     public final HashMap<String, Item> items;
-    public final HashMap<String, Font> fonts;
+    public final HashMap<String, Font> gffonts;
+    public final HashMap<String, java.awt.Font> awtfonts;
     public static final int pixelSize = 64, globalScale = pixelSize / 16, height = 13, width = 22;
     public final Tag data, loottables;
     public Screen activeScreen;
@@ -90,7 +91,7 @@ public class DungeonWorld extends World {
         System.out.println();
         // Load the world.
         System.out.println("Loading save...");
-        FileWork.loadPlayer(selectedSave, this);
+        FileWork.loadPlayer(selectedSave, this, new Player());
         System.out.println();
         // Load music.
         System.out.println("Loading musichandler...");
@@ -102,8 +103,9 @@ public class DungeonWorld extends World {
         System.out.println();
         // Load fonts
         System.out.println("Loading fonts...");
-        fonts = FileWork.loadAllFonts();
-        System.out.println("Loaded fonts: " + fonts.keySet());
+        gffonts = FileWork.loadAllFonts();
+        awtfonts = FileWork.loadAwtFonts();
+        System.out.println("Loaded fonts: " + gffonts.keySet());
         System.out.println();
         // Change paint order.
         System.out.println("Changing paintorder");

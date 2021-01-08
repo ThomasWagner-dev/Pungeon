@@ -104,4 +104,8 @@ public class Player extends Entity implements Collider {
             rotation = movement[0];
         return movement;
     }
+
+    public void die() {
+        ((DungeonWorld) getWorld()).menuscrn.showGameover(this);
+    }
 }

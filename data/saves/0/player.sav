@@ -2,7 +2,10 @@
 pos=810,322
 screen=startingRoom
 [cosmetics]
-skin=entity/player/player.png
+gender=f
+name=Arva
+pronouns=she,her
+skin=entity/player/player_f.png
 [inventory]
 weapon=bow_basic
 [status]
