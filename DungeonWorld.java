@@ -15,7 +15,7 @@ public class DungeonWorld extends World {
     public final HashMap<String, Font> gffonts;
     public final HashMap<String, java.awt.Font> awtfonts;
     public static final int pixelSize = 64, globalScale = pixelSize / 16, height = 13, width = 22;
-    public final Tag data, loottables;
+    public final Tag data, loottables, generationNoises;
     public Screen activeScreen;
     public int selectedSave;
     public MusicHandler musichandler;
@@ -59,6 +59,11 @@ public class DungeonWorld extends World {
         loottables = data.findNextTag("loottables");
         loottables.print();
         System.out.println();
+        // Load generation noises
+        System.out.println("Loading generationnoises...");
+        generationNoises = data.findNextTag("generationNoises");
+        generationNoises.print();
+        System.out.println();
         // Load weapons.
         System.out.println("Loading weapons...");
         weapons = FileWork.loadAllWeapons(data.findNextTag("weapons"));
@@ -86,7 +91,7 @@ public class DungeonWorld extends World {
         System.out.println();
         // Load screens.
         System.out.println("Loading all Screens");
-        screens = FileWork.loadAllScreens(data.findNextTag("screens"), blocks, enemies, imgG);
+        screens = FileWork.loadAllScreens(data.findNextTag("screens"), blocks, enemies, imgG, this);
         System.out.println("Loaded screens: " + screens.keySet());
         System.out.println();
         // Load the world.
@@ -251,5 +256,25 @@ public class DungeonWorld extends World {
         // Remove all Objects which are to be excluded.
         things.removeAll(thingsToRemove);
         return things;
+    }
+
+    /**
+     * Returns the new blockstring, depending on the noises from the data.nbt
+     *
+     * @param b The block noise is gonna be applied to
+     * @return The new block with applied noises
+     */
+    public String applyGenerationNoise(String b) {
+        Tag noise = generationNoises.findNextTag(b);
+        if (noise == null) return b;
+        double rn;
+        for (Tag t : (Tag[]) noise.getValue()) {
+            if (t.getName() == null) continue;
+            if ((Double) t.getValue() > random.nextDouble()) {
+                System.out.println("applied noise: "+ t.getName());
+                return t.getName();
+            }
+        }
+        return b;
     }
 }

@@ -493,7 +493,7 @@ public class FileWork {
                         break;
                 }
             }
-            return new Screen(f.getName().replaceAll("\\.\\w+$", ""), rawMap, enemymap, background, blocks, adjScreens, imgGen);
+            return new Screen(f.getName().replaceAll("\\.\\w+$", ""), rawMap, enemymap, background, blocks, adjScreens, imgGen, null);
         } catch (Exception e) {
             System.out.println("error");
             System.err.println("Error while loading screen {}:".replace("{}", f.getName()));
@@ -502,16 +502,16 @@ public class FileWork {
         }
     }
 
-    public static HashMap<String, Screen> loadAllScreens(Tag screens, HashMap<String, Block> blocks, HashMap<String, Enemy> enemies, ImageGenerator imgGen) {
+    public static HashMap<String, Screen> loadAllScreens(Tag screens, HashMap<String, Block> blocks, HashMap<String, Enemy> enemies, ImageGenerator imgGen, DungeonWorld world) {
         HashMap<String, Screen> scrs = new HashMap<>();
         for (Tag scr : (Tag[]) screens.getValue()) {
             if (scr.getName() == null) continue;
-            scrs.put(scr.getName(), loadScreen(scr, blocks, enemies, imgGen));
+            scrs.put(scr.getName(), loadScreen(scr, blocks, enemies, imgGen, world));
         }
         return scrs;
     }
 
-    public static Screen loadScreen(Tag scr, HashMap<String, Block> blocks, HashMap<String, Enemy> enemies, ImageGenerator imgGen) {
+    public static Screen loadScreen(Tag scr, HashMap<String, Block> blocks, HashMap<String, Enemy> enemies, ImageGenerator imgGen, DungeonWorld world) {
         try {
             ArrayList<ArrayList<String>> rawMap = new ArrayList<>();
             ArrayList<String> tmp;
@@ -543,7 +543,7 @@ public class FileWork {
                         break;
                 }
             }
-            return new Screen(scr.getName(), rawMap, enemymap, background, blocks, adjScreens, imgGen);
+            return new Screen(scr.getName(), rawMap, enemymap, background, blocks, adjScreens, imgGen, world);
         } catch (Exception e) {
             System.out.println("error");
             System.err.println("Error while loading screen {}:".replace("{}", scr.getName()));

@@ -13,15 +13,15 @@ public class Screen {
     public Block backgroundBlock;
     public final String name;
 
-    public Screen(String name, ArrayList<ArrayList<String>> rawMap, HashMap<Enemy, int[]> enemies, Block background, HashMap<String, Block> blocks, HashMap<String, String> adjacentScreens, ImageGenerator imgGen) {
+    public Screen(String name, ArrayList<ArrayList<String>> rawMap, HashMap<Enemy, int[]> enemies, Block background, HashMap<String, Block> blocks, HashMap<String, String> adjacentScreens, ImageGenerator imgGen, DungeonWorld world) {
         this.name = name;
-        map = loadMap(rawMap, blocks, imgGen);
+        map = loadMap(rawMap, blocks, imgGen, world);
         this.enemies = enemies;
         this.adjacentScreens = adjacentScreens;
         backgroundBlock = background;
     }
 
-    public static ArrayList<ArrayList<Block>> loadMapOld(ArrayList<ArrayList<String>> rawMap, HashMap<String, Block> blocks) {
+    public static ArrayList<ArrayList<Block>> loadMapOld(ArrayList<ArrayList<String>> rawMap, HashMap<String, Block> blocks, DungeonWorld world) {
         ArrayList<ArrayList<Block>> map = new ArrayList<>();
         ArrayList<Block> tmp;
         Block tmpBlock;
@@ -30,11 +30,8 @@ public class Screen {
             tmp = new ArrayList<>();
             for (String b : ttmp) {
                 try {
-                    tmpBlock = blocks.get(b).clone();
+                    tmpBlock = blocks.get(world.applyGenerationNoise(b)).clone();
                     img = tmpBlock.getImage();
-                    //if (tmpBlock instanceof Wall) {
-                    //    img = DungeonWorld.imgG.generateWallImage(rawMap.indexOf(ttmp), ttmp.indexOf(b), rawMap);
-                    //}
                     img.scale(64, 64);
                     tmpBlock.setImage(img);
                     tmp.add(blocks.get(b).clone());
@@ -49,16 +46,19 @@ public class Screen {
         return map;
     }
 
-    public static ArrayList<ArrayList<Block>> loadMap(ArrayList<ArrayList<String>> rawMap, HashMap<String, Block> blocks, ImageGenerator imgGen) {
+    public static ArrayList<ArrayList<Block>> loadMap(ArrayList<ArrayList<String>> rawMap, HashMap<String, Block> blocks, ImageGenerator imgGen, DungeonWorld world) {
         ArrayList<ArrayList<Block>> map = new ArrayList<>();
         ArrayList<Block> tmp;
         Block blk;
         GreenfootImage img;
+        String blkname;
         for (int y = 0; y < rawMap.size(); y++) {
             tmp = new ArrayList<>();
             for (int x = 0; x < rawMap.get(0).size(); x++) {
                 try {
-                    blk = blocks.get(rawMap.get(y).get(x)).clone();
+                    blkname = world.applyGenerationNoise(rawMap.get(y).get(x));
+                    rawMap.get(y).set(x, blkname);
+                    blk = blocks.get(blkname).clone();
                     img = imgGen.generateWallImage(x, y, rawMap);
                     if (img == null) {
                         img = blk.getImage();
