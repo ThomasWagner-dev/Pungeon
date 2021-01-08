@@ -13,6 +13,8 @@ public class Player extends Entity implements Collider {
     protected Weapon selectedWeapon;
     protected Inputs inputs = new Inputs(new KeyLayout());
     public String skin = "entity/player/player.png";
+    public String pronoun, displayname;
+    public Gender gender;
 
     public Player() {
         speed = 5;
@@ -20,6 +22,7 @@ public class Player extends Entity implements Collider {
         hp = 20;
         dmg = 7;
         type = "physical";
+        name = "player";
         rotation = new double[]{0, 0};
         //selectedWeapon = DungeonWorld.weapons.get("sword_basic");
     }

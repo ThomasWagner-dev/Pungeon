@@ -20,6 +20,8 @@ public class FileWork {
             wr.write("pos={x},{y}\n".replace("{x}", p.getX() + "").replace("{y}", p.getY() + ""));
             wr.write("screen={}\n".replace("{}", world.activeScreen.name));
             wr.write("[cosmetics]\n");
+            wr.write("name={}\n".replace("{}", p.displayname));
+            wr.write("gender={gnd};{pro}\n".replace("{gnd}", p.gender.s).replace("{pro}", String.join(",", p.gender.pronouns)));
             wr.write("skin={}\n".replace("{}", p.skin));
             wr.write("[inventory]\n");
             wr.write("weapon={}\n".replace("{}", p.selectedWeapon.name));
@@ -63,6 +65,14 @@ public class FileWork {
                             break;
                         case "maxhp":
                             player.maxhp = Integer.parseInt(line[1]);
+                            break;
+                        case "gender":
+                            String[] g = line[1].split(";");
+                            player.gender = Gender.from(g[0]);
+                            player.gender.pronouns = g[1].split(",");
+                            break;
+                        case "name":
+                            player.displayname = line[1];
                             break;
                         //add further save stuff here
                     }
