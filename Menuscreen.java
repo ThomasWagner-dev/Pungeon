@@ -14,10 +14,19 @@ public class Menuscreen extends World{
     public Font title, subtitle, subsubtitle;
     public java.awt.Font awttitle, awtsubtitle, awtsubsubtitle;
     public KeyLayout kl;
+
+    /**
+     * mainly checks if screen gets closed
+     * later check if any new tab is opened
+     */
     public void act() {
+        //fetches the latest key pressed
         String key = Greenfoot.getKey();
+        //checks if a key was pressed, and if it matches the key required to close the menu
         if (key != null && (resumeKey == null || key.equals(resumeKey))) {
+            //debug print statement
             System.out.println("key: "+ key + " last: " + lastKey);
+            //sets the world back to the origin, this menu was opened from
             Greenfoot.setWorld(origin);
         }
 
@@ -25,6 +34,11 @@ public class Menuscreen extends World{
         lastKey = key;
     }
 
+    /**
+     * Creates a new menuscreen
+     * @param origin the world the menu will return to when closed
+     * @param kl the keybinds which are gonna be shown
+     */
     public Menuscreen(DungeonWorld origin, KeyLayout kl) {
         super(DungeonWorld.width*DungeonWorld.pixelSize, DungeonWorld.height*DungeonWorld.pixelSize, 1);
         blackscreen = new GreenfootImage(getWidth(), getHeight());
@@ -41,18 +55,30 @@ public class Menuscreen extends World{
         this.kl = kl;
     }
 
+    /**
+     * displays a fancy displayscreen of the stored keybinds
+     */
     public void showKeybinds() {
         showKeybinds(kl);
     }
 
+    /**
+     * shows a fancy screen showing the keybinds
+     * @param kl the keybins which are gonna be displayed
+     */
     public void showKeybinds(KeyLayout kl) {
+        //sets the active world to this. therefore shows this screen
         Greenfoot.setWorld(this);
+        //sets the button to close the screen to r
         lastKey = kl.pause;
         resumeKey = "r";
+        //clones the image to be able to write on it without interfearing with the original screen
         GreenfootImage blackscreen = new GreenfootImage(this.blackscreen);
+        //sets color one writes as to white
         blackscreen.setColor(Color.WHITE);
         int x = 100, y = 50;
         String text;
+        //loops though all actiongroups the keylayout has
         for (KeyLayout.ActionGroup ag : KeyLayout.ActionGroup.values()) {
             text = kl.getKeysOfActionGroup(ag);
             blackscreen.setFont(title);
@@ -67,6 +93,11 @@ public class Menuscreen extends World{
         setBackground(blackscreen);
     }
 
+    /**
+     * shows a simple gameover screen.
+     * @param p the player which died.
+     * TODO: show player name
+     */
     public void showGameover(Player p) {
         resumeKey = "escape";
         Greenfoot.setWorld(this);
@@ -78,8 +109,6 @@ public class Menuscreen extends World{
         drawCenteredText(blackscreen, java.awt.Color.WHITE, awtsubtitle.deriveFont(30F), subtext, center, 250);
         drawCenteredText(blackscreen, java.awt.Color.WHITE, awtsubsubtitle.deriveFont(30F), "press {} to load latest save".replace("{}", resumeKey), center, (getHeight()/8)*7);
         setBackground(blackscreen);
-        origin.removeObjects(origin.getObjectsExclusive(Counter.class));
-        FileWork.loadPlayer(origin.selectedSave, origin, p);
     }
 
 

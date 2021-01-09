@@ -18,8 +18,8 @@ public class Counter extends Actor {
     /**
      * Basic constructor for the healtbar using 2 Greenfootimages.
      *
-     * @param bg     TODO
-     * @param prefix TODO
+     * @param bg     background image
+     * @param prefix image which always gets put in front of the value
      */
     public Counter(GreenfootImage bg, GreenfootImage prefix) {
         this.bg = bg;
@@ -29,8 +29,8 @@ public class Counter extends Actor {
     /**
      * Basic constructor for the healtbar using the name of 2 Greenfootimages.
      *
-     * @param bg     TODO
-     * @param prefix TODO
+     * @param bg     background image
+     * @param prefix text which always gets put in front of the value
      */
     public Counter(String bg, String prefix) {
         this(new GreenfootImage(bg), new GreenfootImage(prefix));

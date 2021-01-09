@@ -39,6 +39,10 @@ public class Player extends Entity implements Collider {
         }
     }
 
+    /**
+     * called if an item is collected
+     * @param i the item collected
+     */
     public void collect(Item i) {
         if (i.instant) {
             switch (i.changing) {
@@ -61,6 +65,9 @@ public class Player extends Entity implements Collider {
         getWorld().removeObject(i);
     }
 
+    /**
+     * checks if one is at the edge of a screen and then waprs to the next screen
+     */
     public void checkScreenTransition() {
         String edge = "";
         DungeonWorld world = (DungeonWorld) getWorld();
@@ -108,7 +115,13 @@ public class Player extends Entity implements Collider {
         return movement;
     }
 
+    /**
+     * called when the player dies. shows death screen and reloads latest save
+     */
     public void die() {
-        ((DungeonWorld) getWorld()).menuscrn.showGameover(this);
+        DungeonWorld origin = (DungeonWorld) getWorld();
+        origin.menuscrn.showGameover(this);
+        origin.removeObjects(origin.getObjectsExclusive(Counter.class));
+        FileWork.loadPlayer(origin.selectedSave, origin, this);
     }
 }

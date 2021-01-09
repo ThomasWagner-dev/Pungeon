@@ -13,6 +13,17 @@ public class Screen {
     public Block backgroundBlock;
     public final String name;
 
+    /**
+     * creates a new screen.
+     * @param name name of the screen
+     * @param rawMap the raw map of blocks (as strings)
+     * @param enemies all enemies present on this screen
+     * @param background the background tile, if any blocks get destroyed
+     * @param blocks a list of all blocks available to load
+     * @param adjacentScreens a map of adjacent screens
+     * @param imgGen an image generator for connected textures
+     * @param world the world for generation noise purposes
+     */
     public Screen(String name, ArrayList<ArrayList<String>> rawMap, HashMap<Enemy, int[]> enemies, Block background, HashMap<String, Block> blocks, HashMap<String, String> adjacentScreens, ImageGenerator imgGen, DungeonWorld world) {
         this.name = name;
         map = loadMap(rawMap, blocks, imgGen, world);
@@ -21,31 +32,14 @@ public class Screen {
         backgroundBlock = background;
     }
 
-    public static ArrayList<ArrayList<Block>> loadMapOld(ArrayList<ArrayList<String>> rawMap, HashMap<String, Block> blocks, DungeonWorld world) {
-        ArrayList<ArrayList<Block>> map = new ArrayList<>();
-        ArrayList<Block> tmp;
-        Block tmpBlock;
-        GreenfootImage img;
-        for (ArrayList<String> ttmp : rawMap) {
-            tmp = new ArrayList<>();
-            for (String b : ttmp) {
-                try {
-                    tmpBlock = blocks.get(world.applyGenerationNoise(b)).clone();
-                    img = tmpBlock.getImage();
-                    img.scale(64, 64);
-                    tmpBlock.setImage(img);
-                    tmp.add(blocks.get(b).clone());
-                } catch (Exception e) {
-                    System.err.println("Error while cloning block {}".replace("{}", b));
-                    e.printStackTrace();
-                    throw e;
-                }
-            }
-            map.add(tmp);
-        }
-        return map;
-    }
-
+    /**
+     * compiles a raw map into a map
+     * @param rawMap map of blocks as strings
+     * @param blocks all blocks available to load
+     * @param imgGen image generator for connected textures
+     * @param world the world for generation noise purposes
+     * @return returns a map of blocks
+     */
     public static ArrayList<ArrayList<Block>> loadMap(ArrayList<ArrayList<String>> rawMap, HashMap<String, Block> blocks, ImageGenerator imgGen, DungeonWorld world) {
         ArrayList<ArrayList<Block>> map = new ArrayList<>();
         ArrayList<Block> tmp;
@@ -76,6 +70,10 @@ public class Screen {
         return map;
     }
 
+    /**
+     * loads the screen onto the world
+     * @param world world the screen gets generated on
+     */
     public void load(DungeonWorld world) {
         List<Actor> actress = world.getObjectsExclusive(Player.class);
         //List<Actor> actress = world.getObjects(null);

@@ -117,9 +117,6 @@ public class DungeonWorld extends World {
         setPaintOrder(Counter.class, Projectile.class, Player.class, Enemy.class, Item.class, Wall.class, Trap.class, Tile.class);
         System.out.println();
 
-        //FileWork.dmgToData(data, dmgMultiplier);
-        //FileWork.writeData(data);
-
         // Inform the player of the end of the loading process.
         System.out.println("Finished loading.");
 

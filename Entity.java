@@ -24,7 +24,7 @@ public abstract class Entity extends Actor {
     }
 
     /**
-     * Yes
+     * gets processed every tick. moves the entity and plays animation if present
      */
     public void act() {
         move();

@@ -19,6 +19,11 @@ public abstract class Enemy extends Entity implements Cloneable {
         attack();
     }
 
+    /**
+     * Checks if the actor is in attack range of this object
+     * @param a actor to check range on
+     * @return
+     */
     public boolean inRange(Actor a) {
         double distance = DungeonWorld.getDistance(this, a); //fetch distance between me and actor
         int absRange = weapon.range * DungeonWorld.pixelSize + DungeonWorld.scaleImage(new GreenfootImage(weapon.hitbox), 1).getWidth() + DungeonWorld.pixelSize / 2; //calculate absolute range
@@ -26,7 +31,6 @@ public abstract class Enemy extends Entity implements Cloneable {
     }
 
     /**
-     * TODO
      * Abstract version of the attack method.
      * Will be overwritten by all subclasses, as all have a different attack scheme.
      */
@@ -35,10 +39,6 @@ public abstract class Enemy extends Entity implements Cloneable {
         DungeonWorld world = (DungeonWorld) getWorld();
         // Get closest player.
         Player p = (Player) world.getClosestObject(Player.class, this);
-        //System.out.println(distance);//
-        //checks if the distance to the player is close enough
-        //System.out.println((new GreenfootImage(weapon.hitbox)).getWidth()+DungeonWorld.pixelSize/2);
-        //System.out.println();
         // Spawn attack if the player is close enough.
         if (inRange(p)) {
             weapon.attack(world, this, new double[]{p.getX() - getX(), p.getY() - getY()});
@@ -54,7 +54,6 @@ public abstract class Enemy extends Entity implements Cloneable {
     /**
      * Clones the parameters of the enemy origin to the enemy e.
      * e has to be provided as Enemy itself is abstract
-     * TODO
      */
     public static Enemy topClone(Enemy e, Enemy origin) {
         e.hp = origin.hp;

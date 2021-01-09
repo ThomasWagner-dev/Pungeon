@@ -3,6 +3,10 @@ import greenfoot.World;
 
 import java.util.*;
 
+/**
+ * I'm just not gonna comment this pice of code.
+ * This code was made by Scisneromam#9346 on discord. If you do have any questions about this, please ask them.
+ */
 public class ImageGenerator {
     //corners, together they form a complete part
     private GreenfootImage wallCorner = new GreenfootImage("map/wall/connectedTextures/WallCorner.png");

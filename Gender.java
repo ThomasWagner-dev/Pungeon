@@ -6,11 +6,22 @@ public enum Gender {
 
     public final String s;
     public String[] pronouns;
+
+    /**
+     * Gender is just a social construct
+     * @param s gender label
+     * @param pronouns the pronouns people with such label use
+     */
     Gender(String s, String[] pronouns) {
         this.s = s;
         this.pronouns = pronouns;
     }
 
+    /**
+     * fetches a gender from a gender label
+     * @param s gender label
+     * @return the according gender
+     */
     public static Gender from(String s) {
         for (Gender g : Gender.values()) {
             if (g.s.equals(s)) return g;

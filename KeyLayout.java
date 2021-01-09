@@ -36,6 +36,11 @@ public class KeyLayout {
     public void remap() {
     }
 
+    /**
+     * returns a string of the keybinds of the actiongroup
+     * @param ag the actiongroup the keybinds are requested of
+     * @return a string of all keybinds in the actiongroup
+     */
     public String getKeysOfActionGroup(ActionGroup ag) {
         switch (ag) {
             case MOVEMENT:
