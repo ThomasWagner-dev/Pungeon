@@ -6,6 +6,7 @@ gender=f;she,her
 name=Arva
 skin=entity/player/player_f.png
 [inventory]
+inv_weapons=bow_basic,sword_basic,sword_epic
 weapon=bow_basic
 [status]
 hp=20

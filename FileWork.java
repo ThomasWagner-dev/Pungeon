@@ -2,6 +2,7 @@ import greenfoot.*;
 
 import java.util.*;
 import java.io.*;
+import java.util.stream.Collectors;
 
 public class FileWork {
     public static Tag endTag = new Tag(Tag.Type.TAG_End, null, null);
@@ -34,6 +35,7 @@ public class FileWork {
             wr.write("gender={gnd};{pro}\n".replace("{gnd}", p.gender.s).replace("{pro}", String.join(",", p.gender.pronouns)));
             wr.write("skin={}\n".replace("{}", p.skin));
             wr.write("[inventory]\n");
+            wr.write("inv_weapons={}\n".replace("{}", String.join(",", p.inv_weapons.stream().map(w -> w.name).collect(Collectors.toList()))));
             wr.write("weapon={}\n".replace("{}", p.selectedWeapon.name));
             wr.write("[status]\n");
             wr.write("hp={}\n".replace("{}", p.hp + ""));
@@ -68,7 +70,22 @@ public class FileWork {
                             player.skin = line[1];
                             break;
                         case "weapon":
-                            player.selectWeapon(world.weapons.get(line[1]).clone());
+                            for (Weapon wpn : player.inv_weapons) {
+                                if (wpn.name.equals(line[1])) {
+                                    player.selectWeapon(wpn);
+                                    break;
+                                }
+                            }
+                            if (player.selectedWeapon == null) {
+                                player.selectWeapon(player.inv_weapons.get(0));
+                            }
+                            break;
+                        case "inv_weapons":
+                            System.out.println(line[1]);
+                            for (String wpn : line[1].split(",")) {
+                                player.inv_weapons.add(world.weapons.get(wpn).clone());
+                            }
+                            System.out.println(player.inv_weapons);
                             break;
                         case "hp":
                             player.hp = Integer.parseInt(line[1]);

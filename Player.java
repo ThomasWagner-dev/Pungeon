@@ -1,4 +1,4 @@
-
+import java.util.*;
 
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
@@ -11,7 +11,8 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class Player extends Entity implements Collider {
     protected double[] rotation;
     protected Weapon selectedWeapon;
-    protected Inputs inputs = new Inputs(new KeyLayout());
+    protected ArrayList<Weapon> inv_weapons = new ArrayList<>();
+    protected Inputs inputs = new Inputs(new KeyLayout(), this);
     public String skin = "entity/player/player.png";
     public String pronoun, displayname;
     public Gender gender;
@@ -23,7 +24,7 @@ public class Player extends Entity implements Collider {
         dmg = 7;
         type = "physical";
         name = "player";
-        rotation = new double[]{0, 0};
+        rotation = new double[]{1, 0};
         //selectedWeapon = DungeonWorld.weapons.get("sword_basic");
     }
 
@@ -34,9 +35,7 @@ public class Player extends Entity implements Collider {
         if (isAtEdge()) {
             checkScreenTransition();
         }
-        if (inputs.attacks()) {
-            attack();
-        }
+        inputs.checkKeys();
     }
 
     /**

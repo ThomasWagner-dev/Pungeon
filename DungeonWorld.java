@@ -130,6 +130,9 @@ public class DungeonWorld extends World {
         if (Greenfoot.isKeyDown(menuscrn.kl.pause)) {
             menuscrn.showKeybinds();
         }
+        if (Greenfoot.isKeyDown(menuscrn.kl.map)) {
+            menuscrn.showMap();
+        }
     }
 
     /**

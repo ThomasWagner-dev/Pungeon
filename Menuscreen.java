@@ -96,21 +96,33 @@ public class Menuscreen extends World{
     /**
      * shows a simple gameover screen.
      * @param p the player which died.
-     * TODO: show player name
+     *
      */
     public void showGameover(Player p) {
         resumeKey = "escape";
         Greenfoot.setWorld(this);
 
-        String text = "GAME OVER", subtext = "You died", subsubtext = "Come on {}, you can do it. Stay determent";
+        String text = "GAME OVER", subtext = "You died", subsubtext = "Come on {}, you can do it. Stay determined!";
         int center = blackscreen.getWidth()/2;
         GreenfootImage blackscreen = new GreenfootImage(this.blackscreen);
         drawCenteredText(blackscreen, java.awt.Color.RED, awttitle.deriveFont(50F), text, center, 100);
         drawCenteredText(blackscreen, java.awt.Color.WHITE, awtsubtitle.deriveFont(30F), subtext, center, 250);
+        drawCenteredText(blackscreen, new java.awt.Color(64,162,255), awtsubtitle.deriveFont(30F), subsubtext.replace("{}", p.displayname), center, 300);
         drawCenteredText(blackscreen, java.awt.Color.WHITE, awtsubsubtitle.deriveFont(30F), "press {} to load latest save".replace("{}", resumeKey), center, (getHeight()/8)*7);
         setBackground(blackscreen);
     }
 
+    public void showMap() {
+        resumeKey = "escape";
+        Greenfoot.setWorld(this);
+        GreenfootImage bg = new GreenfootImage(blackscreen),
+            map = new GreenfootImage("images/map/maps/"+origin.activeScreen.name.substring(2,origin.activeScreen.name.length())+ ".png");
+        double mx = bg.getWidth()/map.getWidth(), my = bg.getHeight()/map.getHeight();
+
+        map.scale((int) Math.round(map.getWidth()*Math.min(mx, my)), (int) Math.round(map.getHeight()*Math.min(mx, my)));
+        bg.drawImage(map, bg.getWidth()/2 - map.getWidth()/2,bg.getHeight()/2 - map.getHeight()/2);
+        setBackground(bg);
+    }
 
     /**
      * @param gfi  The GreenfootImage to center the text on
@@ -151,4 +163,5 @@ public class Menuscreen extends World{
 
         graphics.dispose();
     }
+
 }

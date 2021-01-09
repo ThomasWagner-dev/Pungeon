@@ -54,12 +54,19 @@ def getEnMapString(hexmap):
         for x in range(len(hexmap[0])):
             en = enallo.get(hexmap[yrow][x])
             hexval = hexmap[yrow][x]
-            if hexval != "888888" and hexval != "523d22":
-                print(hexmap[yrow][x])
-                print(en)
             if (en != None):
                 string += en + "=" + str(x) + "," + str(yrow) + "\n"
     return string
+
+def wipe_mapinformation(pic):
+    rgb_wall = np.array([136,136,136])
+    rgb_tile = np.array([82,61,34])
+    for i, y in enumerate(pic):
+        for j, x in enumerate(y):
+            if (not np.array_equal(x, rgb_wall)):
+                pic[i][j] = rgb_tile
+    return pic
+    #return [[x if (np.array_equal(x, rgb_wall) or np.array_equal(x, rgb_tile)) else rgb_tile for x in y] for y in pic]
 
 def file2screens(file):
     filename = file.split("/")[-1]
@@ -81,6 +88,10 @@ def file2screens(file):
             enfile = open(screenname.replace(".world", ".enemymap"), "w")
             enfile.write(getEnMapString(hexmap))
             enfile.close()
+    wiped_map = wipe_mapinformation(pic)
+    mapname = "../../images/map/maps/" + filename
+    cv.imwrite(mapname, cv.cvtColor(wiped_map, cv.COLOR_RGB2BGR))
+    print(f"wrote map to {mapname}")
     
 if (__name__ == "__main__"):
     while (True):

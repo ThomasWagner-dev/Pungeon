@@ -19,7 +19,8 @@ public class KeyLayout {
             w_cycle_b = "x",
             i_cycle_f = "f",
             i_cycle_b = "r",
-            pause = "escape";
+            pause = "escape",
+            map = "tab";
 
     enum ActionGroup {
         MOVEMENT,

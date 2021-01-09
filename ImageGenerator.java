@@ -6,6 +6,7 @@ import java.util.*;
 /**
  * I'm just not gonna comment this pice of code.
  * This code was made by Scisneromam#9346 on discord. If you do have any questions about this, please ask them.
+ * This is a connected textures class and generates a wall image from the given position and the raw map.
  */
 public class ImageGenerator {
     //corners, together they form a complete part

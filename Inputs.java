@@ -1,5 +1,5 @@
 
-
+import java.util.*;
 import greenfoot.*;
 
 /**
@@ -10,10 +10,12 @@ import greenfoot.*;
  */
 public class Inputs {
     KeyLayout keybinds;
+    Player p;
+    ArrayList<String> pressed_keys = new ArrayList<>();
 
-
-    public Inputs(KeyLayout keybinds) {
+    public Inputs(KeyLayout keybinds, Player p) {
         this.keybinds = keybinds;
+        this.p = p;
     }
 
 
@@ -48,11 +50,36 @@ public class Inputs {
         return new double[][]{movement, new double[]{speedmultiplier}};
     }
 
-    /**
-     * checks if Attack key is pressed.
-     */
-    public boolean attacks() {
-        boolean isPressed = false;
-        return Greenfoot.isKeyDown(keybinds.attack);
+
+    public void checkKeys() {
+        if (Greenfoot.isKeyDown(keybinds.attack)) {
+            if (! pressed_keys.contains(keybinds.attack)) {
+                pressed_keys.add(keybinds.attack);
+                p.attack();
+            }
+        }
+        else {
+            pressed_keys.remove(keybinds.attack);
+        }
+        if (Greenfoot.isKeyDown(keybinds.w_cycle_f) ) {
+            if (! pressed_keys.contains(keybinds.w_cycle_f)) {
+                p.selectWeapon(p.inv_weapons.get((p.inv_weapons.indexOf(p.selectedWeapon) + 1) % p.inv_weapons.size()));
+                pressed_keys.add(keybinds.w_cycle_f);
+            }
+        }
+        else {
+            pressed_keys.remove(keybinds.w_cycle_f);
+        }
+        if (Greenfoot.isKeyDown(keybinds.w_cycle_b) ) {
+            if (! pressed_keys.contains(keybinds.w_cycle_b)) {
+                int ind = p.inv_weapons.indexOf(p.selectedWeapon) - 1;
+                if (ind < 0) ind += p.inv_weapons.size();
+                p.selectWeapon(p.inv_weapons.get(ind));
+                pressed_keys.add(keybinds.w_cycle_b);
+            }
+        }
+        else {
+            pressed_keys.remove(keybinds.w_cycle_b);
+        }
     }
 }
