@@ -49,8 +49,6 @@ public class DungeonWorld extends World {
         System.out.println();
         // Load damage Multipliers.
         System.out.println("Loading damage multipliers...");
-        //dmgMultiplierTag = data.findNextTag("dmgMultipliers");
-        //dmgMultiplierTag.print();
         dmgMultiplier = FileWork.getDmgMultiplier(data.findNextTag("dmgMultipliers"));
         System.out.println("Loaded types: " + dmgMultiplier.keySet());
         System.out.println();

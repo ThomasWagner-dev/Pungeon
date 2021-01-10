@@ -3,7 +3,7 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Superclass for all Melee enemies.
+ * Superclass for all colliding Melee enemies.
  */
 public class CollidingEnemy extends Enemy implements Collider {
 
@@ -16,7 +16,7 @@ public class CollidingEnemy extends Enemy implements Collider {
     }
 
     /**
-     * Definition of standart movement for all melee enemies:
+     * Defines the standart movement for all melee enemies:
      * Walk directly towards the player and ignore walls or others.
      */
     public double[][] getMovement() {
@@ -27,7 +27,7 @@ public class CollidingEnemy extends Enemy implements Collider {
     }
 
     /**
-     * returns a clone of this enemy
+     * Returns a clone of this enemy.
      */
     public Enemy clone() {
         return super.topClone(new CollidingEnemy(name), this);
