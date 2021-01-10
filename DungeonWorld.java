@@ -120,19 +120,13 @@ public class DungeonWorld extends World {
         // Inform the player of the end of the loading process.
         System.out.println("Finished loading.");
 
-        menuscrn = new Menuscreen(this, getObjects(Player.class).get(0).inputs.keybinds);
+        menuscrn = new Menuscreen(this, getObjects(Player.class).get(0).inputs);
         Greenfoot.setWorld(menuscrn);
         menuscrn.showKeybinds();
         Greenfoot.start();
     }
 
     public void act() {
-        if (Greenfoot.isKeyDown(menuscrn.kl.pause)) {
-            menuscrn.showKeybinds();
-        }
-        if (Greenfoot.isKeyDown(menuscrn.kl.map)) {
-            menuscrn.showMap();
-        }
     }
 
     /**
@@ -142,20 +136,20 @@ public class DungeonWorld extends World {
      * @param caller The calling Actor.
      * @return The closest Object of the given class "cls" to the calling Actor.
      */
-    public Actor getClosestObject(Class cls, Actor caller) {
+    public <T extends Actor> T getClosestObject(Class cls, Actor caller) {
         // Retrieve all objects of the class "cls" currently present in the world and save them to a list.
-        List<Actor> actors = getObjects(cls);
+        List<T> actors = getObjects(cls);
         // Remove the calling actor "me" from the list to avoid using distance to self.
         actors.remove(caller);
         // Save the x and y coordinates of the calling Actor for computational efficiency.
         int x = caller.getX();
         int y = caller.getY();
         // Assume the first actor is the closest one till proven otherwise.
-        Actor closest = actors.get(0);
+        T closest = actors.get(0);
         double mindistance = getDistance(x, y, closest.getX(), closest.getY());
         double distance = 0;
         // Loop through all Actors in the list actors to find the closest actor of the class "cls".
-        for (Actor a : actors) {
+        for (T a : actors) {
             // Get the distance between the two Actors.
             distance = getDistance(x, y, a.getX(), a.getY());
             // Check if distance of the points closer than the previously chosen closest one.

@@ -76,11 +76,26 @@ public abstract class Enemy extends Entity implements Cloneable {
         Tag loottable = world.loottables.findNextTag(name);
         double probability, drop;
         Item i;
+        String name;
         if (loottable == null) {
-            System.err.println("No loottable defined for {}".replace("{}", name));
+            System.err.println("No loottable defined for {}".replace("{}", this.name));
         } else {
             for (Tag t : (Tag[]) loottable.getValue()) {
-                i = world.items.get(t.getName());
+                if (t.getName() == null) continue;
+                name = t.getName();
+                if (name.startsWith("any_")) {
+                    switch (name) {
+                        case "any_weapon":
+                            i = world.weapons.get(world.weapons.keySet().toArray()[world.random.nextInt(world.weapons.size())]).clone();
+                            break;
+                        case "any_items":
+                        default:
+                            i = world.items.get(world.items.keySet().toArray()[world.random.nextInt(world.items.size())]).clone();
+                    }
+                }
+                else {
+                    i = world.items.get(t.getName());
+                }
                 if (i == null) continue;
                 probability = (double) t.getValue();
                 drop = random.nextDouble();

@@ -59,7 +59,13 @@ public class Player extends Entity implements Collider {
                     break;
             }
         } else {
-            //TODO add to inv
+            if (i instanceof Weapon) {
+                Weapon wpn = (Weapon) i;
+                inv_weapons.add(wpn);
+            }
+            else {
+                //TODO add to inv
+            }
         }
         getWorld().removeObject(i);
     }

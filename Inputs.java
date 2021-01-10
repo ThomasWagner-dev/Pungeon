@@ -52,34 +52,35 @@ public class Inputs {
 
 
     public void checkKeys() {
-        if (Greenfoot.isKeyDown(keybinds.attack)) {
-            if (! pressed_keys.contains(keybinds.attack)) {
-                pressed_keys.add(keybinds.attack);
-                p.attack();
+        if (checkKey(keybinds.attack)) {
+            p.attack();
+        }
+        if (checkKey(keybinds.w_cycle_f)) {
+            p.selectWeapon(p.inv_weapons.get((p.inv_weapons.indexOf(p.selectedWeapon) + 1) % p.inv_weapons.size()));
+        }
+        if (checkKey(keybinds.w_cycle_b) ) {
+            int ind = p.inv_weapons.indexOf(p.selectedWeapon) - 1;
+            if (ind < 0) ind += p.inv_weapons.size();
+            p.selectWeapon(p.inv_weapons.get(ind));
+        }
+        if (checkKey(keybinds.pause)) {
+            ((DungeonWorld) p.getWorld()).menuscrn.showKeybinds();
+        }
+        if (checkKey(keybinds.map)) {
+            ((DungeonWorld) p.getWorld()).menuscrn.showMap();
+        }
+    }
+
+    public boolean checkKey(String key) {
+        if (Greenfoot.isKeyDown(key)) {
+            if (! pressed_keys.contains(key)) {
+                pressed_keys.add(key);
+                return true;
             }
         }
         else {
-            pressed_keys.remove(keybinds.attack);
+            pressed_keys.remove(key);
         }
-        if (Greenfoot.isKeyDown(keybinds.w_cycle_f) ) {
-            if (! pressed_keys.contains(keybinds.w_cycle_f)) {
-                p.selectWeapon(p.inv_weapons.get((p.inv_weapons.indexOf(p.selectedWeapon) + 1) % p.inv_weapons.size()));
-                pressed_keys.add(keybinds.w_cycle_f);
-            }
-        }
-        else {
-            pressed_keys.remove(keybinds.w_cycle_f);
-        }
-        if (Greenfoot.isKeyDown(keybinds.w_cycle_b) ) {
-            if (! pressed_keys.contains(keybinds.w_cycle_b)) {
-                int ind = p.inv_weapons.indexOf(p.selectedWeapon) - 1;
-                if (ind < 0) ind += p.inv_weapons.size();
-                p.selectWeapon(p.inv_weapons.get(ind));
-                pressed_keys.add(keybinds.w_cycle_b);
-            }
-        }
-        else {
-            pressed_keys.remove(keybinds.w_cycle_b);
-        }
+        return false;
     }
 }

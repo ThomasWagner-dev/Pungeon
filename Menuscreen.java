@@ -13,7 +13,7 @@ public class Menuscreen extends World{
     public final DungeonWorld origin;
     public Font title, subtitle, subsubtitle;
     public java.awt.Font awttitle, awtsubtitle, awtsubsubtitle;
-    public KeyLayout kl;
+    public Inputs inp;
 
     /**
      * mainly checks if screen gets closed
@@ -21,25 +21,19 @@ public class Menuscreen extends World{
      */
     public void act() {
         //fetches the latest key pressed
-        String key = Greenfoot.getKey();
         //checks if a key was pressed, and if it matches the key required to close the menu
-        if (key != null && (resumeKey == null || key.equals(resumeKey))) {
-            //debug print statement
-            System.out.println("key: "+ key + " last: " + lastKey);
+        if (inp.checkKey(resumeKey)) {
             //sets the world back to the origin, this menu was opened from
             Greenfoot.setWorld(origin);
         }
-
-        //lastKey = key==null? lastKey : key;
-        lastKey = key;
     }
 
     /**
      * Creates a new menuscreen
      * @param origin the world the menu will return to when closed
-     * @param kl the keybinds which are gonna be shown
+     * @param inp the keybinds which are gonna be shown
      */
-    public Menuscreen(DungeonWorld origin, KeyLayout kl) {
+    public Menuscreen(DungeonWorld origin, Inputs inp) {
         super(DungeonWorld.width*DungeonWorld.pixelSize, DungeonWorld.height*DungeonWorld.pixelSize, 1);
         blackscreen = new GreenfootImage(getWidth(), getHeight());
         blackscreen.setColor(Color.BLACK);
@@ -52,14 +46,14 @@ public class Menuscreen extends World{
         awttitle = origin.awtfonts.get("pixel-bubble");
         awtsubtitle = origin.awtfonts.get("Welbut");
         awtsubsubtitle = origin.awtfonts.get("ThickThinPixel");
-        this.kl = kl;
+        this.inp = inp;
     }
 
     /**
      * displays a fancy displayscreen of the stored keybinds
      */
     public void showKeybinds() {
-        showKeybinds(kl);
+        showKeybinds(inp.keybinds);
     }
 
     /**

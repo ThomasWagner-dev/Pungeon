@@ -78,7 +78,12 @@ public class Item extends Actor {
      * @param world the world the items gets spawned in
      */
     public void drop(int x, int y, DungeonWorld world) {
-        world.addObject(clone(), world.random.nextInt(world.pixelSize * 2) - world.pixelSize + x, world.random.nextInt(world.pixelSize * 2) - world.pixelSize + y);
+        int sx, sy;
+        do {
+            sy = world.random.nextInt(world.pixelSize * 2) - world.pixelSize + y;
+            sx = world.random.nextInt(world.pixelSize*2)- world.pixelSize +x;
+        } while(world.getObjectsAt(sx, sy, Collider.class).size() != 0);
+        world.addObject(clone(), sx, sy);
         System.out.println("added item at: " + x + " " + y);
     }
 

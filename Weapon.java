@@ -5,7 +5,7 @@ import greenfoot.*;
  *
  * @author Commentator
  */
-public class Weapon {
+public class Weapon extends Item{
     public final int range, dmg, maxCooldown, speed;
     public final double scale;
     public final String name, description, dmgType, displayName;
@@ -39,6 +39,7 @@ public class Weapon {
      * @param angle the standard rotation angle of the projectile when spawned
      */
     public Weapon(String name, String displayname, String description, int range, int dmg, String dmgType, int speed, int cooldown, String spriteName, double scale, String hitbox, boolean isMelee, int angle) {
+        super(name, false, null, null, spriteName);
         this.range = range;
         this.name = name;
         this.description = description;

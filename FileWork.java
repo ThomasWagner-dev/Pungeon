@@ -85,7 +85,6 @@ public class FileWork {
                             for (String wpn : line[1].split(",")) {
                                 player.inv_weapons.add(world.weapons.get(wpn).clone());
                             }
-                            System.out.println(player.inv_weapons);
                             break;
                         case "hp":
                             player.hp = Integer.parseInt(line[1]);

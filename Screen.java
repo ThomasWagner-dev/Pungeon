@@ -101,10 +101,11 @@ public class Screen {
         //load Enemies
         int[] pos;
         for (Enemy e : enemies.keySet()) {
+            if (e.hp <= 0) continue;
             pos = enemies.get(e);
             pos = DungeonWorld.compilePosition(pos);
             world.addObject(
-                    e.clone(),
+                    e,//.clone(),
                     pos[0],
                     pos[1]
             );
