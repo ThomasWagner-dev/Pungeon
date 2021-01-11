@@ -5,7 +5,7 @@ import greenfoot.*;
  *
  * @author Commentator
  */
-public class Weapon extends Item{
+public class Weapon extends Item {
     public final int range, dmg, maxCooldown, speed;
     public final double scale;
     public final String name, description, dmgType, displayName;

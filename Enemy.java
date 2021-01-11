@@ -22,7 +22,7 @@ public abstract class Enemy extends Entity implements Cloneable {
     /**
      * Checks if the actor is in attack range of this object
      * @param a actor to check range on
-     * @return
+     * @return if the actor a is in range of this
      */
     public boolean inRange(Actor a) {
         double distance = DungeonWorld.getDistance(this, a); //fetch distance between me and actor

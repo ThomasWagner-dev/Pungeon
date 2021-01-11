@@ -4,7 +4,7 @@ import greenfoot.*;
 
 /**
  * Class to fetch inputs.
- * Required to make controlleraccessebility easier to add afterwards.
+ * Required to make controller accessebility easier to add afterwards.
  *
  * @author Commentator
  */

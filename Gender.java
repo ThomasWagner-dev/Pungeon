@@ -1,3 +1,7 @@
+/**
+ * Gender is a bad social construct (ge<b>schlecht</b>). It makes thausands of people depressed and make some even commit suicide.
+ * Stop using gender.
+ */
 public enum Gender {
     F ("female", new String[]{"she", "her"}),
     M ("male", new String[]{"he", "him"}),

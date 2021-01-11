@@ -259,7 +259,6 @@ public class DungeonWorld extends World {
     public String applyGenerationNoise(String b) {
         Tag noise = generationNoises.findNextTag(b);
         if (noise == null) return b;
-        double rn;
         for (Tag t : (Tag[]) noise.getValue()) {
             if (t.getName() == null) continue;
             if ((Double) t.getValue() > random.nextDouble()) {

@@ -65,7 +65,7 @@ public class Menuscreen extends World{
         Greenfoot.setWorld(this);
         //sets the button to close the screen to r
         lastKey = kl.pause;
-        resumeKey = "r";
+        resumeKey = kl.pause;
         //clones the image to be able to write on it without interfearing with the original screen
         GreenfootImage blackscreen = new GreenfootImage(this.blackscreen);
         //sets color one writes as to white

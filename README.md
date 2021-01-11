@@ -8,6 +8,7 @@ A simple top down Roguelike using Greenfoot.
 * [Addon scripts](#addon-scripts)
 * [data.nbt](#data.nbt)
 * [Contributers](#contributers)
+* [Noised map generation](#noised-map-generation)
 
 ## General info
 This a simple top down Roguelike game based on Greenfoot.  
@@ -33,6 +34,10 @@ They are NOT required for the game to work, but are tools for the devs and modde
 ## data.nbt
 the file data.nbt stores all data except save files. This includes weapons, items, enemies, the world and a lot more. 
 NBT or Named Binary Tag is a file format used by the game Minecraft and can be opened using an nbtexplorer such as [NBTExplorer](https://github.com/jaquadro/NBTExplorer/releases/tag/v2.8.0-win)
+
+## Noised map generation
+The rooms of the dungeon don't always look the same. They differ each time the game is started (aka the screens are cashed).
+This is due to generation noise (defined in the data.nbt) and is applied when the map is generated.
 
 ## Contributers
 -Thomas Wagner  

@@ -1,6 +1,6 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-public class Item extends Actor {
+public class Item extends Actor implements Cloneable {
     public final boolean instant;
     public final String changing, amount, name;
 
