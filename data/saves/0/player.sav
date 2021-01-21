@@ -2,12 +2,12 @@
 pos=810,322
 screen=00Dungeon01
 [cosmetics]
-gender=f;she,her
+gender=f;she/her
 name=Arva
 skin=entity/player/player_f.png
 [inventory]
-inv_weapons=bow_basic,sword_basic,sword_epic
-weapon=bow_basic
+inv_weapons=bow_creative,sword_basic,sword_epic
+weapon=bow_creative
 [status]
 hp=20
 maxhp=20

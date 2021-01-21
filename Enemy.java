@@ -73,37 +73,25 @@ public abstract class Enemy extends Entity implements Cloneable {
     public void die() {
         DungeonWorld world = (DungeonWorld) getWorld();
         Random random = world.random;
-        Tag loottable = world.loottables.findNextTag(name);
+        Tag loottable = world.mobdrops.findNextTag(name);
         double probability, drop;
         Item i;
         String name;
         if (loottable == null) {
             System.err.println("No loottable defined for {}".replace("{}", this.name));
         } else {
-            for (Tag t : (Tag[]) loottable.getValue()) {
-                if (t.getName() == null) continue;
-                name = t.getName();
-                if (name.startsWith("any_")) {
-                    switch (name) {
-                        case "any_weapon":
-                            i = world.weapons.get(world.weapons.keySet().toArray()[world.random.nextInt(world.weapons.size())]).clone();
-                            break;
-                        case "any_items":
-                        default:
-                            i = world.items.get(world.items.keySet().toArray()[world.random.nextInt(world.items.size())]).clone();
-                    }
-                }
-                else {
-                    i = world.items.get(t.getName());
-                }
-                if (i == null) continue;
-                probability = (double) t.getValue();
-                drop = random.nextDouble();
-                System.out.println("drop: " + drop + " prob: " + probability);
-                if (probability > random.nextDouble()) {
-                    i.drop(getX(), getY(), world);
-                }
-                System.out.println(t.getName());
+            Tag slotTag = loottable.findNextTag("slots"),
+                tables = loottable.findNextTag("table");
+            double min = (Double) slotTag.get("min"),
+                    max = (Double) slotTag.get("max"),
+                    mean = (Double) slotTag.get("mean");
+
+            int slotAmount = (int) world.nextGaussian(min, mean, max),
+                x = getX(),
+                y = getY();
+            System.out.println("loot has {} slots".replace("{}", slotAmount+""));
+            for (int slot = 0; slot < slotAmount; slot++) {
+                world.loottables.get(Loottable.selectOne((Tag[]) tables.getValue(), world.random)).dropOne(world, x, y);
             }
         }
         super.die();

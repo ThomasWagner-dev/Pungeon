@@ -85,7 +85,7 @@ public class Projectile extends Entity {
         this.me = me;
         this.speed = speed;
 
-        setImage(spriteName);
+        setSprite(spriteName);
     }
 
 

@@ -28,7 +28,8 @@ public class KeyLayout {
         ATTACK,
         ITEMS,
         WEAPONS,
-        PAUSE
+        PAUSE,
+        MAP
     }
 
     /**
@@ -56,6 +57,8 @@ public class KeyLayout {
                 return String.join(", ", new String[]{w_cycle_f, w_cycle_b});
             case PAUSE:
                 return pause;
+            case MAP:
+                return map;
             default:
                 return "";
         }

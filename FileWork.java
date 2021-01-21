@@ -555,4 +555,46 @@ public class FileWork {
         }
         return fonts;
     }
+
+    /**
+     * Loads all loottables from the given tag
+     * @param table the tag the loottables are stored in
+     * @return a hashmap of loottables as name -> table
+     */
+    public static HashMap<String, Loottable> loadAllLoottables(Tag table) {
+        HashMap<String, Loottable> tables = new HashMap<>();
+        for (Tag t : (Tag[]) table.getValue()) {
+            if (t.getName() == null) continue;
+            tables.put(t.getName(), loadLoottable(t));
+        }
+        return tables;
+    }
+
+    /**
+     * Loads a single loottable from the tag
+     * @param table the tag the loottable is stored in
+     * @return a fabric new Loottable
+     */
+    public static Loottable loadLoottable(Tag table) {
+        HashMap<String, Double> tableloot = new HashMap<>(),
+                itemloot = new HashMap<>();
+        for (Tag t : (Tag[]) table.getValue()) {
+            if (t.getName() == null) continue;
+            switch (t.getName()) {
+                case "table":
+                    for (Tag tag : (Tag[]) t.getValue()) {
+                        if (tag.getName() == null) continue;
+                        tableloot.put(tag.getName(), (Double)tag.getValue());
+                    }
+                    break;
+                case "item":
+                    for (Tag tag : (Tag[]) t.getValue()) {
+                        if (tag.getName() == null) continue;
+                        itemloot.put(tag.getName(), (Double)tag.getValue());
+                    }
+                    break;
+            }
+        }
+        return new Loottable(table.getName(), tableloot, itemloot);
+    }
 }

@@ -107,7 +107,7 @@ public class Menuscreen extends World{
     }
 
     public void showMap() {
-        resumeKey = "escape";
+        resumeKey = inp.keybinds.map;
         Greenfoot.setWorld(this);
         GreenfootImage bg = new GreenfootImage(blackscreen),
             map = new GreenfootImage("images/map/maps/"+origin.activeScreen.name.substring(2,origin.activeScreen.name.length())+ ".png");

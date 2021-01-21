@@ -12,10 +12,11 @@ public class DungeonWorld extends World {
     public final HashMap<String, Enemy> enemies;
     public final HashMap<String, Screen> screens;
     public final HashMap<String, Item> items;
+    public final HashMap<String, Loottable> loottables;
     public final HashMap<String, Font> gffonts;
     public final HashMap<String, java.awt.Font> awtfonts;
     public static final int pixelSize = 64, globalScale = pixelSize / 16, height = 13, width = 22;
-    public final Tag data, loottables, generationNoises;
+    public final Tag data, mobdrops, generationNoises;
     public Screen activeScreen;
     public int selectedSave;
     public MusicHandler musichandler;
@@ -52,10 +53,15 @@ public class DungeonWorld extends World {
         dmgMultiplier = FileWork.getDmgMultiplier(data.findNextTag("dmgMultipliers"));
         System.out.println("Loaded types: " + dmgMultiplier.keySet());
         System.out.println();
+        //Load mobdrops.
+        System.out.println("Loading mobdrops...");
+        mobdrops = data.findNextTag("mobdrops");
+        mobdrops.print();
+        System.out.println();
         //Load loottables.
         System.out.println("Loading loottables...");
-        loottables = data.findNextTag("loottables");
-        loottables.print();
+        loottables = FileWork.loadAllLoottables(data.findNextTag("loottables"));
+        System.out.println("Loaded loottables: " + loottables.keySet());
         System.out.println();
         // Load generation noises
         System.out.println("Loading generationnoises...");
@@ -76,6 +82,11 @@ public class DungeonWorld extends World {
         System.out.println("Loading items...");
         items = FileWork.loadAllItems(data.findNextTag("items"));
         System.out.println("Loaded items: " + items.keySet());
+        System.out.println();
+        // merge weapons into items
+        System.out.println("merging weapons...");
+        items.putAll(weapons);
+        System.out.println("All droppable items: " + items.keySet());
         System.out.println();
         // Load enemies.
         System.out.println("Loading enemies...");
@@ -266,5 +277,26 @@ public class DungeonWorld extends World {
             }
         }
         return b;
+    }
+
+    /**
+     * generates a new Random number from a Gaussian function having a custom mean and standardDeviation
+     * @param mean the mean of the function
+     * @param standardDeviation the standard deviation of the function
+     * @return a random number
+     */
+    public double nextGaussian(double mean, double standardDeviation) {
+        return random.nextGaussian()*standardDeviation + mean ;
+    }
+
+    /**
+     * Generates a Random number in the defined range, having a mean
+     * @param min the smallest outcome of the random number
+     * @param mean the average outcome
+     * @param max the maximum outcome
+     * @return a random number
+     */
+    public double nextGaussian(double min, double mean, double max) {
+        return Math.max(Math.min(nextGaussian(mean, ( max - min + 1 ) * 0.25 ), max), min);
     }
 }

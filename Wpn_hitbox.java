@@ -28,9 +28,11 @@ public class Wpn_hitbox extends Projectile {
     public Wpn_hitbox(double[] direction, int dmg, String dmgType, int speed, boolean isReflective, String spriteName, Actor me) {
         super(direction, dmg, dmgType, speed, isReflective, spriteName, me);
         lifespan = 5;
+        setSprite(spriteName, 1.5);
     }
 
     public Wpn_hitbox(double[] direction, Weapon selectedWeapon, Actor root) {
         super(direction, selectedWeapon, root);
+        setSprite(selectedWeapon.hitbox, 1.5);
     }
 }
