@@ -64,14 +64,16 @@ public class Inputs {
             p.selectWeapon(p.inv_weapons.get(ind));
         }
         if (checkKey(keybinds.pause)) {
-            ((DungeonWorld) p.getWorld()).menuscrn.showKeybinds();
+            ((DungeonWorld) p.getWorld()).menuscrn.showEscape();
         }
         if (checkKey(keybinds.map)) {
-            ((DungeonWorld) p.getWorld()).menuscrn.showMap();
+            DungeonWorld w = (DungeonWorld) p.getWorld();
+            w.menuscrn.showMap(w, this, w);
         }
     }
 
     public boolean checkKey(String key) {
+        if (key == null) if (Greenfoot.getKey() != null) return true; else return false;
         if (Greenfoot.isKeyDown(key)) {
             if (! pressed_keys.contains(key)) {
                 pressed_keys.add(key);
@@ -82,5 +84,31 @@ public class Inputs {
             pressed_keys.remove(key);
         }
         return false;
+    }
+
+    public String getCurrentKey() {
+        String key = Greenfoot.getKey();
+        if (!checkKey(key)) return "";
+        if (key.equals("shift") ||
+                key.equals("control") ||
+                key.equals("enter") ||
+                key.equals("tab") ||
+                key.equals("backspace") ||
+                key.equals("up") ||
+                key.equals("down") ||
+                key.equals("left") ||
+                key.equals("right") ||
+                key.equals("escape")
+            ) return key;
+        for (int i = 0; i < 12; i ++) {
+            if (key.equals("F"+i)) return "";
+        }
+        if (key.equals("space")) {
+            return " ";
+        }
+        if (Greenfoot.isKeyDown("shift")) {
+            return key.toUpperCase();
+        }
+        else return key;
     }
 }

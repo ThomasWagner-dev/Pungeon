@@ -31,6 +31,7 @@ public class DungeonWorld extends World {
     public DungeonWorld() {
         // Create a new world with 1408x832 cells with a cell size of 1x1 pixels.
         super(width * pixelSize, height * pixelSize, 1);
+        long inittime = System.currentTimeMillis();
         //TODO: put save selection here.
         selectedSave = 0;
 
@@ -128,10 +129,11 @@ public class DungeonWorld extends World {
 
         // Inform the player of the end of the loading process.
         System.out.println("Finished loading.");
+        System.out.println("Builded world in " + (System.currentTimeMillis()- inittime)/1000.0 +" seconds");
 
         menuscrn = new Menuscreen(this, getObjects(Player.class).get(0).inputs);
         Greenfoot.setWorld(menuscrn);
-        menuscrn.showKeybinds();
+        menuscrn.showEscape();
         Greenfoot.start();
     }
 

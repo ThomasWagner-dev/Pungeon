@@ -12,6 +12,7 @@ public class MusicHandler {
     public final HashMap<String, GreenfootSound> musics, sounds;
     public final DungeonWorld world;
     public GreenfootSound currentSound;
+    public int volume = 30;
 
     public MusicHandler(DungeonWorld world) {
         System.out.println("Loading music...");
@@ -20,9 +21,6 @@ public class MusicHandler {
         sounds = FileWork.loadAllSounds();
         System.out.println("Loaded sound effects: " + sounds.keySet());
         this.world = world;
-        currentSound = musics.get("ow_combat");
-        currentSound.playLoop();
-        currentSound.setVolume(25);
         update();
     }
 
@@ -45,10 +43,12 @@ public class MusicHandler {
             name += "combat";
         }
         GreenfootSound song = musics.get(name);
-        if (!song.equals(currentSound)) {
-            currentSound.stop();
+        if (song != null && !song.equals(currentSound)) {
+            if (currentSound != null)
+                currentSound.stop();
             currentSound = song;
             currentSound.playLoop();
+            currentSound.setVolume(volume);
         }
     }
 
@@ -59,5 +59,10 @@ public class MusicHandler {
         } catch (Exception ex) {
             System.out.println("unknown sound: " + name);
         }
+    }
+
+    public void setVolume(int level) {
+        volume = level;
+        currentSound.setVolume(level);
     }
 }
