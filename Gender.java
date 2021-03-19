@@ -32,17 +32,4 @@ public enum Gender {
         }
         return OTHER;
     }
-
-    public static Gender fromPronouns(String pronouns) {
-        return fromPronouns(pronouns.split("[/;,]"));
-    }
-
-    public static Gender fromPronouns(String[] pronouns) {
-        for(Gender g : Gender.values()) {
-            if (g.pronouns[0].equals(pronouns[0]) && g.pronouns[1].equals(pronouns[1])) {
-                return g;
-            }
-        }
-        return OTHER;
-    }
 }

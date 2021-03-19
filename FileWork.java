@@ -1,7 +1,5 @@
 import greenfoot.*;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 import java.io.*;
 import java.util.stream.Collectors;
@@ -23,31 +21,25 @@ public class FileWork {
      * @param slot the save slot
      * @param world the world the player is from
      */
-    public static void savePlayer(String slot, DungeonWorld world) {
-        Player p = world.getObjects(Player.class).get(0);
-        savePlayer(slot, world, p.getX(), p.getY(), world.activeScreen.name, p.displayname, p.gender.s, String.join(",", p.gender.pronouns), p.skin, p.inv_weapons.stream().map(w -> w.name).collect(Collectors.toList()).toArray(new String[p.inv_weapons.size()]), p.selectedWeapon.name, p.hp, p.maxhp);
-    }
-
-    public static void savePlayer(String slot, DungeonWorld world, int x, int y, String screenname, String pname, String gender, String pronouns, String skin, String[] weapons, String selectedweapon, int hp, int maxhp) {
+    public static void savePlayer(int slot, DungeonWorld world) {
         try {
-            String path = fetchSaveFileLocation(world.runningOS) + "/saves/{}/".replace("{}", slot + "");
-            Files.createDirectories(Paths.get(path));
+            Player p = world.getObjects(Player.class).get(0);
 
-            Writer wr = new FileWriter(new File(path + "player.sav"));
+            Writer wr = new FileWriter(new File("./data/saves/{}/player.sav".replace("{}", slot + "")));
 
             wr.write("[location]\n");
-            wr.write("pos={x},{y}\n".replace("{x}", x + "").replace("{y}", y + ""));
-            wr.write("screen={}\n".replace("{}", screenname));
+            wr.write("pos={x},{y}\n".replace("{x}", p.getX() + "").replace("{y}", p.getY() + ""));
+            wr.write("screen={}\n".replace("{}", world.activeScreen.name));
             wr.write("[cosmetics]\n");
-            wr.write("name={}\n".replace("{}", pname));
-            wr.write("gender={gnd};{pro}\n".replace("{gnd}", gender).replace("{pro}", String.join(",", pronouns)));
-            wr.write("skin={}\n".replace("{}", skin));
+            wr.write("name={}\n".replace("{}", p.displayname));
+            wr.write("gender={gnd};{pro}\n".replace("{gnd}", p.gender.s).replace("{pro}", String.join(",", p.gender.pronouns)));
+            wr.write("skin={}\n".replace("{}", p.skin));
             wr.write("[inventory]\n");
-            wr.write("inv_weapons={}\n".replace("{}", String.join(",", weapons)));
-            wr.write("weapon={}\n".replace("{}", selectedweapon));
+            wr.write("inv_weapons={}\n".replace("{}", String.join(",", p.inv_weapons.stream().map(w -> w.name).collect(Collectors.toList()))));
+            wr.write("weapon={}\n".replace("{}", p.selectedWeapon.name));
             wr.write("[status]\n");
-            wr.write("hp={}\n".replace("{}", hp + ""));
-            wr.write("maxhp={}\n".replace("{}", maxhp + ""));
+            wr.write("hp={}\n".replace("{}", p.hp + ""));
+            wr.write("maxhp={}\n".replace("{}", p.maxhp + ""));
             wr.close();
         } catch (Exception e) {
             System.err.println("Error while saving player");
@@ -56,94 +48,11 @@ public class FileWork {
     }
 
     /**
-     * fetches the OS the game is run on
-     * @return the OS currently booted
-     */
-    public static String getOS() {
-        String os = System.getProperty("os.name");
-        System.out.println(os);
-        if (os.contains("Windows")) return "windows";
-        if (os.contains("Mac")) return "mac";
-        if (os.contains("Linux")) return "linux";
-        return os;
-    }
-
-    public static String fetchSaveFileLocation(String os) {
-        String dir = System.getenv("LOCALAPPDATA");
-        if (dir != null)
-            return dir+"/Pungeon";
-        switch (os) {
-            case "mac":
-                return " ~/Library/Application Support/Pungeon";//"bad os, we don't support such crap";
-            case "linux":
-                return "~/.config/Pungeon";
-            default:
-                return "./";
-        }
-    }
-
-    public static void createNewSave(String slot, String playername, String pronouns, String skin, DungeonWorld world) {
-        Tag ds = world.data.findNextTag("defaultsave");
-        String[] pos = ((String) ds.get("pos")).split(",");
-        Gender g = Gender.fromPronouns(pronouns);
-        //int slot, DungeonWorld world, int x, int y, String screenname, String pname, String gender, String pronouns, String skin, String[] weapons, String selectedweapon, int hp, int maxhp
-        savePlayer(slot,
-                world,
-                Integer.parseInt(pos[0]),
-                Integer.parseInt(pos[1]),
-                (String) ds.get("screen"),
-                playername.isBlank()? (String) ds.get("name"):playername,
-                g.s,
-                String.join(",",g.pronouns),
-                skin.isBlank()? (String) ds.get("skin"): skin,
-                ((String) ds.get("inv_weapons")).split(","),
-                (String) ds.get("weapon"),
-                (Integer) ds.get("hp"),
-                (Integer) ds.get("maxhp")
-        );
-    }
-
-    public static void createNewDefaultSave(String slot, DungeonWorld world) {
-        Tag ds = world.data.findNextTag("defaultsave");
-        String[] pos = ((String) ds.get("pos")).split(","), gender = ((String) ds.get("gender")).split(";");
-        //int slot, DungeonWorld world, int x, int y, String screenname, String pname, String gender, String pronouns, String skin, String[] weapons, String selectedweapon, int hp, int maxhp
-        savePlayer(slot,
-                world,
-                Integer.parseInt(pos[0]),
-                Integer.parseInt(pos[1]),
-                (String) ds.get("screen"),
-                (String) ds.get("name"),
-                gender[0],
-                gender[1],
-                (String) ds.get("skin"),
-                ((String) ds.get("inv_weapons")).split(","),
-                (String) ds.get("weapon"),
-                (Integer) ds.get("hp"),
-                (Integer) ds.get("maxhp")
-        );
-    }
-
-    /**
      * load the player into the world.
      */
-    public static void loadPlayer(String slot, DungeonWorld world, Player player) {
-        String dir = fetchSaveFileLocation(world.runningOS);
-        File f = null;
-        Scanner sc = null;
+    public static void loadPlayer(int slot, DungeonWorld world, Player player) {
         try {
-            f = new File(dir+"/saves/{}/player.sav".replace("{}", slot+""));
-            sc = new Scanner(f);
-        }
-        catch(FileNotFoundException fnfe) {
-            System.err.println("No save file found at slot "+ slot);
-            System.out.println("Creating new default save...");
-            createNewDefaultSave(slot, world);
-        }
-        catch(Exception e) {
-
-        }
-        try {
-            sc = new Scanner(f);
+            Scanner sc = new Scanner(readFile("./data/saves/{}/player.sav".replace("{}", slot + "")));
             String[] line;
             int[] pos = new int[2];
             while (sc.hasNextLine()) {

@@ -15,17 +15,15 @@ public class DungeonWorld extends World {
     public final HashMap<String, Loottable> loottables;
     public final HashMap<String, Font> gffonts;
     public final HashMap<String, java.awt.Font> awtfonts;
-    public final String runningOS;
     public static final int pixelSize = 64, globalScale = pixelSize / 16, height = 13, width = 22;
     public final Tag data, mobdrops, generationNoises;
     public Screen activeScreen;
-    public String selectedSave;
+    public int selectedSave;
     public MusicHandler musichandler;
     public Counter hp_counter;
     public final Random random;
     public final ImageGenerator imgG;
-    public Menuscreen menuscrn;
-    public final Inputs inp;
+    public final Menuscreen menuscrn;
 
     /**
      * Simple constructor to create the lobby containing Dungeon selection etc.
@@ -34,11 +32,9 @@ public class DungeonWorld extends World {
         // Create a new world with 1408x832 cells with a cell size of 1x1 pixels.
         super(width * pixelSize, height * pixelSize, 1);
         long inittime = System.currentTimeMillis();
-        //collect OS Information
-        System.out.println("Fetching os name...");
-        runningOS = FileWork.getOS();
-        System.out.println("Current os is: "+runningOS);
-        System.out.println();
+        //TODO: put save selection here.
+        selectedSave = 0;
+
         // Inform the player of the loading process.
         System.out.println("Starting world generation...");
         System.out.println();
@@ -108,14 +104,17 @@ public class DungeonWorld extends World {
         screens = FileWork.loadAllScreens(data.findNextTag("screens"), blocks, enemies, imgG, this);
         System.out.println("Loaded screens: " + screens.keySet());
         System.out.println();
-
+        // Load the world.
+        System.out.println("Loading save...");
+        FileWork.loadPlayer(selectedSave, this, new Player());
+        System.out.println();
         // Load music.
         System.out.println("Loading musichandler...");
         musichandler = new MusicHandler(this);
         System.out.println();
-        //Generating key listener
-        System.out.println("Loading keylistener...");
-        inp = new Inputs(new KeyLayout(), null);
+        // Load counters.
+        System.out.println("Loading counters...");
+        Counter.load(getObjects(Player.class).get(0), this);
         System.out.println();
         // Load fonts
         System.out.println("Loading fonts...");
@@ -132,11 +131,9 @@ public class DungeonWorld extends World {
         System.out.println("Finished loading.");
         System.out.println("Builded world in " + (System.currentTimeMillis()- inittime)/1000.0 +" seconds");
 
-
-        Titlescreen.showTitle(this);
-        menuscrn = new Menuscreen(this, inp);
-        //Greenfoot.setWorld(menuscrn);
-        ///menuscrn.showEscape();
+        menuscrn = new Menuscreen(this, getObjects(Player.class).get(0).inputs);
+        Greenfoot.setWorld(menuscrn);
+        menuscrn.showEscape();
         Greenfoot.start();
     }
 
@@ -204,7 +201,7 @@ public class DungeonWorld extends World {
      *
      * @param slot The slot to save the player to.
      */
-    public void save(String slot) {
+    public void save(int slot) {
         FileWork.savePlayer(slot, this);
     }
 
@@ -303,24 +300,5 @@ public class DungeonWorld extends World {
      */
     public double nextGaussian(double min, double mean, double max) {
         return Math.max(Math.min(nextGaussian(mean, ( max - min + 1 ) * 0.25 ), max), min);
-    }
-
-    public void startSave(String slot, World upper) {
-        if (slot.equals("New Game")) {
-            Titlescreen.showNewSave(this, upper);
-            return;
-        }
-        selectedSave = slot;
-        System.out.println("Loading save");
-        // Load the world.
-        System.out.println("Loading save...");
-        FileWork.loadPlayer(selectedSave, this, new Player(inp));
-        System.out.println();
-        // Load counters.
-        System.out.println("Loading counters...");
-        Counter.load(getObjects(Player.class).get(0), this);
-        System.out.println();
-        menuscrn = new Menuscreen(this, inp);
-        Greenfoot.setWorld(this);
     }
 }

@@ -16,7 +16,7 @@ public class Menuscreen extends World{
     public java.awt.Font awttitle, awtsubtitle, awtsubsubtitle;
     public Inputs inp;
     public final Actor returnbutton;
-    public LinkedHashMap<Button, Button> buttons;
+    public HashMap<Button, Button> buttons;
 
     /**
      * mainly checks if screen gets closed
@@ -56,7 +56,7 @@ public class Menuscreen extends World{
         awtsubtitle = origin.awtfonts.get("Welbut");
         awtsubsubtitle = origin.awtfonts.get("ThickThinPixel");
         this.inp = inp;
-        returnbutton = createReturnbutton();
+        returnbutton = Menuscreen.createReturnbutton();
         addObject(returnbutton, getWidth()-(DungeonWorld.pixelSize/2), DungeonWorld.pixelSize/2);
     }
 
@@ -114,10 +114,10 @@ public class Menuscreen extends World{
         String text = "GAME OVER", subtext = "You died", subsubtext = "Come on {}, you can do it. Stay determined!";
         int center = blackscreen.getWidth()/2;
         GreenfootImage blackscreen = new GreenfootImage(this.blackscreen);
-        Utils.drawCenteredText(blackscreen, java.awt.Color.RED, awttitle.deriveFont(50F), text, center, 100);
-        Utils.drawCenteredText(blackscreen, java.awt.Color.WHITE, awtsubtitle.deriveFont(30F), subtext, center, 250);
-        Utils.drawCenteredText(blackscreen, new java.awt.Color(64,162,255), awtsubtitle.deriveFont(30F), subsubtext.replace("{}", p.displayname), center, 300);
-        Utils.drawCenteredText(blackscreen, java.awt.Color.WHITE, awtsubsubtitle.deriveFont(30F), "press {} to load latest save".replace("{}", resumeKey), center, (getHeight()/8)*7);
+        drawCenteredText(blackscreen, java.awt.Color.RED, awttitle.deriveFont(50F), text, center, 100);
+        drawCenteredText(blackscreen, java.awt.Color.WHITE, awtsubtitle.deriveFont(30F), subtext, center, 250);
+        drawCenteredText(blackscreen, new java.awt.Color(64,162,255), awtsubtitle.deriveFont(30F), subsubtext.replace("{}", p.displayname), center, 300);
+        drawCenteredText(blackscreen, java.awt.Color.WHITE, awtsubsubtitle.deriveFont(30F), "press {} to load latest save".replace("{}", resumeKey), center, (getHeight()/8)*7);
         setBackground(blackscreen);
     }
 
@@ -135,6 +135,63 @@ public class Menuscreen extends World{
     }
 
 
+    /**
+     * @param gfi  The GreenfootImage to center the text on
+     * @param text The text to draw
+     * @param x    the x coord to center around, use negative (out of bounds) values to place in middle of image
+     * @param y    the y coord to center around, use negative (out of bounds) values to place in middle of image
+     */
+    public static void drawCenteredText(GreenfootImage gfi, java.awt.Color color, java.awt.Font font, String text, int x, int y)
+    {
+        Graphics2D graphics = gfi.getAwtImage().createGraphics();
+        if (graphics == null)
+        {
+            return;
+        }
+
+        graphics.setColor(color);
+        graphics.setFont(font);
+
+        if (x < 0 || x >= gfi.getWidth())
+        {
+            x = gfi.getWidth() / 2;
+        }
+        if (y < 0 || y >= gfi.getHeight())
+        {
+            y = gfi.getHeight() / 2;
+        }
+
+        graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        String[] lines = GraphicsUtilities.splitLines(text);
+        FontMetrics fontMetrics = graphics.getFontMetrics(font);
+        int height = fontMetrics.getHeight();
+        y -= height * (lines.length / 2);
+        y += (height / 4);
+        for (int i = 0; i < lines.length; ++i)
+        {
+            graphics.drawString(lines[i], x - (fontMetrics.stringWidth(lines[i]) / 2), y + (i * height));
+        }
+
+        graphics.dispose();
+    }
+
+    public static int[] getStringDimensions(java.awt.Font font, String text) {
+        Graphics2D graphics = (new GreenfootImage("Invis.png")).getAwtImage().createGraphics();
+        if (graphics == null)
+        {
+            return new int[] {0,0};
+        }
+
+        graphics.setFont(font);
+
+        graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        String[] lines = GraphicsUtilities.splitLines(text);
+        FontMetrics fontMetrics = graphics.getFontMetrics(font);
+        int height = fontMetrics.getHeight();
+        int width = Arrays.asList(lines).stream().map(fontMetrics::stringWidth).max((a,b) -> a - b).orElse(0);
+        return new int[] {width, height};
+    }
+
     public void on_return() {}
 
     public void showEscape() {
@@ -142,8 +199,7 @@ public class Menuscreen extends World{
     }
 
     public static void showEscape(DungeonWorld origin, Inputs inp, World upper) {
-        Menuscreen es = new Menuscreen(origin, inp, upper);
-        es.resumeKey = inp.keybinds.pause;
+        Menuscreen es = new Menuscreen(origin, inp, upper);es.resumeKey = inp.keybinds.pause;
         es.createEscapeButtons();
         es.arrangeButtons("PAUSE","");
 
@@ -151,7 +207,7 @@ public class Menuscreen extends World{
     }
 
     public void createEscapeButtons() {
-        buttons = new LinkedHashMap<>();
+        buttons = new HashMap<>();
         buttons.put(new Button("settings", "Settings", awtsubtitle.deriveFont(40F), java.awt.Color.WHITE){
             public void click_event() {
                 Menuscreen es = (Menuscreen) getWorld();
@@ -164,22 +220,10 @@ public class Menuscreen extends World{
                 Menuscreen.showKeybinds(es.origin, es.inp, es);
             }
         }, null);
-        buttons.put(new Button("map", "Pungeon map", awtsubtitle.deriveFont(40F), java.awt.Color.WHITE){
+        buttons.put(new Button("map", "Dungeon map", awtsubtitle.deriveFont(40F), java.awt.Color.WHITE){
             public void click_event() {
                 Menuscreen es = (Menuscreen) getWorld();
                 Menuscreen.showMap(es.origin, es.inp, es);
-            }
-        }, null);
-        buttons.put(new Button("save", "Save", awtsubtitle.deriveFont(40F), java.awt.Color.WHITE){
-            public void click_event() {
-                FileWork.savePlayer(origin.selectedSave, origin);
-            }
-        }, null);
-        buttons.put(new Button("savenexit", "safe the exit", awtsubtitle.deriveFont(40F), java.awt.Color.WHITE){
-            public void click_event() {
-                Menuscreen ms = (Menuscreen) getWorld();
-                ms.origin.save(ms.origin.selectedSave);
-                Titlescreen.showTitle(ms.origin);
             }
         }, null);
     }
@@ -205,7 +249,7 @@ public class Menuscreen extends World{
     }
 
     public void createSettingsButtons(Player p, MusicHandler mh) {
-        buttons = new LinkedHashMap<>();
+        buttons = new HashMap<>();
         Button b;
         Button tf;
         b = new Button("name", "Name:", awtsubtitle.deriveFont(30F), java.awt.Color.WHITE);
@@ -236,22 +280,23 @@ public class Menuscreen extends World{
         GreenfootImage img = new GreenfootImage(blackscreen);
         img.setColor(greenfoot.Color.WHITE);
         img.setFont(title.deriveFont(40F));
-        Utils.drawCenteredText(img, java.awt.Color.WHITE, awttitle.deriveFont(40F), screentitle, img.getWidth()/2, 50);
-        //img.drawString(screentitle, 100, 50);
-        int x = img.getWidth()/2, y = 100, xx;
+        img.drawString(screentitle, 100, 50);
+        int x = 150, y = 100;
         Button v;
         for (Button b : buttons.keySet()) {
-            xx = x;
-            v = buttons.get(b);
-            if (v != null) {
-                xx = x-(b.getImage().getWidth()/2);
-                addObject(buttons.get(b), x+200, y);
+            if (y > getHeight()) {
+                x += 400;
+                y = 100;
             }
-            addObject(b, xx, y);
+            addObject(b, x, y);
+            v = buttons.get(b);
+            if (v != null)
+                addObject(buttons.get(b), x+300, y);
             y += 70;
         }
         img.setFont(subsubtitle.deriveFont(30F));
         img.drawString(note, 100, getHeight()-50);
         setBackground(img);
     }
+
 }

@@ -9,9 +9,9 @@ import greenfoot.*;
  * @author Commentator
  */
 public class Inputs {
-    public KeyLayout keybinds;
-    public Player p;
-    public ArrayList<String> pressed_keys = new ArrayList<>();
+    KeyLayout keybinds;
+    Player p;
+    ArrayList<String> pressed_keys = new ArrayList<>();
 
     public Inputs(KeyLayout keybinds, Player p) {
         this.keybinds = keybinds;
@@ -88,8 +88,7 @@ public class Inputs {
 
     public String getCurrentKey() {
         String key = Greenfoot.getKey();
-        //if (!checkKey(key)) return "";
-        if (key == null) return "";
+        if (!checkKey(key)) return "";
         if (key.equals("shift") ||
                 key.equals("control") ||
                 key.equals("enter") ||

@@ -12,14 +12,12 @@ public class Player extends Entity implements Collider {
     protected double[] rotation;
     protected Weapon selectedWeapon;
     protected ArrayList<Weapon> inv_weapons = new ArrayList<>();
-    protected Inputs inputs;
+    protected Inputs inputs = new Inputs(new KeyLayout(), this);
     public String skin = "entity/player/player.png";
     public String pronoun, displayname;
     public Gender gender;
 
-    public Player(Inputs inp) {
-        inputs = inp;
-        inputs.p = this;
+    public Player() {
         speed = 5;
         maxhp = 20;
         hp = 20;
