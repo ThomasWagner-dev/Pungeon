@@ -1,3 +1,0 @@
-type=block class [e.g. tile or wall]
-breakable=breakable [for walls only (true or false)]
-img=sprite
