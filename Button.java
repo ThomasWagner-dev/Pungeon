@@ -32,14 +32,14 @@ public class Button extends Actor{
     }
 
     public void updateText(String text) {
-        int[] dim = Menuscreen.getStringDimensions(font, text);
+        int[] dim = Utils.getStringDimensions(font, text);
         GreenfootImage img = new GreenfootImage(dim[0], dim[1]);
         updateText(text, img);
     }
 
     public void updateText(String text, GreenfootImage img) {
         this.text = text;
-        Menuscreen.drawCenteredText(img, color, font, text, img.getWidth()/2, img.getHeight()/2);
+        Utils.drawCenteredText(img, color, font, text, img.getWidth()/2, img.getHeight()/2);
         setImage(img);
     }
 
