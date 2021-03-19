@@ -1,0 +1,10 @@
+*.xml
+*.iml
+*.ctxt
+*.class
+*.docx
+standalone.properties
+out
+.idea
+WorkDocs
+userhome

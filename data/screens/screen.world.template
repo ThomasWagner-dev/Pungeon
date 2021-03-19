@@ -1,4 +1,0 @@
-map (22x13)
-###
-adjacent screens as dir:screenName (dir as up/down/left/right; screenName as screenname or "none")
-bg:background tile for destroyed objs 

@@ -1,0 +1,3 @@
+type=enemy class [e.g. melee]
+img=sprite
+weapon=weaponname [e.g. sword_basic] #has to be in ./data/weapons/weaponname.wpn
