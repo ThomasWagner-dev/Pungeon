@@ -54,7 +54,7 @@ if (__name__ == "__main__"):
         if (picname == ""):
             exit()
         string = file2screen(picname)+"\n###\n"
-        savefile = tk.filedialog.asksaveasfile(title="save file", initialdir="../../data/screens", defaultextension=".world", filetype=[("screenfile", ("*.world"))])
+        savefile = tk.filedialog.asksaveasfile(initialfile = picname.split("/")[-1].split(".")[0],title="save file", initialdir="../../data/screens", defaultextension=".world", filetype=[("screenfile", ("*.world"))])
         #print(type(savefile))
         savefile.write(string)
         savefile.close()

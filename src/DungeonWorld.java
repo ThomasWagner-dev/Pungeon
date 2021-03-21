@@ -12,12 +12,14 @@ public class DungeonWorld extends World {
     public final HashMap<String, Block> blocks;
     public final HashMap<String, Enemy> enemies;
     public final HashMap<String, Screen> screens;
+    public final HashMap<String, RawScreen> rawscreens;
     public final HashMap<String, Item> items;
     public final HashMap<String, Loottable> loottables;
     public final HashMap<String, java.awt.Font> awtfonts;
     public final String runningOS;
     public static final int pixelSize = 64, globalScale = pixelSize / 16, height = 13, width = 22;
     public final Tag data, mobdrops, generationNoises;
+    public MapGenerator mg;
     public Screen tickiveScreen;
     public String selectedSave;
     public MusicBox musichandler;
@@ -104,9 +106,14 @@ public class DungeonWorld extends World {
         //imgG.GenerationTest(this);
         System.out.println();
         // Load screens.
-        System.out.println("Loading all Screens");
+        System.out.println("Loading all Screens...");
         screens = FileWork.loadAllScreens(data.findNextTag("screens"), blocks, enemies, imgG, this);
         System.out.println("Loaded screens: " + screens.keySet());
+        System.out.println();
+        rawscreens = FileWork.loadAllRawScreens(data.findNextTag("screens"));
+        //Creating map generator
+        System.out.println("Creating map generator...");
+        mg = new MapGenerator(random, new ArrayList<>(rawscreens.values()), this, 0);
         System.out.println();
 
         // Load music.
@@ -134,8 +141,6 @@ public class DungeonWorld extends World {
 
         Titlescreen.showTitle(this);
         menuscrn = new Menuscreen(this, inp);
-        //Greenfoot.setWorld(menuscrn);
-        ///menuscrn.showEscape();
     }
 
     public void tick() {

@@ -88,7 +88,7 @@ public abstract class Entity extends WorldObj {
     }
 
     /**
-     * Basic collision physics. check tick() in Projectile for further information
+     * Basic collision physics. check {@link Projectile#tick()} for further information
      */
     protected void collide(Projectile p) {
         DungeonWorld world = (DungeonWorld) this.world;
@@ -117,10 +117,15 @@ public abstract class Entity extends WorldObj {
      */
     protected void die() {
         DungeonWorld world = (DungeonWorld) this.world;
-        DeadBody db = new DeadBody();
-        setSprite("entity/enemies/"+name+"_dead.png");
-        db.setImage(img);
-        world.addObject(db, x, y);
+        try {
+            setSprite("entity/enemies/"+name+"_dead.png");
+            DeadBody db = new DeadBody();
+            db.setImage(img);
+            world.addObject(db, x, y);
+        }
+        catch(Exception e) {
+            System.err.println("no dead body defined for " + name);
+        }
         world.removeObject(this);
         world.musichandler.update();
         world.musichandler.playSound("die", name);

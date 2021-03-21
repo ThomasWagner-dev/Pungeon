@@ -105,14 +105,18 @@ def inject_maps():
             i += 1
         while (i < len(lines)):
             line = lines[i].split(":")
-            scr_tag.tags.append(nbt.TAG_String(name=line[0], value = line[1]))
+            if len(line) > 1:
+                scr_tag.tags.append(nbt.TAG_String(name=line[0], value = line[1]))
             i += 1
         scr_tag.tags.append(nbt.TAG_String(name = "map", value = map))
-        enemymap = open(header + scr.replace(".world", "") + ".enemymap")
+        try:
+            enemymap = open(header + scr.replace(".world", "") + ".enemymap").read().split("\n")
+        except:
+            enemymap = []
         enm = nbt.TAG_Compound()
         enm.name = "enemymap"
         i = 0
-        for line in enemymap.read().split("\n"):
+        for line in enemymap:
             if (line == ""):
                 continue
             line = line.split("=")

@@ -16,15 +16,19 @@ This a simple top down Roguelike game based on Greenfoot.
 
 ## Technologies 
 Project created with:  
-Java 11  
-Greenfoot: 3.6.0  
+Java 12  
+No longer Greenfoot: 3.6.0  
 Python 3.9.0
+Way too much pain
 
 ## Setup
-Download the game.jar file.  
-Install Java 11 from ****.  
-Run the game.jar file.  
-Yeah.... No!
+Download the Pungeon.jar file. (includes full source code and documentation)
+or download the Pungeon_light.jar (only compiled code)
+Install Java 12 from somewhere on the internet.  
+Run the jar file either via double-click or 'java -jar Pungeon.jar'   
+Annotation when running the jar for the first time:
+Extracting the assets may take (a literal) minute. Don't worry if nothing is happening.
+If you have any idea how to improve the extraction to make it faster, message us.
 
 
 ## Addon scripts
@@ -43,7 +47,7 @@ This is due to generation noise (defined in the data.nbt) and is applied when th
 -Thomas Wagner  
 Github: https://github.com/ThomasWagner-dev
 
--Andreas Bücker   
+-Leonie Bücker   
 Github: https://github.com/KommentatorForAll
 
 -Jaques Reimers  

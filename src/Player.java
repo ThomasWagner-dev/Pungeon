@@ -81,17 +81,11 @@ public class Player extends Entity implements Collider {
         if (y == 0) edge = "up";
         if (x == mx - 1) edge = "right";
         if (y == my - 1) edge = "down";
-        String nextScreenName = world.tickiveScreen.adjacentScreens.get(edge);
-        System.out.println(edge);
-        System.out.println(nextScreenName);
-        if (nextScreenName != null) {
-            Screen nextScreen = world.screens.get(nextScreenName);
-            nextScreen.load(world);
-            if (edge.equals("up") || edge.equals("down")) {
-                setLocation(x, my - (y - world.pixelSize / 2));
-            } else {
-                setLocation(mx - (x - world.pixelSize / 2), y);
-            }
+        world.mg.transition(edge);
+        if (edge.equals("up") || edge.equals("down")) {
+            setLocation(x, my - (y - world.pixelSize / 2));
+        } else {
+            setLocation(mx - (x - world.pixelSize / 2), y);
         }
     }
 

@@ -19,7 +19,7 @@ public class Projectile extends Entity {
     // }
 
     /**
-     * moves and then checks for all collisions. See collide(Projectile p) in Entity for further detail
+     * moves and then checks for all collisions. {@link Entity#collide(Projectile)} in Entity for further detail
      */
     public void tick() {
         super.tick();

@@ -1,4 +1,3 @@
-import java.awt.Font;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -150,7 +149,8 @@ public class FileWork {
                 if (!line[0].startsWith("[")) {
                     switch (line[0]) {
                         case "screen":
-                            world.screens.get(line[1]).load(world);
+                            //world.screens.get(line[1]).load(world);
+                            world.mg.generateAt(0,0).load(world);
                             break;
                         case "pos":
                             line = line[1].split(",");
@@ -405,7 +405,6 @@ public class FileWork {
     public static Screen loadScreen(Tag scr, HashMap<String, Block> blocks, HashMap<String, Enemy> enemies, ImageGenerator imgGen, DungeonWorld world) {
         try {
             ArrayList<ArrayList<String>> rawMap = new ArrayList<>();
-            ArrayList<String> tmp;
             HashMap<String, String> adjScreens = new HashMap<>();
             Block background = new Tile();
             HashMap<Enemy, int[]> enemymap = new HashMap<>();
@@ -414,13 +413,11 @@ public class FileWork {
                 switch (t.getName()) {
                     case "map":
                         for (String l : ((String) scr.get("map")).split("\n")) {
-                            tmp = new ArrayList<>();
-                            Arrays.asList(l.split(",")).forEach(tmp::add);
-                            rawMap.add(tmp);
+                            rawMap.add(new ArrayList<>(Arrays.asList(l.split(","))));
                         }
                         break;
                     case "bg":
-                        background = blocks.get((String) t.getValue());
+                        background = blocks.get(t.getValue());
                         break;
                     case "enemymap":
                         for (Tag x : (Tag[]) t.getValue()) {
@@ -440,6 +437,24 @@ public class FileWork {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static HashMap<String,RawScreen> loadAllRawScreens(Tag screens) {
+        HashMap<String, RawScreen> scrs = new HashMap<>();
+        for (Tag scr : (Tag[]) screens.getValue()) {
+            if (scr.getName() == null) continue;
+            scrs.put(scr.getName(), loadRawScreen(scr));
+        }
+        return scrs;
+    }
+
+    public static RawScreen loadRawScreen(Tag screen) {
+        ArrayList<ArrayList<String>> rmap = new ArrayList<>();
+        String map = (String) screen.get("map");
+        for (String l : (map.split("\n"))) {
+            rmap.add(new ArrayList<>(Arrays.asList(l.split(","))));
+        }
+        return new RawScreen(rmap);
     }
 
     /**
@@ -592,7 +607,7 @@ public class FileWork {
     public static Tag getData() {
         Tag t = null;
         try {
-            t = Tag.readFrom(readFile("./data.nbt"));
+            t = Tag.readFrom(Utils.readFromAssets("data.nbt"));
         } catch (Exception e) {
             System.err.println("Error while loading data from file");
             e.printStackTrace();

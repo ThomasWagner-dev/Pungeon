@@ -4,11 +4,11 @@ import java.util.*;
  * @version 2021-01-01-22-37
  */
 public class Screen {
-    public final ArrayList<ArrayList<Block>> map;
-    public final HashMap<Enemy, int[]> enemies;
+    public ArrayList<ArrayList<Block>> map;
+    public HashMap<Enemy, int[]> enemies;
     public HashMap<String, String> adjacentScreens;
     public Block backgroundBlock;
-    public final String name;
+    public String name;
 
     /**
      * creates a new screen.
