@@ -8,7 +8,7 @@ public class MapGenerator {
     public List<RawScreen> screens;
     public Map<String, Screen> currentMap = new HashMap<>();
     public Map<String, RawScreen> rawMap = new HashMap<>();
-    public int openCons = 1;
+    public int openCons = 0;
     public int level, x, y;
     public boolean hasEnd, hasBoss;
     //String name, ArrayList<ArrayList<String>> rawMap, HashMap<Enemy, int[]> enemies, Block background, HashMap<String, Block> blocks, HashMap<String, String> adjacentScreens, ImageGenerator imgGen, DungeonWorld world
@@ -62,12 +62,14 @@ public class MapGenerator {
                 .collect(Collectors.toList());
         System.out.println("Selecting random from " + options.size() + " rooms");
         tmp = options.get((int)(Math.random()*options.size()));
+        System.out.println("open cons before: "+ openCons);
+        System.out.println("cons of map: "+ tmp.conCnt);
         openCons += tmp.conCnt;
-        openCons--;
-        if (hu) openCons--;
-        if (hd) openCons--;
-        if (hl) openCons--;
-        if (hr) openCons--;
+        if (hu) openCons-=2;
+        if (hd) openCons-=2;
+        if (hl) openCons-=2;
+        if (hr) openCons-=2;
+        System.out.println("udlr" + hu+ hd+ hl+ hr);
         System.out.println("leftover connections: " + openCons);
         Screen compiled = tmp.compile(x, y, world, this);
         rawMap.put(x+","+y,tmp);
@@ -76,11 +78,12 @@ public class MapGenerator {
     }
 
     public List<Enemy> getEnemies() {
-        //if (hasBoss) {
-        //    return new ArrayList<>();
-        //}
+        if (false || hasBoss) {
+            return new ArrayList<>();
+        }
         ArrayList<Enemy> ene= new ArrayList<>();
         int amount = (int) Math.round(world.nextGaussian(0,level,level*2));
+        if (currentMap.size() <= 1) amount = 0;
         System.out.println(amount);
         if (amount == 0) {
             amount = (int) world.nextGaussian(0,level/2.0, 2);

@@ -75,19 +75,20 @@ public class Menuscreen extends World{
         lastKey = kl.pause+"";
         resumeKey = kl.pause+"";
         //clones the image to be able to write on it without interfearing with the original screen
-        AdvancedImage blackscreen = new AdvancedImage(this.blackscreen);
+        AdvancedImage blackscreen = new AdvancedImage(width, height);
+        blackscreen.fill(Color.BLACK);
         //sets color one writes as to white
-        int x = 100, y = 50;
+        int x = width/2, y = 50;
         String text;
         //loops though all tickiongroups the keylayout has
         for (KeyLayout.tickionGroup ag : KeyLayout.tickionGroup.values()) {
             text = kl.getKeysOftickionGroup(ag);
-            blackscreen.drawText(Color.WHITE, title, ag.name(), x, y);
-            y += 20;
-            blackscreen.drawText(Color.WHITE, subtitle, text, x, y);
+            blackscreen.drawText(Color.WHITE, title.deriveFont(30F), ag.name(), x, y);
+            y += 30;
+            blackscreen.drawText(Color.WHITE, subtitle.deriveFont(30F), text, x, y);
             y += 50;
         }
-        blackscreen.drawText(Color.WHITE, subtitle, "press {} to continue".replace("{}", resumeKey), 100, (height/8)*7);
+        blackscreen.drawText(Color.WHITE, subtitle.deriveFont(30F), "press escape to continue".replace("{}", resumeKey), width/2, (height/8)*7);
         setBackground(blackscreen);
     }
 
@@ -307,7 +308,6 @@ public class Menuscreen extends World{
         };
         tf.name = b.name;
         int ma = mainframe.getMonitorCount();
-        System.out.println(ma);
         tf.setFont(b.font);
         tf.setTextColor(b.textColor);
         tf.isNumeric = true;

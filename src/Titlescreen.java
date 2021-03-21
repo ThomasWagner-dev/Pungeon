@@ -43,7 +43,7 @@ public class Titlescreen extends World {
         ts.setBackground(blackscreen);
         List<String> saves;
         File folder = new File(FileWork.fetchSaveFileLocation(world.runningOS)+ "/saves/");
-        saves = Arrays.stream(folder.listFiles()).map(File::getName).collect(Collectors.toList());
+        saves = Arrays.stream(folder.listFiles()==null?new File[0]:folder.listFiles()).map(File::getName).collect(Collectors.toList());
         saves.add("New Game");
         blackscreen.drawText(java.awt.Color.WHITE, world.awtfonts.get("ThickThinPixel").deriveFont(30F), "Use left/right click to cycle save slots", ts.getWidth()/2, 400);
         ScrollButton ssb = new ScrollButton(saves, saves.get(0));
@@ -76,7 +76,8 @@ public class Titlescreen extends World {
 
     public static void showNewSave(DungeonWorld origin, World upper) {
         Titlescreen ts = new Titlescreen(origin, upper);
-        AdvancedImage img = new AdvancedImage(origin.menuscrn.blackscreen);
+        AdvancedImage img = new AdvancedImage(ts.width, ts.height);
+        img.fill(Color.BLACK);
         java.awt.Font font = origin.awtfonts.get("Welbut").deriveFont(30F);
         img.drawText(java.awt.Color.WHITE, font, "Save name:", ts.getWidth()/2, 200, AdvancedImage.VerticalAlignment.CENTER, AdvancedImage.HorizontalAlignment.RIGHT);
         img.drawText(java.awt.Color.WHITE, font, "Your name:", ts.getWidth()/2, 250, AdvancedImage.VerticalAlignment.CENTER, AdvancedImage.HorizontalAlignment.RIGHT);
@@ -87,18 +88,24 @@ public class Titlescreen extends World {
         tmp.setText("New Save");
         tmp.setFont(font);
         tmp.setTextColor(Color.WHITE);
+        tmp.setBackgroundColor(Color.BLACK);
+        tmp.setSize(200,50);
         ts.addObject(tmp, ts.getWidth()/2+200, 200);
         tmp = new Textfield();
         tmp.name = "playername";
         tmp.setText("Arva");
         tmp.setFont(font);
         tmp.setTextColor(Color.WHITE);
+        tmp.setBackgroundColor(Color.BLACK);
+        tmp.setSize(200,50);
         ts.addObject(tmp, ts.getWidth()/2+200, 250);
         List<String> options = Arrays.stream(Gender.values()).map(g -> String.join("/",g.pronouns)).collect(Collectors.toList());
         tmp = new ScrollButton(options, options.get(0));
         tmp.name = "pronouns";
         tmp.setFont(font);
         tmp.setTextColor(Color.WHITE);
+        tmp.setBackgroundColor(Color.BLACK);
+        tmp.setSize(200,50);
         ts.addObject(tmp, ts.getWidth()/2+200, 300);
         tmp = new Button() {
             @Override
@@ -119,6 +126,7 @@ public class Titlescreen extends World {
                             break;
                     }
                 }
+                savename = savename.trim();
                 if (savename.trim().isEmpty() || savename.equals("New Save")) {
                     System.err.println("invalid save name");
                     AdvancedImage img = new AdvancedImage(ts.getBackground());
@@ -147,6 +155,7 @@ public class Titlescreen extends World {
         tmp.setText("Create new save");
         tmp.setFont(origin.awtfonts.get("Welbut").deriveFont(40F));
         tmp.setTextColor(Color.WHITE);
+        tmp.setBackgroundColor(Color.BLACK);
         ts.addObject(tmp, ts.width/2, 600);
 
         ts.setBackground(img);

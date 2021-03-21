@@ -150,6 +150,7 @@ public class FileWork {
                     switch (line[0]) {
                         case "screen":
                             //world.screens.get(line[1]).load(world);
+                            world.mg = new MapGenerator(world.random, new ArrayList<>(world.rawscreens.values()), world, 3);
                             world.mg.getAt(0,0).load(world);
                             break;
                         case "pos":
@@ -194,6 +195,7 @@ public class FileWork {
                     }
                 }
             }
+            world.removeObjects(Player.class);
             world.addObject(player, pos[0], pos[1]);
         } catch (Exception e) {
             System.err.println("Error while loading player into world");

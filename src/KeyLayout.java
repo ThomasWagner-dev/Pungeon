@@ -52,7 +52,7 @@ public class KeyLayout {
             case USE:
                 return use+"";
             case ATTACK:
-                return attack+"";
+                return attack == ' '? "space" : attack+"";
             case ITEMS:
                 return String.join(", ", new String[]{i_cycle_f+"", i_cycle_b+""});
             case WEAPONS:
@@ -60,7 +60,7 @@ public class KeyLayout {
             case PAUSE:
                 return pause+"";
             case MAP:
-                return map+"";
+                return "tab";
             default:
                 return "";
         }

@@ -128,9 +128,9 @@ public class Player extends Entity implements Collider {
     public void keyPressed(char key) {
         if (key == inputs.keybinds.attack)
             attack();
-        else if (key == inputs.keybinds.w_cycle_f)
+        else if (Character.toLowerCase(key) == inputs.keybinds.w_cycle_f)
             selectWeapon(inv_weapons.get((inv_weapons.indexOf(selectedWeapon) + 1) % inv_weapons.size()));
-        else if (key == inputs.keybinds.w_cycle_b) {
+        else if (Character.toLowerCase(key) == inputs.keybinds.w_cycle_b) {
             int ind = inv_weapons.indexOf(selectedWeapon) - 1;
             if (ind < 0) ind += inv_weapons.size();
             selectWeapon(inv_weapons.get(ind));

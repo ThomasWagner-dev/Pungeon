@@ -316,7 +316,7 @@ public class DungeonWorld extends World {
         System.out.println("Loading save");
         // Load the world.
         System.out.println("Loading save...");
-        FileWork.loadPlayer(selectedSave, this, new Player(inp));
+        FileWork.loadPlayer(slot, this, new Player(inp));
         System.out.println();
         // Load counters.
         System.out.println("Loading counters...");
