@@ -113,7 +113,7 @@ public class DungeonWorld extends World {
         rawscreens = FileWork.loadAllRawScreens(data.findNextTag("screens"));
         //Creating map generator
         System.out.println("Creating map generator...");
-        mg = new MapGenerator(random, new ArrayList<>(rawscreens.values()), this, 0);
+        mg = new MapGenerator(random, new ArrayList<>(rawscreens.values()), this, 2);
         System.out.println();
 
         // Load music.
@@ -138,7 +138,6 @@ public class DungeonWorld extends World {
         System.out.println("Finished loading.");
         System.out.println("Built world in " + (System.currentTimeMillis()- inittime)/1000.0 +" seconds");
         setTps(100);
-
         Titlescreen.showTitle(this);
         menuscrn = new Menuscreen(this, inp);
     }

@@ -28,6 +28,7 @@ public class MusicBox {
         System.out.println("Loaded sound effects: " + sounds);
         System.out.println("Loaded tracks:" + others);
         this.world = world;
+        setVolume(30);
         update();
     }
 
@@ -52,6 +53,7 @@ public class MusicBox {
         Clip song = musics.get(name);
         System.out.println(name + song+currentSound);
         if (song != null && !song.equals(currentSound)) {
+            MusicHandler.setVolume(song, volume);
             System.out.println("here");
             if (currentSound != null)
                 currentSound.stop();

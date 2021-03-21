@@ -150,7 +150,7 @@ public class FileWork {
                     switch (line[0]) {
                         case "screen":
                             //world.screens.get(line[1]).load(world);
-                            world.mg.generateAt(0,0).load(world);
+                            world.mg.getAt(0,0).load(world);
                             break;
                         case "pos":
                             line = line[1].split(",");

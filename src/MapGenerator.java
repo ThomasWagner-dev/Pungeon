@@ -76,10 +76,39 @@ public class MapGenerator {
     }
 
     public List<Enemy> getEnemies() {
-        if (hasBoss) {
-            return new ArrayList<>();
+        //if (hasBoss) {
+        //    return new ArrayList<>();
+        //}
+        ArrayList<Enemy> ene= new ArrayList<>();
+        int amount = (int) Math.round(world.nextGaussian(0,level,level*2));
+        System.out.println(amount);
+        if (amount == 0) {
+            amount = (int) world.nextGaussian(0,level/2.0, 2);
+            switch (amount) {
+                case 0:
+                    ene.add(world.enemies.get("chest_wood").clone());
+                    break;
+                case 1:
+                    ene.add(world.enemies.get("chest_iron").clone());
+                    break;
+                case 2:
+                    ene.add(world.enemies.get("chest_gold").clone());
+                    break;
+            }
         }
-        return new ArrayList<>();
+        else {
+            List<String> e = world.enemies.keySet().stream().filter(s -> !s.startsWith("chest")).collect(Collectors.toList());
+            System.out.println(e);
+            for (int i = 0; i < amount; i++) {
+                ene.add(world.enemies.get(selectRandom(e)).clone());
+            }
+        }
+        return ene;
+    }
+
+    public <T> T selectRandom(List<T> list) {
+        int i =(int) (Math.random()*list.size());
+        return list.get(i);
     }
 
     public void transition(String dir) {

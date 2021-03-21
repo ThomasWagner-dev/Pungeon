@@ -9,6 +9,8 @@ public class Chest extends Enemy implements Collider {
 
     public void tick() {}
 
+    public void attack() {}
+
     public Enemy clone() {
         return topClone(new Chest(name), this);
     }

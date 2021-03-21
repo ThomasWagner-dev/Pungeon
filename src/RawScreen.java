@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class RawScreen {
     public ArrayList<ArrayList<String>> map;
@@ -13,9 +15,28 @@ public class RawScreen {
     }
 
     public Screen compile(int x, int y, DungeonWorld world, MapGenerator mg) {
-        Screen s = new Screen(x+","+y, map, loadEnemies(), world.blocks.get("tile_ground"), world.blocks, new HashMap<>(), world.imgG, world);
+        Screen s = new Screen(x+","+y, map, createEnemies(mg), world.blocks.get("tile_ground"), world.blocks, new HashMap<>(), world.imgG, world);
         generateConnections(mg, x, y, s);
         return s;
+    }
+
+    public HashMap<Enemy, int[]> createEnemies(MapGenerator mg) {
+        List<Enemy> enemies = mg.getEnemies();
+        HashMap<Enemy, int[]> e = new HashMap<>();
+        int w = map.get(0).size(), h = map.size();
+        enemies.forEach(en -> {
+            int x, y;
+            do {
+                x = (int) (Math.random() * (w - 2)) + 1;
+                y = (int) (Math.random() * (h - 2)) + 1;
+                int fx = x;
+                int fy = y;
+                if (e.values().stream().noneMatch(pos -> pos[0] == fx && pos[1] == fy))
+                    break;
+            }while (true);
+            e.put(en, new int[] {x,y});
+        });
+        return e;
     }
 
     public void setCon() {
@@ -33,10 +54,6 @@ public class RawScreen {
         if (l) cnt++;
         if (r) cnt++;
         return cnt;
-    }
-
-    public HashMap<Enemy, int[]> loadEnemies() {
-        return new HashMap<>();
     }
 
     public void generateConnections(MapGenerator mg, int x, int y, Screen s) {

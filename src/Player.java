@@ -121,7 +121,7 @@ public class Player extends Entity implements Collider {
     public void die() {
         DungeonWorld origin = (DungeonWorld) world;
         origin.menuscrn.showGameover(this);
-        origin.removeObjects(origin.getObjectsExclusive(Counter.class));
+        origin.removeObjectsExclusive(Counter.class);
         FileWork.loadPlayer(origin.selectedSave, origin, this);
     }
 
