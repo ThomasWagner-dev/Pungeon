@@ -82,10 +82,18 @@ public class Player extends Entity implements Collider {
         if (x == mx - 1) edge = "right";
         if (y == my - 1) edge = "down";
         world.mg.transition(edge);
-        if (edge.equals("up") || edge.equals("down")) {
-            setLocation(x, my - (y - world.pixelSize / 2));
-        } else {
-            setLocation(mx - (x - world.pixelSize / 2), y);
+        switch (edge) {
+            case "up":
+                setLocation(x, my-(int)(DungeonWorld.pixelSize*1.5));
+                break;
+            case "down":
+                setLocation(x, (int)(DungeonWorld.pixelSize*1.5));
+                break;
+            case "right":
+                setLocation((int)(DungeonWorld.pixelSize*1.5), y);
+                break;
+            case "left":
+                setLocation(mx - (int)(DungeonWorld.pixelSize*1.5), y);
         }
     }
 

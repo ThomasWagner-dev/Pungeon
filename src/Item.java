@@ -80,7 +80,7 @@ public class Item extends WorldObj implements Cloneable {
         do {
             sy = world.random.nextInt(world.pixelSize * 2) - world.pixelSize + y;
             sx = world.random.nextInt(world.pixelSize*2)- world.pixelSize +x;
-        } while(world.objectsOfInterfaceAt(sx, sy, Collider.class).size() != 0);
+        } while(world.objectsOfInterfaceOn(sx, sy, Collider.class).size() != 0);
         world.addObject(clone(), sx, sy);
         System.out.println("added item at: " + x + " " + y);
     }

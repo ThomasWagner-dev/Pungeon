@@ -9,7 +9,7 @@ public class MapGenerator {
     public Map<String, Screen> currentMap = new HashMap<>();
     public Map<String, RawScreen> rawMap = new HashMap<>();
     public int openCons = 0;
-    public int level, x, y;
+    public int level, x, y, defaultsize = 10, size = 0;
     public boolean hasEnd, hasBoss;
     //String name, ArrayList<ArrayList<String>> rawMap, HashMap<Enemy, int[]> enemies, Block background, HashMap<String, Block> blocks, HashMap<String, String> adjacentScreens, ImageGenerator imgGen, DungeonWorld world
     public MapGenerator(Random random, List<RawScreen> screens, DungeonWorld world, int level) {
@@ -31,6 +31,7 @@ public class MapGenerator {
     public Screen generateAt(int x, int y) {
         boolean hu=false, hl=false, hr=false, hd=false, gu=false, gl=false, gr=false, gd=false;
         RawScreen tmp;
+        size++;
         System.out.println(rawMap.get(x-1+","+y));
         if ((tmp = rawMap.get(x-1+","+y)) != null) {
             hl = tmp.r;
@@ -60,6 +61,10 @@ public class MapGenerator {
                 .filter(s -> l || finalHl == s.l)
                 .filter(s -> r || finalHr == s.r)
                 .collect(Collectors.toList());
+        List<RawScreen> cropped = options.stream()
+                .filter(s -> size < defaultsize || s.conCnt <= 2)
+                .collect(Collectors.toList());
+        options = cropped.size()==0?options:cropped;
         System.out.println("Selecting random from " + options.size() + " rooms");
         tmp = options.get((int)(Math.random()*options.size()));
         System.out.println("open cons before: "+ openCons);
@@ -69,16 +74,19 @@ public class MapGenerator {
         if (hd) openCons-=2;
         if (hl) openCons-=2;
         if (hr) openCons-=2;
-        System.out.println("udlr" + hu+ hd+ hl+ hr);
         System.out.println("leftover connections: " + openCons);
         Screen compiled = tmp.compile(x, y, world, this);
         rawMap.put(x+","+y,tmp);
         currentMap.put(x+","+y, compiled);
+        if (openCons == 0) {
+            hasBoss = true;
+        }
         return compiled;
     }
 
     public List<Enemy> getEnemies() {
-        if (false || hasBoss) {
+        if (hasBoss) {
+            hasBoss = false;
             return new ArrayList<>();
         }
         ArrayList<Enemy> ene= new ArrayList<>();
@@ -86,7 +94,7 @@ public class MapGenerator {
         if (currentMap.size() <= 1) amount = 0;
         System.out.println(amount);
         if (amount == 0) {
-            amount = (int) world.nextGaussian(0,level/2.0, 2);
+            amount = (int) world.nextGaussian(0,level/4.0, 2);
             switch (amount) {
                 case 0:
                     ene.add(world.enemies.get("chest_wood").clone());
@@ -133,5 +141,8 @@ public class MapGenerator {
                 s = getAt(x,y);
         }
         s.load(world);
+        if (hasBoss) {
+            world.addObject(new Teleport(), world.getWidth()/2, world.getHeight()/2);
+        }
     }
 }

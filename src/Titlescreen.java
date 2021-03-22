@@ -127,10 +127,10 @@ public class Titlescreen extends World {
                     }
                 }
                 savename = savename.trim();
-                if (savename.trim().isEmpty() || savename.equals("New Save")) {
+                if (savename.trim().isEmpty() || savename.equals("New Game")) {
                     System.err.println("invalid save name");
                     AdvancedImage img = new AdvancedImage(ts.getBackground());
-                    img.drawText(java.awt.Color.RED, origin.awtfonts.get("Welbut").deriveFont(30F), "Invalid Savename: Name must not be blank or 'New Save'.", img.getWidth()/2, 500);
+                    img.drawText(java.awt.Color.RED, origin.awtfonts.get("Welbut").deriveFont(30F), "Invalid Savename: Name must not be blank or 'New Game'.", img.getWidth()/2, 500);
                     ts.setBackground(img);
                     return;
                 }

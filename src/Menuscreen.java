@@ -101,15 +101,15 @@ public class Menuscreen extends World{
         resumeKey = "escape";
         switchWorld(this);
 
-        String text = "GAME OVER", subtext = "You died", subsubtext = "Come on {}, you can do it. Stay determined!";
+        String text = "GAME OVER", subtext = "You died", subsubtext = "Come on {}, you made it to stage {1}. Stay determined!";
         int center = getWidth()/2;
 
         AdvancedImage blackscreen = new AdvancedImage(width,height);
         blackscreen.fill(Color.BLACK);
         blackscreen.drawText(java.awt.Color.RED, awttitle.deriveFont(50F), text, center, 100);
         blackscreen.drawText(java.awt.Color.WHITE, awtsubtitle.deriveFont(30F), subtext, center, 250);
-        blackscreen.drawText(new java.awt.Color(64,162,255), awtsubtitle.deriveFont(30F), subsubtext.replace("{}", p.displayname), center, 300);
-        blackscreen.drawText(java.awt.Color.WHITE, awtsubsubtitle.deriveFont(30F), "press {} to load latest save".replace("{}", resumeKey), center, (height/8)*7);
+        blackscreen.drawText(new java.awt.Color(64,162,255), awtsubtitle.deriveFont(30F), subsubtext.replace("{}", p.displayname).replace("{1}", ((DungeonWorld)p.world).mg.level-2+""), center, 300);
+        blackscreen.drawText(java.awt.Color.WHITE, awtsubsubtitle.deriveFont(30F), "press {} to reload this level".replace("{}", resumeKey), center, (height/8)*7);
         setBackground(blackscreen);
     }
 
@@ -367,5 +367,42 @@ public class Menuscreen extends World{
 
         else if ((key+"").equals(resumeKey))
             leave();
+    }
+
+    public void showNextLevel() {
+        AdvancedImage img = new AdvancedImage(width, height);
+        img.fill(Color.BLACK);
+        img.drawText(Color.BLUE, title.deriveFont(40F), "CONGRATULATIONS", width/2, 50);
+        img.drawText(Color.WHITE, subtitle.deriveFont(30F), "You managed to escape this floor of the dungeon", width/2, 100);
+        img.drawText(Color.RED, subtitle.deriveFont(30F), "But only to go deeper into it.", width/2, 170);
+
+        Button tmp = new Button() {
+            @Override
+            public void clickEvent(MouseEventInfo mouseEventInfo) {
+                Menuscreen ts = (Menuscreen) world;
+                DungeonWorld w = ts.origin;
+                w.mg = new MapGenerator(world.random, new ArrayList<>(w.rawscreens.values()), w, w.mg.level+1);
+                w.mg.getAt(0,0).load(w);
+                World.switchWorld(w);
+                ts.removeAll();
+            }
+
+            @Override
+            public void tick() {
+
+            }
+        };
+        tmp.setBackgroundColor(Color.BLACK);
+        tmp.setBorderColor(Color.BLUE);
+        tmp.setTextColor(Color.GREEN);
+        tmp.setFont(subsubtitle.deriveFont(30F));
+        tmp.setSize(300,50);
+        tmp.setText("Enter floor "+ (origin.mg.level-1));
+        addObject(tmp, width/2, height/8*7);
+
+        removeObject(returnbutton);
+
+        setBackground(img);
+        switchWorld(this);
     }
 }

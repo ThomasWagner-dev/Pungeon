@@ -113,7 +113,7 @@ public class DungeonWorld extends World {
         rawscreens = FileWork.loadAllRawScreens(data.findNextTag("screens"));
         //Creating map generator
         System.out.println("Creating map generator...");
-        mg = new MapGenerator(random, new ArrayList<>(rawscreens.values()), this, 2);
+        mg = new MapGenerator(random, new ArrayList<>(rawscreens.values()), this, 1);
         System.out.println();
 
         // Load music.

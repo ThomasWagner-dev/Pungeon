@@ -67,6 +67,7 @@ public class FileWork {
     }
 
     public static String fetchSaveFileLocation(String os) {
+        if (true) return Utils.fetchAppdataFolder(os);
         String dir = System.getenv("LOCALAPPDATA");
         if (dir != null)
             return dir+"/Pungeon";
@@ -155,7 +156,7 @@ public class FileWork {
                             break;
                         case "pos":
                             line = line[1].split(",");
-                            pos = new int[]{Integer.parseInt(line[0]), Integer.parseInt(line[1])};
+                            pos = new int[]{world.getWidth()/2, world.getHeight()/2};//{Integer.parseInt(line[0]), Integer.parseInt(line[1])};
                             break;
                         case "skin":
                             player.skin = line[1];
