@@ -47,6 +47,9 @@ public class Player extends Entity implements Collider {
                 case "hp":
                     hp = Math.min(maxhp, hp + Integer.parseInt(i.amount));
                     break;
+                case "maxhp":
+                    maxhp += Integer.parseInt(i.amount);
+                    hp = maxhp;
                 case "effect":
                     //TODO statuseffects: change effects
                     break;

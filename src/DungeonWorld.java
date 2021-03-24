@@ -137,7 +137,7 @@ public class DungeonWorld extends World {
         // Inform the player of the end of the loading process.
         System.out.println("Finished loading.");
         System.out.println("Built world in " + (System.currentTimeMillis()- inittime)/1000.0 +" seconds");
-        setTps(100);
+        setTps(50);
         Titlescreen.showTitle(this);
         menuscrn = new Menuscreen(this, inp);
     }

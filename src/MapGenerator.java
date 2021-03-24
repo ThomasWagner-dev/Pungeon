@@ -9,7 +9,7 @@ public class MapGenerator {
     public Map<String, Screen> currentMap = new HashMap<>();
     public Map<String, RawScreen> rawMap = new HashMap<>();
     public int openCons = 0;
-    public int level, x, y, defaultsize = 10, size = 0;
+    public int level, x, y, defaultsize = 3, size = 0;
     public boolean hasEnd, hasBoss;
     //String name, ArrayList<ArrayList<String>> rawMap, HashMap<Enemy, int[]> enemies, Block background, HashMap<String, Block> blocks, HashMap<String, String> adjacentScreens, ImageGenerator imgGen, DungeonWorld world
     public MapGenerator(Random random, List<RawScreen> screens, DungeonWorld world, int level) {
@@ -62,7 +62,7 @@ public class MapGenerator {
                 .filter(s -> r || finalHr == s.r)
                 .collect(Collectors.toList());
         List<RawScreen> cropped = options.stream()
-                .filter(s -> size < defaultsize || s.conCnt <= 2)
+                .filter(s -> (openCons < 5 && size < defaultsize) || s.conCnt <= 2)
                 .collect(Collectors.toList());
         options = cropped.size()==0?options:cropped;
         System.out.println("Selecting random from " + options.size() + " rooms");
@@ -142,7 +142,10 @@ public class MapGenerator {
         }
         s.load(world);
         if (hasBoss) {
+            hasBoss = false;
             world.addObject(new Teleport(), world.getWidth()/2, world.getHeight()/2);
+            world.removeObjects(Enemy.class);
+            world.addObject(new Boss(level), world.getWidth()/2, world.getHeight()/2);
         }
     }
 }
