@@ -65,6 +65,7 @@ public class Loottable {
             totalWeight += table.get(key);
         }
         rnd = random.nextDouble()*totalWeight;
+        System.out.println("total weigt: "+totalWeight + "; rnd: "+rnd);
         for (String key : table.keySet()) {
             rnd -= table.get(key);
             if (rnd <= 0) return key;
@@ -99,7 +100,9 @@ public class Loottable {
         System.out.println("loot has {} slots".replace("{}", slotAmount+""));
         for (int slot = 0; slot < slotAmount; slot++) {
             world.loottables.get(Loottable.selectOne((Tag[]) tables.getValue(), world.random)).dropOne(world, x, y);
+            System.out.println("dropped item");
         }
+        System.out.println("dropped all items");
     }
 
     public static void drop(Loottable loottable, DungeonWorld world, int x , int y, int min, int max, int mean) {

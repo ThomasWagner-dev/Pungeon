@@ -1,4 +1,4 @@
 public interface AttackIndication {
 
-    void action();
+    void action(int x, int y);
 }

@@ -11,6 +11,7 @@ public class Teleport extends Tile {
     public void tick() {
         if (enabled && isTouching(Player.class)) {
             DungeonWorld w = (DungeonWorld) world;
+            w.musichandler.playSound("teleport", "player");
             w.menuscrn.showNextLevel();
         }
     }

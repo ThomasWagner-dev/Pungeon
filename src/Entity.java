@@ -117,6 +117,7 @@ public abstract class Entity extends WorldObj {
      */
     protected void die() {
         DungeonWorld world = (DungeonWorld) this.world;
+        System.out.println(name + " died and removing");
         try {
             setSprite("entity/enemies/"+name+"_dead.png");
             DeadBody db = new DeadBody();

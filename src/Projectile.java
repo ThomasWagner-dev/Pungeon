@@ -59,6 +59,7 @@ public class Projectile extends Entity {
         setSprite(selectedWeapon.hitbox);
         lifespan = selectedWeapon.range == 0 ? 10 : (int) ((selectedWeapon.range * DungeonWorld.pixelSize) / speed) + 1;
         this.me = root;
+        setRotation(DungeonWorld.getRotationAngle(direction));
     }
 
     public Projectile(double[] direction, int dmg, String dmgType, int speed, boolean isReflective, String spriteName, int lifespan, WorldObj me) {
@@ -71,6 +72,7 @@ public class Projectile extends Entity {
         this.lifespan = lifespan;
         this.me = me;
         this.speed = speed;
+        setRotation(DungeonWorld.getRotationAngle(direction));
 
         setSprite(spriteName);
     }
@@ -83,6 +85,7 @@ public class Projectile extends Entity {
         this.lifespan = -1;
         this.me = me;
         this.speed = speed;
+        setRotation(DungeonWorld.getRotationAngle(direction));
 
         setSprite(spriteName);
     }

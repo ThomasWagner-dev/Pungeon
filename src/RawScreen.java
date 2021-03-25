@@ -27,8 +27,8 @@ public class RawScreen {
         enemies.forEach(en -> {
             int x, y;
             do {
-                x = (int) (Math.random() * (w - 2)) + 1;
-                y = (int) (Math.random() * (h - 2)) + 1;
+                x = (int) (Math.random() * (w - 4)) + 2;
+                y = (int) (Math.random() * (h - 4)) + 2;
                 int fx = x;
                 int fy = y;
                 if (e.values().stream().noneMatch(pos -> pos[0] == fx && pos[1] == fy))

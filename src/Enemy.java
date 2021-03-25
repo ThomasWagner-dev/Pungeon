@@ -71,12 +71,14 @@ public abstract class Enemy extends Entity implements Cloneable {
     public void die() {
         DungeonWorld world = (DungeonWorld) this.world;
         System.out.println(name);
+        super.die();
         Tag loottable = world.mobdrops.findNextTag(name);
         if (loottable == null) {
             System.err.println("No loottable defined for {}".replace("{}", this.name));
         } else {
+            System.out.println("dropping itmes...");
             Loottable.drop(loottable, world, x, y);
+            System.out.println("dropped items");
         }
-        super.die();
     }
 }

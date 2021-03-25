@@ -7,6 +7,7 @@ public class Screen {
     public ArrayList<ArrayList<Block>> map;
     public HashMap<Enemy, int[]> enemies;
     public HashMap<String, String> adjacentScreens;
+    public ArrayList<WorldObj> additionalObjs = new ArrayList<>();
     public Block backgroundBlock;
     public String name;
 
@@ -104,6 +105,8 @@ public class Screen {
                     pos[1]
             );
         }
+
+        additionalObjs.forEach(obj -> world.addObject(obj, obj.x, obj.y));
         world.tickiveScreen = this;
     }
 }

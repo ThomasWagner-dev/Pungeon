@@ -504,7 +504,7 @@ public class FileWork {
                         en.setSprite((String) tag.getValue());
                         break;
                     case "weapon":
-                        en.weapon = weapons.get((String) tag.getValue()).clone();
+                        en.weapon = weapons.get(tag.getValue()).clone();
                         break;
                     case "hp":
                         en.maxhp = (Integer) tag.getValue();

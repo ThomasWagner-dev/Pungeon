@@ -146,6 +146,8 @@ public class MapGenerator {
             world.addObject(new Teleport(), world.getWidth()/2, world.getHeight()/2);
             world.removeObjects(Enemy.class);
             world.addObject(new Boss(level), world.getWidth()/2, world.getHeight()/2);
+            s.additionalObjs.addAll(world.objectsOf(Teleport.class));
+            Door.close(world);
         }
     }
 }

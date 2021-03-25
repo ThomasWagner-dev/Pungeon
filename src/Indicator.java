@@ -14,6 +14,7 @@ public class Indicator extends WorldObj {
         this.lifetime = lifetime;
         this.c = c;
         this.caller = caller;
+        setImage(orig.scale(32,32));
     }
 
     @Override
@@ -21,12 +22,17 @@ public class Indicator extends WorldObj {
         t++;
         if (t > lifetime) {
             world.removeObject(this);
-            caller.action();
+            caller.action(x, y);
             return;
         }
-        Color nc = t > lifetime/2? c.brighter():c.darker();
+        if (c != null) {
+            Color nc = t > lifetime/2? c.brighter():c.darker();
 
-        setImage(orig.replaceColor(c, nc));
-        c = nc;
+            setImage(orig.replaceColor(c, nc));
+            c = nc;
+        }
+        //else {
+        //    setImage(img.rotate(30));
+        //}
     }
 }
