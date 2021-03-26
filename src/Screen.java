@@ -104,6 +104,8 @@ public class Screen {
                     pos[0],
                     pos[1]
             );
+            if (e.weapon != null)
+                e.weapon.cooldown = 50;
         }
 
         additionalObjs.forEach(obj -> world.addObject(obj, obj.x, obj.y));

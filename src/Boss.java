@@ -5,7 +5,7 @@ public class Boss extends CollidingEnemy implements AttackIndication{
 
     public int level;
     public int attack;
-    public int cooldown;
+    public int cooldown = 50;
     public double speedmp = 1;
     public boolean isAtt;
     public Point pos;
@@ -79,7 +79,7 @@ public class Boss extends CollidingEnemy implements AttackIndication{
                 break;
             case 1:
                 for (int a = 0; a <= 0; a+=1) {
-                    Projectile pr = new Projectile(new double[] {p.x-x,p.y-y}, dmg,"electric", 5, false, "entity/projectiles/zap.png", 300,this);
+                    Projectile pr = new Projectile(new double[] {p.x-x,p.y-y}, dmg,"electric", 15, false, "entity/projectiles/zap.png", 300,this);
                     pr.move(200);
                     world.addObject(pr, x, y);
                 }
@@ -98,6 +98,7 @@ public class Boss extends CollidingEnemy implements AttackIndication{
             case 0:
                 Wpn_hitbox w = new Wpn_hitbox(new double[]{0, 0}, dmg, "physical",0,false,"weapons/hitboxes/boss_point.png", this);
                 w.lifespan = 15;
+                w.setImage(w.img.scale(256,256));
                 world.addObject(w, x, y);
                 cooldown = 200;
                 ((DungeonWorld) world).musichandler.playSound("atk", "boss_fist");

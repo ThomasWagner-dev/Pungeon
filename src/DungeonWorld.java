@@ -133,6 +133,10 @@ public class DungeonWorld extends World {
         System.out.println("Changing paintorder");
         setPaintOrder(Indicator.class, Counter.class, Projectile.class, Player.class, Enemy.class, Item.class, DeadBody.class, Wall.class, Door.class, Trap.class, Tile.class);
         System.out.println();
+        // Beautifying window
+        System.out.println("Beautifying window...");
+        mainframe.setTitle("Pungeon");
+        mainframe.setIconImage(Utils.loadImageFromAssets("icon"));
 
         // Inform the player of the end of the loading process.
         System.out.println("Finished loading.");

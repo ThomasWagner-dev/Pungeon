@@ -80,10 +80,10 @@ public class Player extends Entity implements Collider {
         DungeonWorld world = (DungeonWorld) this.world;
         int mx = world.getWidth(), my = world.getHeight();
         //System.out.println("x: " + x + " y: " + y + " mx: " + mx + " my: " + my);
-        if (x == 0) edge = "left";
-        if (y == 0) edge = "up";
-        if (x == mx - 1) edge = "right";
-        if (y == my - 1) edge = "down";
+        if (x <= world.getWidth()/2-300) edge = "left";
+        if (y <= world.getHeight()/2-300) edge = "up";
+        if (x >= world.getWidth()/2+300) edge = "right";
+        if (y >= world.getHeight()/2+300) edge = "down";
         world.mg.transition(edge);
         switch (edge) {
             case "up":

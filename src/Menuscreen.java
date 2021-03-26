@@ -199,6 +199,26 @@ public class Menuscreen extends World{
         tmp.setTextColor(Color.WHITE);
         tmp.setBackgroundColor(Color.BLACK);
         buttons.put(tmp, null);
+
+        tmp = new Button() {
+            @Override
+            public void clickEvent(MouseEventInfo mouseEventInfo) {
+                Menuscreen ms = (Menuscreen) world;
+                ms.showCredits();
+            }
+
+            @Override
+            public void tick() {
+
+            }
+        };
+        tmp.name = "credits";
+        tmp.setText("Credits");
+        tmp.setFont(awtsubtitle.deriveFont(40F));
+        tmp.setTextColor(Color.WHITE);
+        tmp.setBackgroundColor(Color.BLACK);
+        buttons.put(tmp,null);
+
         tmp = new Button(){
             public void tick(){}
             public void clickEvent(MouseEventInfo e) {
@@ -231,7 +251,7 @@ public class Menuscreen extends World{
         };
         es.resumeKey = inp.keybinds.pause+ "";
         es.createSettingsButtons(p, world.musichandler);
-        es.arrangeButtons("SETTINGS","change numeral values: left-click: increase; right-click: decrease\n shift to half changing speed");
+        es.arrangeButtons("SETTINGS","");
 
         switchWorld(es);
     }
@@ -359,10 +379,10 @@ public class Menuscreen extends World{
     }
 
     public void keyPressed(char key) {
-        if (resumeKey.equals("escape") && key == 27)
+        if ("escape".equals(resumeKey) && key == 27)
             leave();
 
-        else if (resumeKey.equals("tab") && key == 9)
+        else if ("tab".equals(resumeKey) && key == 9)
             leave();
 
         else if ((key+"").equals(resumeKey))
@@ -401,6 +421,49 @@ public class Menuscreen extends World{
         addObject(tmp, width/2, height/8*7);
 
         removeObject(returnbutton);
+
+        setBackground(img);
+        switchWorld(this);
+    }
+
+    public void showCredits() {
+        removeAll();
+        resumeKey = "escape";
+        AdvancedImage img = new AdvancedImage(width, height);
+        img.fill(Color.BLACK);
+
+        img.drawText(Color.WHITE, awttitle.deriveFont(50F), "CREDITS", width/2, 50);
+
+        img.drawText(Color.GREEN, awttitle.deriveFont(30F), "CODE", width/4, 150);
+        img.drawText(Color.GREEN, awtsubtitle.deriveFont(20F), "Commentator2.0", width/4, 200);
+        img.drawText(Color.GREEN, awtsubtitle.deriveFont(20F), "ThomasWagner-dev", width/4, 250);
+
+        img.drawText(Color.WHITE, awttitle.deriveFont(30F), "MUSIC", width/4, 350);
+        img.drawText(Color.WHITE, awtsubtitle.deriveFont(20F), "Jimmy#7514", width/4, 400);
+
+        img.drawText(Color.WHITE, awttitle.deriveFont(30F), "SPRITES", width/4, 500);
+        img.drawText(Color.WHITE, awtsubtitle.deriveFont(20F), "Klaus", width/4, 550);
+
+        img.drawText(Color.WHITE, awttitle.deriveFont(30F), "SOUNDS", width/4, 650);
+        img.drawText(Color.WHITE, awtsubtitle.deriveFont(20F), "Commentator2.0", width/4, 700);
+        img.drawText(Color.WHITE, awtsubtitle.deriveFont(20F), "WilsontheWolf", width/4, 750);
+        img.drawText(Color.WHITE, awtsubtitle.deriveFont(20F), "created with https://sfxr.me/", width/4, 800);
+
+
+        img.drawText(Color.WHITE, awttitle.deriveFont(30F), "LIBRARIES", width/4*3, 150);
+        img.drawText(Color.WHITE, awtsubtitle.deriveFont(20F), "Scisneromam (Connected textures)", width/4*3, 200);
+        img.drawText(Color.WHITE, awtsubtitle.deriveFont(20F), "Udoprog (Minecraft TAG class)", width/4*3, 250);
+
+        img.drawText(Color.WHITE, awttitle.deriveFont(30F), "FONT", width/4*3, 350);
+        img.drawText(Color.WHITE, awttitle.deriveFont(20F), "JWIGGS", width/4*3, 400);
+        img.drawText(Color.WHITE, awtsubtitle.deriveFont(20F), "Karen Clemens",width/4*3, 450);
+        img.drawText(Color.WHITE, awtsubsubtitle.deriveFont(20F), "Devil's Work.shop", width/4*3, 500);
+
+        img.drawText(Color.WHITE, awttitle.deriveFont(30F), "SPECIAL THANKS", width/4*3, 600);
+        img.drawText(Color.WHITE, awtsubtitle.deriveFont(20F), "democat (playtest mac)", width/4*3, 650);
+        img.drawText(Color.WHITE, awtsubtitle.deriveFont(20F), "WilsontheWolf (playtest Linux)", width/4*3, 700);
+        img.drawText(Color.WHITE, awtsubtitle.deriveFont(40F), "YOU for playing this game", width/4*3, 750);
+
 
         setBackground(img);
         switchWorld(this);

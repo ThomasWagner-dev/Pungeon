@@ -12,7 +12,8 @@ A simple top down Roguelike using Greenfoot.
 * [Contributors](#contributers)
 
 ## General info
-This a simple top down Roguelike game based on Greenfoot (not anymore).
+This a simple top down Roguelike game based on Greenfoot (not anymore).  
+To see the keybinds, press escape, while ingame and click on the 'Keybinds' button.
 
 ## Technologies 
 Project created with:  
