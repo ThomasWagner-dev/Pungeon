@@ -6,6 +6,7 @@ public class Boss extends CollidingEnemy implements AttackIndication{
     public int level;
     public int attack;
     public int cooldown = 50;
+    public int cred;
     public double speedmp = 1;
     public boolean isAtt;
     public Point pos;
@@ -24,7 +25,7 @@ public class Boss extends CollidingEnemy implements AttackIndication{
         maxhp = 5*level;
         type = "physical";
         dmg = level*4;
-
+        cred = fib(level);
         pos = new Point(x,y);
 
         w = new Weapon("boss_weapon",
@@ -84,7 +85,7 @@ public class Boss extends CollidingEnemy implements AttackIndication{
                     world.addObject(pr, x, y);
                 }
                 world.musichandler.playSound("atk", "boss_zap");
-                cooldown = 200;
+                setCooldown(200);
                 break;
             case 2:
 
@@ -100,7 +101,7 @@ public class Boss extends CollidingEnemy implements AttackIndication{
                 w.lifespan = 15;
                 w.setImage(w.img.scale(256,256));
                 world.addObject(w, x, y);
-                cooldown = 200;
+                setCooldown(200);
                 ((DungeonWorld) world).musichandler.playSound("atk", "boss_fist");
                 break;
         }
@@ -113,5 +114,15 @@ public class Boss extends CollidingEnemy implements AttackIndication{
         }
 
         return new double[][] {{towards.x-x,towards.y-y},{speedmp}};
+    }
+    
+    public void setCooldown(int c) {
+        cooldown = c-cred;
+        cooldown = cooldown<20?20:cooldown;
+    }
+    
+    public static int fib(int n) {
+        if (n > 2) return 1;
+        return fib(n-1)+fib(n-2);
     }
 }
